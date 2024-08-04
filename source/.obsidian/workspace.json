@@ -1,0 +1,227 @@
+{
+  "main": {
+    "id": "0727ccde25f4e2b2",
+    "type": "split",
+    "children": [
+      {
+        "id": "6aa303662ed0bb03",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "295b2ef3b6aa954f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "_posts/利用 Hexo 与 Github Page 搭建个人博客.md",
+                "mode": "source",
+                "backlinks": false,
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "fa2661a8fa6880e4",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "_posts/利用 Hexo 与 Github Page 搭建个人博客.md",
+                "mode": "source",
+                "backlinks": false,
+                "source": false
+              }
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "9b81d13a99431204",
+    "type": "split",
+    "children": [
+      {
+        "id": "05167ece40bc998d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "950eee6fc4932169",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "c1152c6361b89625",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "49c2e8cf9a70b9fc",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 240.5
+  },
+  "right": {
+    "id": "c4a5b62ae0b7e094",
+    "type": "split",
+    "children": [
+      {
+        "id": "f8520319aa6a9fe8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "09624192dd937b94",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "_posts/利用 Hexo 与 Github Page 搭建个人博客.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "19b6a99e9965415d",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "_posts/利用 Hexo 与 Github Page 搭建个人博客.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "800b5f2fb3f4bd6a",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "fab1ced9787cf1ee",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "_posts/利用 Hexo 与 Github Page 搭建个人博客.md"
+              }
+            }
+          },
+          {
+            "id": "7b32df0f5fdf2164",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "vscode-editor:新建代码文件": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": false
+    }
+  },
+  "active": "fa2661a8fa6880e4",
+  "lastOpenFiles": [
+    "_posts/星空的琴弦.md",
+    "_posts/利用 Hexo 与 Github Page 搭建个人博客.md",
+    "draft/连结.md",
+    "draft/烧烤店.md",
+    "template/post.md",
+    "template/page.md",
+    "2024-08-04.md",
+    "images/starry_night.jpg",
+    "images/template.png",
+    "images/ssh.png",
+    "images/new_repo.png",
+    "images/logo.png",
+    "images/insert_template.png",
+    "images/hexo_init.png",
+    "images/hexo_test.png",
+    "images/favicon-32x32.png",
+    "images/favicon-16x16.png",
+    "about/index.md",
+    "about",
+    "images/starry_night.jpg.~tmp",
+    "_posts/new/test.md",
+    "_posts/new",
+    "draft",
+    "math/new.md",
+    "math/index.md",
+    "tags/index.md",
+    "math",
+    "2024-07-27.md",
+    "tags",
+    "_posts/r3r3r.md",
+    "template/未命名 1.md",
+    "template",
+    "math",
+    "数学/实变函数/勒贝格积分/积分的极限定理.md",
+    "毛概/重点.md",
+    "毛概/重点无提示词.md",
+    "数学/实变函数/集合与测度/「数列极限」、「集合列极限」和「函数列极限」的关系.md",
+    "数学/实变函数/集合与测度/不连续点的基数问题.md",
+    "数学/实变函数/集合与测度/极限与集合.md",
+    "数学/实变函数/集合与测度/外测度与内测度定义等价性证明.md",
+    "数学/实变函数/可测函数/可测函数与连续函数.md",
+    "数学/实变函数/可测函数/可测函数与简单函数.md",
+    "数学/实变函数/可测函数/可测函数列的收敛.md",
+    "数学/实变函数/Lp空间/Lp空间与范数.md",
+    "Xorbits",
+    "歌词",
+    "Excalidraw/未命名.canvas",
+    "未命名.canvas",
+    "附件/未命名.canvas"
+  ]
+}

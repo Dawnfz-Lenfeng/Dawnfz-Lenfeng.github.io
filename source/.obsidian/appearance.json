@@ -1,0 +1,11 @@
+{
+  "accentColor": "",
+  "theme": "obsidian",
+  "cssTheme": "Things",
+  "translucency": false,
+  "baseFontSize": 17,
+  "enabledCssSnippets": [
+    "图片对齐语法增强"
+  ],
+  "baseFontSizeAction": true
+}

@@ -1,0 +1,66 @@
+{
+  "items": [
+    {
+      "name": "Markdown"
+    },
+    {
+      "name": "Markdown (Hugo)"
+    },
+    {
+      "name": "Html"
+    },
+    {
+      "name": "TextBundle"
+    },
+    {
+      "name": "Typst"
+    },
+    {
+      "name": "PDF",
+      "customArguments": "--pdf-engine=xelatex -V CJKmainfont=\"SimSun\" --reference-links --reference-location=block",
+      "arguments": "--resource-path=\"${currentDir}\" --resource-path=\"${attachmentFolderPath}\" --lua-filter=\"${luaDir}/pdf.lua\" ${ options.textemplate ? `--resource-path=\"${pluginDir}/textemplate\" --template=\"${options.textemplate}\"` : ` ` } -s -o \"${outputPath}\" -t pdf",
+      "runCommand": false
+    },
+    {
+      "name": "Word (.docx)",
+      "customArguments": "",
+      "arguments": "--resource-path=\"${currentDir}\" --resource-path=\"${attachmentFolderPath}\" -s -o \"${outputPath}\" -t docx"
+    },
+    {
+      "name": "OpenOffice"
+    },
+    {
+      "name": "RTF"
+    },
+    {
+      "name": "Epub"
+    },
+    {
+      "name": "Latex"
+    },
+    {
+      "name": "Media Wiki"
+    },
+    {
+      "name": "reStructuredText"
+    },
+    {
+      "name": "Textile"
+    },
+    {
+      "name": "OPML"
+    },
+    {
+      "name": "Bibliography"
+    }
+  ],
+  "defaultExportDirectoryMode": "Same",
+  "openExportedFile": true,
+  "env": {},
+  "showExportProgressBar": true,
+  "lastExportDirectory": {
+    "win32": "E:\\Note\\Note//"
+  },
+  "lastExportType": "PDF",
+  "lastEditName": "PDF"
+}
