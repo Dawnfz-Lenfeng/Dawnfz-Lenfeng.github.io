@@ -373,17 +373,11 @@ div {
 .post .post-content ul,
 .post .post-content ol {
   border-radius: 3px;
-  margin: 0;
+  margin: 1em 0;
 }
 .post .post-content ul ul,
 .post .post-content ol ul {
   margin: 0;
-  padding: 0;
-}
-.post .post-content ul ul li,
-.post .post-content ol ul li {
-  margin-bottom: 0;
-  /* 调整列表项之间的间距 */
 }
 .post .post-content ul code,
 .post .post-content ol code {
