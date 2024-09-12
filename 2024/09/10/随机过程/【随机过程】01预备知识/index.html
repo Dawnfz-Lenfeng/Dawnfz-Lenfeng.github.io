@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>【随机过程】01预备知识 | What was I thinking?</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/pure-min.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="https://unpkg.com/jquery/dist/jquery.min.js"></script><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"><link rel="Shortcut Icon" href="/images/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="https://unpkg.com/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="https://unpkg.com/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="https://unpkg.com/toastr/build/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【随机过程】01预备知识</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【随机过程】01预备知识</h1><div class="post-meta">2024-09-10<span> | </span><span class="category"><a href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E7%8E%87%E7%A9%BA%E9%97%B4"><span class="toc-number">1.</span> <span class="toc-text">概率空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E4%B8%8E%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">随机变量与分布函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E7%89%B9%E5%BE%81%E7%9F%A9%E6%AF%8D%E5%87%BD%E6%95%B0%E4%B8%8E%E7%89%B9%E5%BE%81%E5%87%BD%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">数字特征、矩母函数与特征函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%8E%E6%9B%BC%E6%96%AF%E8%92%82%E5%B0%94%E6%9D%B0%E6%96%AFriemann-stieltjes-r-s%E7%A7%AF%E5%88%86"><span class="toc-number">3.1.</span> <span class="toc-text">黎曼─斯蒂尔杰斯（Riemann-Stieltjes,
+R-S）积分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E6%AF%8D%E5%87%BD%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">矩母函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E6%9C%9F%E6%9C%9B%E4%B8%8E%E6%9D%A1%E4%BB%B6%E6%96%B9%E5%B7%AE"><span class="toc-number">4.</span> <span class="toc-text">条件期望与条件方差</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E6%9C%9F%E6%9C%9B"><span class="toc-number">4.1.</span> <span class="toc-text">条件期望</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E6%96%B9%E5%B7%AE"><span class="toc-number">4.2.</span> <span class="toc-text">条件方差</span></a></li></ol></li></ol></div></div><div class="post-content"><h2 id="概率空间">概率空间</h2>
+<ul>
+<li>随机试验每一个可能的结果被称为样本点<span
+class="math inline">\(w\)</span>。</li>
+<li>全体样本点所构成的集合称为样本空间<span
+class="math inline">\(\Omega\)</span>。</li>
+<li>样本空间中的子集构建事件域<span
+class="math inline">\(\mathcal{F}\)</span>，且<span
+class="math inline">\(\mathcal{F}\)</span>为<span
+class="math inline">\(\sigma\)</span>域。</li>
+<li>概率<span class="math inline">\(P\)</span>为<span
+class="math inline">\(\mathcal{F}\to
+\mathbb{R}\)</span>的实值函数，为概率测度。</li>
+<li><span
+class="math inline">\((\Omega,\mathcal{F},P)\)</span>称为概率空间。<span
+class="math inline">\(\mathcal{F}\)</span>中的元素称为事件，<span
+class="math inline">\(P(A)\)</span>称为事件<span
+class="math inline">\(A\)</span>的概率。</li>
+</ul>
+<p><strong><span class="math inline">\(\sigma\)</span>域</strong>
+设<span class="math inline">\(\Omega\)</span>为一个样本空间，<span
+class="math inline">\(\mathcal{F}\)</span>为<span
+class="math inline">\(\Omega\)</span>中的子集构成的集合族。如果满足 1.
+<span class="math inline">\(\Omega \in \mathcal{F}\)</span> 2. 若<span
+class="math inline">\(A \in \mathcal{F}\)</span>，则<span
+class="math inline">\(A^{c} \in \mathcal{F}\)</span> 3. 若<span
+class="math inline">\(A_{n} \in \mathcal{F}\)</span>（<span
+class="math inline">\(n=1,2,\dots\)</span>），则<span
+class="math inline">\(\bigcup_{n = 1}^{\infty}A_{n} \in
+\mathcal{F}\)</span></p>
+<p>则称<span class="math inline">\(\mathcal{F}\)</span>为<span
+class="math inline">\(\Omega\)</span>上的<span
+class="math inline">\(\sigma\)</span>域（<span
+class="math inline">\(\sigma\)</span>代数）。显然<span
+class="math inline">\(\mathcal{F}\)</span>中任意可列交、并、补运算均封闭。</p>
+<p><strong>概率测度</strong> 设<span class="math inline">\(P:
+\mathcal{F}\to \mathbb{R}\)</span>，即定义在<span
+class="math inline">\(\mathcal{F}\)</span>上的实值函数。如果 1. <span
+class="math inline">\(P(\Omega)=1\)</span> 2. <span
+class="math inline">\(\forall A \in \mathcal{F}, 0\leq P(A)\leq
+1\)</span> 3. 对于<span class="math inline">\(\{ A_{n}
+\}\)</span>，当<span class="math inline">\(i\neq j\)</span>时，<span
+class="math inline">\(A_{i}\cap A_{j}=\varnothing\)</span>，有<span
+class="math inline">\(P\left( \bigcup_{n = 1}^{\infty}A_{n}
+\right)=\sum_{n = 1}^{\infty}P(A_{n})\)</span></p>
+<p>则称<span class="math inline">\(P\)</span>为<span
+class="math inline">\((\Omega,\mathcal{F})\)</span>上的概率。</p>
+<h2 id="随机变量与分布函数">随机变量与分布函数</h2>
+<p><strong>随机变量</strong> 设<span class="math inline">\(X:\Omega\to
+\mathbb{R}\)</span>，即定义在<span
+class="math inline">\(\Omega\)</span>上的实值函数。如果<span
+class="math inline">\(X\)</span>关于<span
+class="math inline">\(\mathcal{F}\)</span>为可测函数，即<span
+class="math display">\[X^{-1}(\mathcal{B} )= \{ \omega \in \Omega \mid
+X(\omega) \in \mathcal{B}  \} \in \mathcal{F}  \]</span>则称<span
+class="math inline">\(X\)</span>是<span
+class="math inline">\(\mathcal{F}\)</span>上的随机变量，简称随机变量。</p>
+<p><strong>分布函数</strong> 设概率空间<span
+class="math inline">\((\Omega,\mathcal{F},P)\)</span>，函数<span
+class="math display">\[F(x)=P \{ \omega \in \mid X(\omega)\leq x \}=P \{
+X\leq x \}\]</span>称为随机变量<span
+class="math inline">\(X\)</span>的分布函数。</p>
+<h2 id="数字特征矩母函数与特征函数">数字特征、矩母函数与特征函数</h2>
+<h3
+id="黎曼斯蒂尔杰斯riemann-stieltjes-r-s积分">黎曼─斯蒂尔杰斯（Riemann-Stieltjes,
+R-S）积分</h3>
+<p><strong>定义</strong> Riemann积分定义为<span
+class="math display">\[\int_{a}^{b}g(x) \, dx= \lim_{ \Delta \to 0
+}\sum_{i = 1}^{n}
+g(\xi_{i})(x_{i}-x_{i-1})  \]</span>而Riemann-Stieltjes积分定义为<span
+class="math display">\[\int_{a}^{b}g(x) \, dF(x)=\lim_{ \Delta \to 0 }
+\sum_{i = 1}^{n} g(\xi_{i})(F(x_{i})-F(x_{i-1})) \]</span>
+<strong>性质</strong> - 当<span
+class="math inline">\(F(x)=x\)</span>时，Riemann-Stieltjes积分即为Riemann积分。
+- 当<span
+class="math inline">\(F(x)\)</span>为阶梯函数时，Riemann-Stieltjes积分为求和级数。
+- 当<span
+class="math inline">\(F(x)\)</span>为离散随机变量的概率分布函数时，有<span
+class="math display">\[\int_{-\infty}^{\infty} x \, dF(x)=\lim_{ \Delta
+\to 0 } \sum_{i = 1}^{n} x_{i}(F(x_{i})-F(x_{i-1}))=\sum_{i}
+x_{i}p_{i}  \]</span> -
+根据Riemann-Stieltjes积分的定义，离散型和连续型随机变量的数学期望可以用一个统一的积分形式表达<span
+class="math display">\[E(X)=\int_{-\infty}^{\infty} x \, dF(x)\]</span>
+<strong>充分条件</strong> 若函数<span
+class="math inline">\(g(x)\)</span>为连续函数，<span
+class="math inline">\(F(x)\)</span>为单调函数，则Riemann-Stieltjes积分存在。</p>
+<h3 id="矩母函数">矩母函数</h3>
+<p><strong>定义</strong> 矩母函数定义为<span
+class="math display">\[\phi(t)=E(e^{tX})\]</span> 类似变换如下：</p>
+<ul>
+<li>矩母函数<span class="math inline">\(E(e^{tX})\)</span></li>
+<li>概率母函数<span class="math inline">\(E(t^{X})\)</span></li>
+<li>Laplace变换<span class="math inline">\(E(e^{-tX})\)</span></li>
+<li>特征函数<span class="math inline">\(E(e^{itX})\)</span></li>
+</ul>
+<p><strong>性质</strong> 1. <span
+class="math inline">\(E(X^{n})=\phi^{(n)}(0)\)</span> 2. 若<span
+class="math inline">\(Y=aX+b\)</span>，则<span
+class="math inline">\(\phi_{Y}(t)=e^{bt}\phi_{X}(at)\)</span></p>
+<hr />
+<p><strong>例</strong> 求设<span class="math inline">\(Y\sim
+N(\mu,\sigma^{2})\)</span>，求其矩母函数与特征函数。</p>
+<p><strong>解</strong> 先计算<span class="math inline">\(X\sim
+N(0,1)\)</span>，此时<span class="math display">\[\begin{align}
+\phi_{X}(t) &amp; =E(e^{tX}) \\
+&amp; = \frac{1}{\sqrt{ 2\pi }} \int_{-\infty}^{\infty} e^{tx}
+e^{-x^{2}/2} \, dx \\
+  &amp; = e^{t^{2}/2} \frac{1}{\sqrt{ 2\pi }}\int_{-\infty}^{\infty}
+e^{-(x-t)^{2}/2} \, dx  \\
+&amp; = e^{t^{2}/2}
+\end{align}\]</span>注意到<span class="math inline">\(Y=\sigma
+X+\mu\)</span>，故<span class="math display">\[\phi_{Y}(t)=e^{\mu
+t}\phi_{X}(\sigma t)=e^{\mu t+\sigma^{2}t^{2}/2}\]</span></p>
+<p>特征函数同理。注意到<span class="math display">\[\begin{align}
+f_{X}(t)  &amp; = E(e^{itX}) \\
+     &amp; = \frac{1}{\sqrt{ 2\pi }}\int_{-\infty}^{\infty}
+e^{itx}e^{-x^{2}/2} \, dx \\
+&amp; = e^{-t^{2}/2} \frac{1}{\sqrt{ 2\pi }}\int_{-\infty}^{\infty}
+e^{(x-it)^{2}/2} \, dx   \\
+&amp; = e^{-t^{2}/2}
+\end{align}\]</span>故<span class="math display">\[\begin{align}
+f_{Y}(t)=e^{i \mu t}f_{X}(\sigma t)=e^{i \mu t- \sigma^{2}t^{2}/2}
+\end{align}\]</span> ### 期望 <strong>引理（Fubini定理）</strong>
+对于两重求和，若<span class="math inline">\(\sum_{i = 1}^{\infty}\sum_{j
+= 1}^{\infty}\lvert a_{i,j}
+\rvert&lt;+\infty\)</span>，则求和可以交换次序；对于两重积分<span
+class="math inline">\(\int_{0}^{\infty} \int_{0}^{\infty}  f(x,y) \, dy
+\, dx\)</span>，若<span class="math inline">\(\int_{0}^{\infty}
+\int_{0}^{\infty} \lvert f(x,y) \rvert \, dx \,
+dy&lt;+\infty\)</span>，则积分可以交换次序。</p>
+<p><strong>推论（Tonelli定理）</strong> 退化为非负即可。</p>
+<hr />
+<p><strong>定理</strong> 设<span
+class="math inline">\(X\)</span>为非负连续型随机变量，分布函数为<span
+class="math inline">\(F(x)\)</span>，则<span
+class="math display">\[E(X)=\int_{0}^{\infty} (1-F(x)) \, dx =
+\int_{0}^{\infty} P(X&gt;x) \, dx =  \int_{0}^{1} F^{-1}(p) \, dp
+\]</span></p>
+<p><strong>证明</strong> 考虑Fubini定理，有<span
+class="math display">\[\begin{align}
+E(X)  &amp; = \int_{0}^{\infty} t  \, dF(t)  \\
+&amp; = \int_{0}^{\infty} \int_{0}^{t}  \, dx  \, dF(t)  \\
+&amp; = \int_{0}^{\infty} \int_{x}^{\infty} \, dF(t)  \, dx  \\
+&amp; = \int_{0}^{\infty} (1-F(x)) \, dx
+\end{align}\]</span>而后面的等式注意到<span
+class="math display">\[F(X)\sim U(0,1)\]</span>因此<span
+class="math display">\[X \xlongequal{ d } F^{-1}(U)\]</span>
+<strong>推论</strong> 设<span
+class="math inline">\(N\)</span>为非负离散型随机变量，则<span
+class="math display">\[E(N)=\sum_{k = 1}^{\infty} P(N\geq
+k)\]</span></p>
+<h2 id="条件期望与条件方差">条件期望与条件方差</h2>
+<h3 id="条件期望">条件期望</h3>
+<p><strong>定义</strong> 对于离散型变量<span
+class="math display">\[E(X\mid Y=y)=\sum_{x } P\{ X=x \mid Y=y \}
+\]</span>对于连续性变量<span class="math display">\[E(X\mid
+Y=y)=\int_{-\infty}^{\infty} xf(x\mid y) \, dx \]</span>其中<span
+class="math display">\[f(x\mid y)= \frac{f(x,y)}{f(y)}\]</span></p>
+<p><strong>全期望公式</strong> 对于所有随机变量<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>，有<span
+class="math display">\[E(X)=E(E(X\mid Y))\]</span></p>
+<h3 id="条件方差">条件方差</h3>
+<p><strong>定义</strong> 条件方差定义为<span
+class="math display">\[Var(X\mid Y=y)=E((X-E(X\mid Y=y))^{2} \mid
+Y=y)\]</span>同时也有<span class="math display">\[Var(X\mid
+Y=y)=E(X^{2}\mid Y=y)-E^{2}(X\mid Y=y)\]</span></p>
+<p><strong>条件方差公式</strong> 对于所有的随机变量<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>有<span
+class="math display">\[Var(X)=E(Var(X\mid Y)+Var(E(X\mid Y)))\]</span>
+<strong>证明</strong> 注意到左边<span
+class="math display">\[\begin{align}
+E(Var(X\mid Y)) &amp; =E(E(X^{2}\mid Y)-E^{2}(X\mid Y)) \\
+&amp; =E(X^{2})-E(E^{2}(X\mid Y))
+\end{align}\]</span>右边<span class="math display">\[\begin{align}
+Var(E(X\mid Y)) &amp; = E(E^{2}(X\mid Y))-E^{2}(E(X\mid Y)) \\
+&amp; = E(E^{2}(X\mid Y))-E^{2}(X)
+\end{align}\]</span>因此<span class="math display">\[E(Var(X\mid
+Y)+Var(E(X\mid Y)))=E(X^{2})-E^{2}(X)=Var(X)\]</span> *<strong>
+</strong>例** 设<span
+class="math inline">\(X_{1},\dots,X_{n}\)</span>独立同分布，分布函数为<span
+class="math inline">\(F(x)\)</span>，均值为<span
+class="math inline">\(\mu\)</span>方差为<span
+class="math inline">\(\sigma^{2}\)</span>。此时假设其与非负整数值得随机变量<span
+class="math inline">\(N\)</span>独立，求<span
+class="math inline">\(S=\sum_{i = 1}^{N}X_{i}\)</span>的方差。</p>
+<p><strong>解</strong> 使用条件方差公式，注意到<span
+class="math display">\[
+Var(X|N=n) = Var\left( \sum_{i = 1}^{n} X_{i} \right)= n\sigma^{2}
+\]</span>故<span class="math display">\[E(Var(X\mid
+N))=E(\sigma^{2}N)=\sigma^{2}E(N)\]</span>同理<span
+class="math display">\[E(X\mid N=n)=E\left( \sum_{i = 1}^{n} X_{i}
+\right)=n\mu\]</span>因此<span class="math display">\[Var(E(X\mid
+N))=Var(\mu N)=\mu Var(N)\]</span>故<span
+class="math display">\[Var(S)=\sigma^{2}E(N)+\mu Var(N)\]</span> ###
+特殊形式的全概率公式 设<span
+class="math inline">\(I(A)\)</span>为示性随机变量，则有<span
+class="math display">\[E(I(A))=P(A)\]</span>对于条件期望也有<span
+class="math display">\[E(I(A)\mid Y=y)=P(A\mid Y=y)\]</span></p>
+<p><strong>全概率公式</strong> 当<span
+class="math inline">\(Y\)</span>为离散随机变量时，有<span
+class="math display">\[P(A)=\sum_{y} P(A\mid Y=y)P(Y=y)
+\]</span>当当<span
+class="math inline">\(Y\)</span>为连续随机变量时，有<span
+class="math display">\[P(A)=\int_{-\infty}^{\infty} P(A\mid Y=y)f(y) \,
+dy \]</span></p>
+</div><div class="tags"></div><div class="post-nav"><a class="next" href="/2024/08/12/Docker%20%E9%95%9C%E5%83%8F/">Docker 镜像</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/09/10/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【随机过程】01预备知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/08/12/Docker%20%E9%95%9C%E5%83%8F/">Docker 镜像</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/07/29/%E5%88%A9%E7%94%A8%20Hexo%20%E4%B8%8E%20Github%20Page%20%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">利用 Hexo 与 Github Page 搭建个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/07/28/%E6%98%9F%E7%A9%BA%E7%9A%84%E7%90%B4%E5%BC%A6/">星空的琴弦</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
