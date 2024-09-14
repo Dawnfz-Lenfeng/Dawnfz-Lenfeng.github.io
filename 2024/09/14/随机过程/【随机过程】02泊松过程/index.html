@@ -1,0 +1,371 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>【随机过程】02泊松过程 | What was I thinking?</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/pure-min.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="https://unpkg.com/jquery/dist/jquery.min.js"></script><link rel="stylesheet" href="/css/custom.css"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"><link rel="Shortcut Icon" href="/images/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="https://unpkg.com/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="https://unpkg.com/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="https://unpkg.com/toastr/build/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【随机过程】02泊松过程</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【随机过程】02泊松过程</h1><div class="post-meta">2024-09-14<span> | </span><span class="category"><a href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8B%AC%E7%AB%8B%E5%A2%9E%E9%87%8F%E8%BF%87%E7%A8%8B"><span class="toc-text">1 独立增量过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B"><span class="toc-text">2 泊松过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8E%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B%E7%9B%B8%E8%81%94%E7%B3%BB%E7%9A%84%E8%8B%A5%E5%B9%B2%E5%88%86%E5%B8%83"><span class="toc-text">3 与泊松过程相联系的若干分布</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#x_n%E4%B8%8Et_n%E7%9A%84%E5%88%86%E5%B8%83"><span class="toc-text">3.1 \(X_{n}\)与\(T_{n}\)的分布</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#t_n%E7%9A%84%E6%9D%A1%E4%BB%B6%E5%88%86%E5%B8%83"><span class="toc-text">3.2 \(T_{n}\)的条件分布</span></a></li></ol></li></ol></div></div><div class="post-content"><h2 data-number="1" id="独立增量过程"><span
+class="header-section-number">1</span> 独立增量过程</h2>
+<div class="block definition">
+<div class="block-title">
+Definition 1.1 (独立增量过程).
+</div>
+<div class="block-content">
+<p>如果对于任意<span class="math inline">\(t_{1},t_{2},\dots,t_{n}\in
+T\)</span>，<span
+class="math inline">\(t_{1}&lt;t_{2}&lt;\dots&lt;t_{n}\)</span>，随机变量<span
+class="math inline">\(X(t_{2})-X(t_{1})\)</span>，<span
+class="math inline">\(X(t_{3})-X(t_{2})\)</span>，<span
+class="math inline">\(\dots\)</span>，<span
+class="math inline">\(X(t_{n})-X(t_{n-1})\)</span>是相互独立的，则称<span
+class="math inline">\(\{ X(t), t \in T \}\)</span>是独立增量过程。</p>
+<p>如果对于任意<span class="math inline">\(t_{1}\)</span>，<span
+class="math inline">\(t_{2}\)</span>，有<span
+class="math inline">\(X(t_{1}+h)-X(t_{1})\stackrel{ d
+}{=}X(t_{2}+h)-X(t_{2})\)</span>，则称<span class="math inline">\(\{
+X(t) ,t\in T \}\)</span>是平稳增量过程。</p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 1.1 (平稳增量的充分必要条件).
+</div>
+<div class="block-content">
+<p>设<span class="math inline">\(\{ X(t) ,  t\geq 0
+\}\)</span>是一个独立增量过程，则<span
+class="math inline">\(X(t)\)</span>具有平稳增量的充分必要条件为：其特征函数具有可乘性，即<span
+class="math display">\[\psi_{X(t+s)}(a)=\psi_{X(t)}(a)\psi_{X(s)}(a)\]</span></p>
+</div>
+</div>
+<h2 data-number="2" id="泊松过程"><span
+class="header-section-number">2</span> 泊松过程</h2>
+<div class="block definition">
+<div class="block-title">
+Definition 2.1 (泊松过程Poisson Process).
+</div>
+<div class="block-content">
+<p>如果计数过程<span class="math inline">\(\{ N(t),t\geq 0
+\}\)</span>满足以下条件：</p>
+<ol type="1">
+<li><span class="math inline">\(N(0)=0\)</span></li>
+<li><span class="math inline">\(N(t)\)</span>有独立增量性</li>
+<li>在长度为<span
+class="math inline">\(t\)</span>的时间内发生的次数服从泊松分布，参数为<span
+class="math inline">\(\lambda t\)</span>，即对任意的<span
+class="math inline">\(s,t&gt;0\)</span>，有<span
+class="math display">\[P\{ N(t+s)-N(s)=n \}= \frac{(\lambda
+t)^{n}}{n!}e^{-\lambda t}\]</span></li>
+</ol>
+<p>则称<span class="math inline">\(N(t)\)</span>为强度参数为<span
+class="math inline">\(\lambda&gt;0\)</span>的泊松过程。</p>
+</div>
+</div>
+<p>其矩母函数为<span class="math display">\[\begin{align}
+\psi(u) &amp; = E(e^{uX}) \\
+&amp; = \sum_{n = 0}^{\infty} e^{un} \frac{\lambda^{n}}{n!}e^{-\lambda}
+\\
+&amp; = e^{-\lambda}\sum_{n = 0}^{\infty} \frac{(\lambda e^{u})^{n}}{n!}
+\\
+&amp; = e^{-\lambda }e^{\lambda e^{u}} \\
+&amp; = e^{\lambda(e^{u}-1)}
+\end{align}\]</span>对其求导有 <span
+class="math display">\[\begin{align}
+\psi&#39;(u) &amp; = \lambda e^{u}e^{\lambda(e^{u}-1)} \\
+\psi&#39;&#39;(u)  &amp; = (\lambda e^{u})^{2}e^{\lambda(e^{u}-1)}+
+\lambda e^{u}e^{\lambda(e^{u}-1)}
+\end{align}\]</span>因此<span class="math display">\[\begin{align}
+E(X)  &amp; = \psi&#39;(0)=\lambda \\
+E(X^{2})  &amp; = \psi&#39;&#39;(0)= \lambda^{2}+\lambda \\
+Var(X)  &amp; = E(X^{2})-E^{2}(X)=\lambda
+\end{align}\]</span></p>
+<div class="block definition">
+<div class="block-title">
+Definition 2.2 (泊松过程等价定义).
+</div>
+<div class="block-content">
+<p>计数过程<span class="math inline">\(\{ N(t),t\geq0
+\}\)</span>称为泊松过程，参数为<span
+class="math inline">\(\lambda&gt;0\)</span>，如果</p>
+<ol type="1">
+<li><span class="math inline">\(N(0)=0\)</span></li>
+<li>过程有平稳增量性和独立增量性</li>
+<li><span class="math inline">\(P\{ N(t+h)-N(t)=1 \}=\lambda
+h+o(h)\)</span></li>
+<li><span class="math inline">\(P\{ N(t+h)-N(t)\geq 2
+\}=o(h)\)</span></li>
+</ol>
+</div>
+</div>
+<p><strong>证明</strong> <span
+class="math inline">\(\implies\)</span>的证明是显然的。注意到<span
+class="math display">\[\begin{align}
+P\{ N(t+h)-N(t)=1 \}  &amp; = \frac{\lambda h}{1!}e^{-\lambda h} \\
+&amp; = \lambda h(1-\lambda h+o(h)) \\
+&amp; = \lambda h+o(h)
+\end{align}\]</span>同时<span class="math display">\[\begin{align}
+P\{ N(t+h)-N(t)\geq2 \}  &amp; = 1- \sum_{n = 0}^{1} \frac{(\lambda
+h)^{n}}{n!}e^{-\lambda h} \\
+&amp; = 1-e^{-\lambda h}(1+\lambda h) \\
+&amp; = 1-(1-\lambda h+o(h))(1+\lambda h) \\
+&amp; = o(h)
+\end{align}\]</span>因此，下面只需要考虑反方向证明，这里给出2种方法。</p>
+<p><strong>法一</strong> 直接考虑概率递推关系。令<span
+class="math inline">\(P_{n}(t)=P\{ N(t)=n \}\)</span>，条件转化为<span
+class="math display">\[
+P_{1}(h)  =\lambda h+o(h) \]</span>此时<span
+class="math display">\[\begin{align}
+P_{n}(t+h) &amp; = P\{ N(t+h)=n \} \\
+     &amp; = P\{ N(t)=n,N(t+h)-N(t)=0 \} \\
+&amp; \quad + P\{ N(t)=n-1,N(t+h)-N(t)=1 \} \\
+&amp; \quad + P\{ N(t+h)=n,N(t+h)-N(t)\geq 2 \} \\
+     &amp; = P_{n}(t)P_{0}(h)+P_{n-1}(t)P_{1}(h)+o(h) \\
+&amp; = (1-\lambda h)P_{n}(t)+\lambda hP_{n-1}(t)+o(h)
+\end{align}\]</span>因此<span
+class="math display">\[\frac{P_{n}(t+h)-P_{n}(t)}{h}= -\lambda
+P_{n}(t)+\lambda P_{n-1}(t)+o(h)\]</span>从而<span
+class="math display">\[P&#39;_{n}(t)= -\lambda P_{n}(t)+\lambda
+P_{n-1}(t)\]</span>下面只需求出初值<span
+class="math inline">\(P_{0}(t)\)</span>。我们采用类似的办法，注意到<span
+class="math display">\[\begin{align}
+P_{0}(t+h) &amp; =P\{ N(t+h)=0  \} \\
+&amp; = P\{ N(t+h)-N(t)=0,N(t)=0 \} \\
+&amp; = P\{ N(t)=0 \}P\{ N(t+h)-N(t)=0 \} \\
+&amp; = P_{0}(t)(1-\lambda h+o(h))
+\end{align}\]</span>因此<span
+class="math display">\[\frac{P_{0}(t+h)-P_{0}(h)}{h}=-\lambda
+P_{0}(t)+\frac{o(h)}{h}\]</span>令<span class="math inline">\(h\to
+0\)</span>，有<span class="math display">\[P_{0}&#39;(t)=-\lambda
+P_{0}(t)\]</span>从而根据<span
+class="math inline">\(P_{0}(0)=1\)</span>可得到<span
+class="math display">\[P_{0}(t)=e^{-\lambda
+t}\]</span>此时通过递推关系和数学归纳法即可求出<span
+class="math inline">\(P_{n}(t)\)</span>。</p>
+<p><strong>法二</strong> 考虑 Laplace
+变换，只需要求出其变换后表达式与泊松分布相同即可。设<span
+class="math inline">\(g(t)=E(e^{-uN(t)})\)</span>，欲证<span
+class="math display">\[g(t)=e^{\lambda t(e^{-u}-1)}\]</span>只需证<span
+class="math display">\[\frac{g&#39;(t)}{g(t)}=\lambda(e^{-u}-1)\]</span>注意到由平稳增量性，有<span
+class="math display">\[
+g(t+h) = g(t)g(h)
+\]</span>此时只需证明<span class="math display">\[\frac{g(t+h)-g(t)}{h}
+\cdot \frac{1}{g(t)}=  \frac{g(h)-1}{h} \to
+\lambda(e^{-u}-1)\]</span>即证<span class="math display">\[g(h)=\lambda
+h(e^{-u}-1)+1+o(h)\]</span>而<span class="math display">\[\begin{align}
+g(h) &amp; =E(e^{-uN(h)}) \\
+&amp; = (1-\lambda h+o(h))+(\lambda h+o(h))e^{-u }+o(h) \\
+&amp; = 1-\lambda h +\lambda he^{-u}+o(h)
+\end{align}\]</span>故证毕。</p>
+<hr />
+<div class="block example">
+<div class="block-title">
+Example 2.1 (泊松过程的随机稀疏).
+</div>
+<div class="block-content">
+<p>设事件<span class="math inline">\(A\)</span>形成强度为<span
+class="math inline">\(\lambda\)</span>的泊松过程<span
+class="math inline">\(\{ N(t),t\geq0
+\}\)</span>，如果每次事件发生时以概率<span
+class="math inline">\(p\)</span>记录下来，设<span
+class="math inline">\(M(t)\)</span>为到<span
+class="math inline">\(t\)</span>时刻被记录下来的事件总数，则<span
+class="math inline">\(\{ M(t),t\geq 0 \}\)</span>时一个强度为<span
+class="math inline">\(\lambda p\)</span>的泊松过程，即<span
+class="math display">\[P\{ M(t)=m \}= \frac{(\lambda
+pt)^{m}}{m!}e^{-\lambda pt}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 对于复合随机变量，使用全概率公式。注意到<span
+class="math display">\[\begin{align}
+P\{ M(t)=m \}  &amp; = \sum_{n = 0}^{\infty} P\{ M(t)=m\mid N(t)=n+m
+\}P\{ N(t)=n+m \} \\
+     &amp; = \sum_{n = 0}^{\infty} \frac{(n+m)!}{n!m!} p^{m}(1-p)^{n}
+\frac{(\lambda t)^{n+m}}{(n+m)!} e^{-\lambda t} \\
+     &amp; = \frac{(\lambda pt)^{m}}{m!}e^{-\lambda t}\sum_{n =
+0}^{\infty} \frac{(\lambda(1-p)t)^{n}}{n!}  \\
+     &amp; = \frac{(\lambda pt)^{m}}{m!}e^{-\lambda t} e^{\lambda(1-p)t}
+\\
+     &amp; = \frac{(\lambda pt)^{m}}{m!}e^{-\lambda pt}
+\end{align}\]</span>故证毕。</p>
+<hr />
+<div class="block example">
+<div class="block-title">
+Example 2.2 (泊松过程的叠加).
+</div>
+<div class="block-content">
+<p>设<span class="math inline">\(\{ N_{i}(t),t\geq 0
+\}\)</span>是速率为<span
+class="math inline">\(\lambda_{i}\)</span>，<span
+class="math inline">\(i=1,2\)</span>的独立泊松过程，则<span
+class="math inline">\(\{ N(t)=N_{1}(t)+N_{2}(t),t\geq 0
+\}\)</span>是速率为<span
+class="math inline">\(\lambda_{1}+\lambda_{2}\)</span>的泊松过程。</p>
+</div>
+</div>
+<p><strong>证明</strong> 可以考虑矩母函数，注意到<span
+class="math display">\[\begin{align}
+\psi_{N(t)}(u) &amp; = \psi_{N_{1}(t)+N_{2}(t)}(u) \\
+     &amp; = \psi_{N_{1}(t)}(u)+\psi_{N_{2}(t)}(u) \\
+&amp; = e^{\lambda_{1}t(e^{u}-1)}\cdot e^{\lambda_{2}t(e^{u}-1)} \\
+&amp; = e^{(\lambda_{1}+\lambda_{2})t(e^{u}-1)}
+\end{align}\]</span>故证毕。</p>
+<h2 data-number="3" id="与泊松过程相联系的若干分布"><span
+class="header-section-number">3</span> 与泊松过程相联系的若干分布</h2>
+<h3 data-number="3.1" id="x_n与t_n的分布"><span
+class="header-section-number">3.1</span> <span
+class="math inline">\(X_{n}\)</span>与<span
+class="math inline">\(T_{n}\)</span>的分布</h3>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.1.1 ($X_{n}$的分布).
+</div>
+<div class="block-content">
+<p>第<span class="math inline">\(n\)</span>次与第<span
+class="math inline">\(n-1\)</span>次事件发生的时间间隔<span
+class="math inline">\(X_{n}\)</span>，<span
+class="math inline">\(n=1,2,\dots\)</span>，服从参数为<span
+class="math inline">\(\lambda\)</span>的指数分布，且相互独立，即<span
+class="math display">\[P\{ X_{n}\leq t \}=1-e^{-\lambda t}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 首先注意到<span
+class="math inline">\(X_{1}\)</span>的分布，注意到<span
+class="math display">\[P\{ X_{1}&gt;t \}=P\{ N(t)=0 \}=e^{-\lambda
+t}\]</span>此时<span class="math display">\[\begin{align}
+P\{ X_{2}&gt;t\mid X_{1}=s \} &amp; = P\{ N(s+t)-N(s)=0\mid
+N(s)=1,N(u)=0,u&lt;s \} \\
+&amp; = P\{ N(s+t)-N(s)=0 \} \\
+&amp; = e^{-\lambda t} \\
+\end{align}\]</span>同理可得任意两次事件均独立且满足指数分布。</p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.1.2 ($T_{n}$的分布).
+</div>
+<div class="block-content">
+<p>第<span class="math inline">\(n\)</span>次事件发生的时刻<span
+class="math inline">\(T_{n}\)</span>，<span
+class="math inline">\(n=1,2,\dots\)</span>，服从参数为<span
+class="math inline">\(n\)</span>和<span
+class="math inline">\(\lambda\)</span>的伽马分布。</p>
+</div>
+</div>
+<p><strong>证明</strong> 注意到<span class="math inline">\(T_{n}=\sum_{i
+= 1}^{n}X_{i}\)</span>，而<span class="math inline">\(X_{i}\sim
+\exp(\lambda)=Ga(1,\lambda)\)</span>，因此<span
+class="math inline">\(T_{n}\sim Ga(n,\lambda)\)</span>。</p>
+<div class="block corollary">
+<div class="block-title">
+Corollary 3.1.1 (泊松分布的再一种定义).
+</div>
+<div class="block-content">
+<p>计数过程<span class="math inline">\(\{ N(t),t\geq 0
+\}\)</span>是参数为<span
+class="math inline">\(\lambda\)</span>的泊松过程，如果每次事件发生的时间间隔<span
+class="math inline">\(X_{i}\)</span>相互独立，且服从同一参数<span
+class="math inline">\(\lambda\)</span>的指数分布。</p>
+</div>
+</div>
+<h3 data-number="3.2" id="t_n的条件分布"><span
+class="header-section-number">3.2</span> <span
+class="math inline">\(T_{n}\)</span>的条件分布</h3>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.2.1 ($T_{n}$的条件分布).
+</div>
+<div class="block-content">
+<p>在已知<span
+class="math inline">\(N(t)=n\)</span>的条件下，事件发生的<span
+class="math inline">\(n\)</span>个时刻<span
+class="math inline">\(T_{1},T_{2},\dots,T_{n}\)</span>的联合密度函数为<span
+class="math display">\[f(t_{1},t_{2},\dots,t_{n})=\frac{n!}{t^{n}},\quad0&lt;t_{1}&lt;t_{2}&lt;\dots&lt;t_{n}&lt;t\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 设<span
+class="math inline">\(0&lt;t_{1}&lt;t_{2}&lt;\dots&lt;t_{n}&lt;t_{n+1}=t\)</span>，取<span
+class="math inline">\(h_{i}\)</span>充分小使得<span
+class="math inline">\(t_{i}+h_{i}&lt;t_{i+1}\)</span>，此时<span
+class="math display">\[\begin{align}
+&amp; P\{ t_{i}&lt;T_{i}\leq t_{i}+h_{i},i=1,2,\dots,n\mid N(t)=n \}  \\
+&amp; = \frac{P\{
+N(t_{i}+h_{i})-N(t_{i})=1,N(t_{i+1})-N(t_{i}+h_{i})=0,1\leq i\leq
+n,N(t_{1})=0 \}}{P\{ N(t)=n \}} \\
+&amp; =
+\frac{e^{-\lambda(t-h_{1}-h_{2}-\dots-h_{n})}\prod_{i=1}^{n}\lambda
+h_{i}e^{-\lambda h_{i}}}{\frac{(\lambda t)^{n}}{n!}e^{-\lambda t}} \\
+&amp; = \frac{n!}{t^{n}}h_{1}h_{2}\dots h_{n}
+\end{align}\]</span>因此<span class="math display">\[\begin{align}
+f(t_{1},\dots,t_{n}) &amp; = \frac{ \partial^{n }  }{ \partial
+h_{1}h_{2}\dots h_{n} } P\{ t_{i}&lt;T_{i}\leq
+t_{i}+h_{i},i=1,2,\dots,n\mid N(t)=n \} \\
+&amp; = \frac{n!}{t^{n}}
+\end{align}\]</span></p>
+<div class="block corollary">
+<div class="block-title">
+Corollary 3.2.1
+</div>
+<div class="block-content">
+<p>在已知<span class="math inline">\(N(t)=n\)</span>的条件下，<span
+class="math inline">\(T_{n}\)</span>与<span
+class="math inline">\((0,t]\)</span>上的均匀分布的次序统计量同分布，即<span
+class="math display">\[T_{n}\mid (N(t)=n)\stackrel{ d
+}{=}U(0,t)_{(i)}\]</span></p>
+</div>
+</div>
+<hr />
+<div class="block example">
+<div class="block-title">
+Example 3.2.1
+</div>
+<div class="block-content">
+<p>乘客按照强度为<span
+class="math inline">\(\lambda\)</span>的泊松过程来到火车站，火车在时刻<span
+class="math inline">\(t\)</span>启程，计算在<span
+class="math inline">\((0,t]\)</span>内乘客等待事件的总和的期望，即求<span
+class="math display">\[E\left( \sum_{i = 1}^{N(t)} (t-T_{i})
+\right)\]</span>其中<span class="math inline">\(T_{i}\)</span>是第<span
+class="math inline">\(i\)</span>个乘客来到的时刻。</p>
+</div>
+</div>
+<p><strong>解</strong> 考虑<span class="math display">\[\begin{align}
+E\left( \sum_{i = 1}^{N(t)} (t-T_{i}) \mid N(t)=n\right) &amp; = E\left(
+\sum_{i = 1}^{n} (t-T_{i})\mid N(t)=n \right) \\
+&amp; = nt-E\left( \sum_{i = 1}^{n} T_{i}\mid N(t)=n\right)
+    \end{align}\]</span>而注意到<span class="math display">\[E\left(
+\sum_{i = 1}^{n} T_{i}\mid N(t)=n\right)= E\left( \sum_{i = 1}^{n}
+U_{(i)} \right)= E\left( \sum_{i = 1}^{n} U_{i}
+\right)=\frac{nt}{2}\]</span>因此<span class="math display">\[E\left(
+\sum_{i = 1}^{N(t)} (t-T_{i}) \mid N(t)=n\right)  =
+\frac{nt}{2}\]</span>由全期望公式<span
+class="math display">\[\begin{align}
+E\left( \sum_{i = 1}^{N(t)} (t-T_{i}) \right) &amp; =E\left( E\left(
+\sum_{i = 1}^{N(t)} (t-T_{i}) \mid N(t)\right) \right) \\
+&amp; =\frac{t}{2}E(N(t)) \\
+&amp; = \frac{\lambda t^{2}}{2}
+\end{align}
+\]</span></p>
+<hr />
+<div class="block example">
+<div class="block-title">
+Example 3.2.2 (泊松分布的条件稀疏).
+</div>
+<div class="block-content">
+<p>若例2.1改为事件在时刻<span
+class="math inline">\(s\)</span>被记录的概率为<span
+class="math inline">\(P(s)\)</span>，则此时再求<span
+class="math inline">\(M(t)\)</span>的分布。</p>
+</div>
+</div>
+<p><strong>解</strong> 前面的过程是类似的<span class="math display">\[
+P\{ M(t)=m \}  = \sum_{n = 0}^{\infty} P\{ M(t)=m\mid N(t)=n+m \}P\{
+N(t)=n+m \} \\
+\]</span>关键在于<span class="math display">\[\begin{align}
+p &amp; =P\{ \text{事件在}[0,t]\text{中发生且被记录}\mid N(t)=n+m \} \\
+&amp; = \int _{0}^{t}P(s) \frac{1}{t} \, ds \\
+  &amp; = \frac{1}{t}\int _{0}^{t}P(s) \, ds
+\end{align}\]</span>其余完全一致。</p>
+</div><div class="tags"></div><div class="post-nav"><a class="next" href="/2024/09/10/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【随机过程】01预备知识</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/09/14/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B/">【随机过程】02泊松过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/10/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【随机过程】01预备知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/08/12/Docker%20%E9%95%9C%E5%83%8F/">Docker 镜像</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/07/29/%E5%88%A9%E7%94%A8%20Hexo%20%E4%B8%8E%20Github%20Page%20%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">利用 Hexo 与 Github Page 搭建个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/07/28/%E6%98%9F%E7%A9%BA%E7%9A%84%E7%90%B4%E5%BC%A6/">星空的琴弦</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>

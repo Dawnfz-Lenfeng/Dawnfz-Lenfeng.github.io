@@ -99,7 +99,7 @@ Definition 2.2 (分布函数).
 <div class="block-content">
 <p>设概率空间<span
 class="math inline">\((\Omega,\mathcal{F},P)\)</span>，函数<span
-class="math display">\[F(x)=P \{ \omega \in \mid X(\omega)\leq x \}=P \{
+class="math display">\[F(x)=P \{ \omega  \mid X(\omega)\leq x \}=P \{
 X\leq x \}\]</span>称为随机变量<span
 class="math inline">\(X\)</span>的分布函数。</p>
 </div>
@@ -123,22 +123,25 @@ class="math display">\[\int_{a}^{b}g(x) \, dF(x)=\lim_{ \Delta \to 0 }
 </div>
 <p><strong>性质</strong></p>
 <ul>
+<li>当<span class="math inline">\(F(x)=x\)</span>时，Riemann-Stieltje
+积分即为 Riemann 积分。</li>
 <li>当<span
-class="math inline">\(F(x)=x\)</span>时，Riemann-Stieltjes积分即为Riemann积分。</li>
-<li>当<span
-class="math inline">\(F(x)\)</span>为阶梯函数时，Riemann-Stieltjes积分为求和级数。</li>
+class="math inline">\(F(x)\)</span>为阶梯函数时，Riemann-Stieltjes
+积分为求和级数。</li>
 <li>当<span
 class="math inline">\(F(x)\)</span>为离散随机变量的概率分布函数时，有<span
 class="math display">\[\int_{-\infty}^{\infty} x \, dF(x)=\lim_{ \Delta
 \to 0 } \sum_{i = 1}^{n} x_{i}(F(x_{i})-F(x_{i-1}))=\sum_{i}
 x_{i}p_{i}  \]</span></li>
-<li>根据Riemann-Stieltjes积分的定义，离散型和连续型随机变量的数学期望可以用一个统一的积分形式表达<span
+<li>根据 Riemann-Stieltjes
+积分的定义，离散型和连续型随机变量的数学期望可以用一个统一的积分形式表达<span
 class="math display">\[E(X)=\int_{-\infty}^{\infty} x \,
 dF(x)\]</span></li>
 </ul>
 <p><strong>充分条件</strong> 若函数<span
 class="math inline">\(g(x)\)</span>为连续函数，<span
-class="math inline">\(F(x)\)</span>为单调函数，则Riemann-Stieltjes积分存在。</p>
+class="math inline">\(F(x)\)</span>为单调函数，则 Riemann-Stieltjes
+积分存在。</p>
 <h3 data-number="3.2" id="矩母函数"><span
 class="header-section-number">3.2</span> 矩母函数</h3>
 <div class="block definition">
@@ -164,8 +167,15 @@ class="math display">\[\phi(t)=E(e^{tX})\]</span></p>
 class="math inline">\(\phi_{Y}(t)=e^{bt}\phi_{X}(at)\)</span></li>
 </ol>
 <hr />
-<p><strong>例</strong> 求设<span class="math inline">\(Y\sim
+<div class="block example">
+<div class="block-title">
+Example 3.2.1 (正态分布的矩母函数与特征函数).
+</div>
+<div class="block-content">
+<p>设<span class="math inline">\(Y\sim
 N(\mu,\sigma^{2})\)</span>，求其矩母函数与特征函数。</p>
+</div>
+</div>
 <p><strong>解</strong> 先计算<span class="math inline">\(X\sim
 N(0,1)\)</span>，此时<span class="math display">\[\begin{align}
 \phi_{X}(t) &amp; =E(e^{tX}) \\
@@ -225,7 +235,7 @@ class="math display">\[E(X)=\int_{0}^{\infty} (1-F(x)) \, dx =
 \]</span></p>
 </div>
 </div>
-<p><strong>证明</strong> 考虑Fubini定理，有<span
+<p><strong>证明</strong> 考虑 Fubini 定理，有<span
 class="math display">\[\begin{align}
 E(X)  &amp; = \int_{0}^{\infty} t  \, dF(t)  \\
 &amp; = \int_{0}^{\infty} \int_{0}^{t}  \, dx  \, dF(t)  \\
@@ -303,13 +313,20 @@ Var(E(X\mid Y)) &amp; = E(E^{2}(X\mid Y))-E^{2}(E(X\mid Y)) \\
 \end{align}\]</span>因此<span class="math display">\[E(Var(X\mid
 Y)+Var(E(X\mid Y)))=E(X^{2})-E^{2}(X)=Var(X)\]</span></p>
 <hr />
-<p><strong>例</strong> 设<span
+<div class="block example">
+<div class="block-title">
+Example 3.5.1 (复合随机变量方差).
+</div>
+<div class="block-content">
+<p>设<span
 class="math inline">\(X_{1},\dots,X_{n}\)</span>独立同分布，分布函数为<span
 class="math inline">\(F(x)\)</span>，均值为<span
 class="math inline">\(\mu\)</span>方差为<span
-class="math inline">\(\sigma^{2}\)</span>。此时假设其与非负整数值得随机变量<span
+class="math inline">\(\sigma^{2}\)</span>。此时假设其与非负整数随机变量<span
 class="math inline">\(N\)</span>独立，求<span
 class="math inline">\(S=\sum_{i = 1}^{N}X_{i}\)</span>的方差。</p>
+</div>
+</div>
 <p><strong>解</strong> 使用条件方差公式，注意到<span
 class="math display">\[
 Var(X|N=n) = Var\left( \sum_{i = 1}^{n} X_{i} \right)= n\sigma^{2}
@@ -336,7 +353,7 @@ class="math display">\[P(A)=\int_{-\infty}^{\infty} P(A\mid Y=y)f(y) \,
 dy \]</span></p>
 </div>
 </div>
-</div><div class="tags"></div><div class="post-nav"><a class="next" href="/2024/08/12/Docker%20%E9%95%9C%E5%83%8F/">Docker 镜像</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/09/10/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【随机过程】01预备知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/08/12/Docker%20%E9%95%9C%E5%83%8F/">Docker 镜像</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/07/29/%E5%88%A9%E7%94%A8%20Hexo%20%E4%B8%8E%20Github%20Page%20%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">利用 Hexo 与 Github Page 搭建个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/07/28/%E6%98%9F%E7%A9%BA%E7%9A%84%E7%90%B4%E5%BC%A6/">星空的琴弦</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/09/14/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B/">【随机过程】02泊松过程</a><a class="next" href="/2024/08/12/Docker%20%E9%95%9C%E5%83%8F/">Docker 镜像</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/09/14/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B/">【随机过程】02泊松过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/10/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【随机过程】01预备知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/08/12/Docker%20%E9%95%9C%E5%83%8F/">Docker 镜像</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/07/29/%E5%88%A9%E7%94%A8%20Hexo%20%E4%B8%8E%20Github%20Page%20%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">利用 Hexo 与 Github Page 搭建个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/07/28/%E6%98%9F%E7%A9%BA%E7%9A%84%E7%90%B4%E5%BC%A6/">星空的琴弦</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
   tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   });
 </script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>

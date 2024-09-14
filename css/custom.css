@@ -36,21 +36,19 @@
         font-size: 1em;
         padding: 4px 8px;
         padding-left: 16px;
-        font-family: Times, Arial, sans-serif; /* 更适合小屏幕阅读 */
+        font-family: Times, Arial, sans-serif; 
     }
 
     .block-content {
         padding: 10px 8px 1px 8px;
-        font-size: 14px;
+        font-size: 15px;
         font-family: Times, "KaiTi", "STKaiti", cursive; 
     }
 
-    /* 可选：调整字体大小和行高以提高可读性 */
     h1, h2, h3, h4, h5, h6 {
-        font-size: 1.2em; /* 根据需要调整 */
+        font-size: 1.2em; 
     }
 
-    /* 可选：调整边距和填充以适应小屏幕 */
     .block {
         padding: 0;
         margin: 0.8em 0;
@@ -79,7 +77,7 @@
     --title-bg-color: #fff3e0;
 }
 
-.proof {
-    --title-color: #2196f3;
-    --title-bg-color: #e3f2fd;
+.example {
+    --title-color: #b865f0;
+    --title-bg-color: #efe7f5;
 }
