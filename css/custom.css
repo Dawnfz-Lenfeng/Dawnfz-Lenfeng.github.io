@@ -1,0 +1,44 @@
+.block {
+    clear: both;
+    display: block;
+    padding: 0;
+    margin: 1em 0;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    border-left: 4px solid var(--title-color, #e6f4ea);
+}
+
+.block-title {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: var(--title-color, #000);
+    background-color: var(--title-bg-color, #e6f4ea);
+    padding: 5px 10px;
+    padding-left: 19px;
+    border-radius: 3px;
+    font-family: Times;
+}
+
+.block-content {
+    padding: 15px 12px 2px 12px;
+    font-family: Times, "KaiTi", "STKaiti", cursive; 
+    font-size: 16.5px; 
+}
+
+
+
+/* 定义不同类型的 CSS 变量 */
+.definition {
+    --title-color: #42b983;
+    --title-bg-color: #e6f4ea;
+}
+
+.theorem {
+    --title-color: #eb704e;
+    --title-bg-color: #fff3e0;
+}
+
+.proof {
+    --title-color: #2196f3;
+    --title-bg-color: #e3f2fd;
+}
