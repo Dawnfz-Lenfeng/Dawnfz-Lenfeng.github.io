@@ -38,6 +38,16 @@
     --title-bg-color: #fff3e0;
 }
 
+.lemma {
+    --title-color: #67646d;
+    --title-bg-color: #cdcdd4;
+}
+
+.corollary {
+    --title-color: #2196f3;
+    --title-bg-color: #e3f2fd;
+}
+
 .proof {
     --title-color: #2196f3;
     --title-bg-color: #e3f2fd;
