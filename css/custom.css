@@ -25,6 +25,37 @@
     font-size: 16.5px; 
 }
 
+/* 响应式样式 */
+@media only screen and (max-width: 768px) {
+    .block {
+        margin: 0.8em 0;
+        border-left-width: 3px;
+    }
+
+    .block-title {
+        font-size: 1em;
+        padding: 4px 8px;
+        padding-left: 16px;
+        font-family: Times, Arial, sans-serif; /* 更适合小屏幕阅读 */
+    }
+
+    .block-content {
+        padding: 10px 8px 1px 8px;
+        font-size: 14px;
+        font-family: Times, "KaiTi", "STKaiti", cursive; 
+    }
+
+    /* 可选：调整字体大小和行高以提高可读性 */
+    h1, h2, h3, h4, h5, h6 {
+        font-size: 1.2em; /* 根据需要调整 */
+    }
+
+    /* 可选：调整边距和填充以适应小屏幕 */
+    .block {
+        padding: 0;
+        margin: 0.8em 0;
+    }
+}
 
 
 /* 定义不同类型的 CSS 变量 */
@@ -34,8 +65,8 @@
 }
 
 .theorem {
-    --title-color: #eb704e;
-    --title-bg-color: #fff3e0;
+    --title-color: #2196f3;
+    --title-bg-color: #e3f2fd;
 }
 
 .lemma {
@@ -44,8 +75,8 @@
 }
 
 .corollary {
-    --title-color: #2196f3;
-    --title-bg-color: #e3f2fd;
+    --title-color: #eb704e;
+    --title-bg-color: #fff3e0;
 }
 
 .proof {
