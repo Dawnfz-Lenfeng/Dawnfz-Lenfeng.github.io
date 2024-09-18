@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>【最优化方法】01预备知识 | What was I thinking?</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/pure-min.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="https://unpkg.com/jquery/dist/jquery.min.js"></script><link rel="stylesheet" href="/css/custom.css"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"><link rel="Shortcut Icon" href="/images/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="https://unpkg.com/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="https://unpkg.com/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="https://unpkg.com/toastr/build/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【最优化方法】01预备知识</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【最优化方法】01预备知识</h1><div class="post-meta">2024-09-18<span> | </span><span class="category"><a href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%91%E9%87%8F%E5%87%BD%E6%95%B0%E7%9A%84%E5%BE%AE%E5%88%86"><span class="toc-text">1 向量函数的微分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E5%90%91%E5%AF%BC%E6%95%B0%E4%B8%8E%E6%A2%AF%E5%BA%A6"><span class="toc-text">1.1 方向导数与梯度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E9%87%8F%E5%87%BD%E6%95%B0%E7%9A%84%E4%B8%AD%E5%80%BC%E5%AE%9A%E7%90%86%E4%B8%8E%E6%B3%B0%E5%8B%92%E5%B1%95%E5%BC%80"><span class="toc-text">1.2
+向量函数的中值定理与泰勒展开</span></a></li></ol></li></ol></div></div><div class="post-content"><h2 data-number="1" id="向量函数的微分"><span
+class="header-section-number">1</span> 向量函数的微分</h2>
+<h3 data-number="1.1" id="方向导数与梯度"><span
+class="header-section-number">1.1</span> 方向导数与梯度</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 1.1.1 (方向导数).
+</div>
+<div class="block-content">
+<p>设可微函数<span class="math inline">\(f:\mathbb{R}^{n}\to
+\mathbb{R}\)</span>，其在点<span
+class="math inline">\(\boldsymbol{x}\)</span>任意单位向量<span
+class="math inline">\(\boldsymbol{u}\)</span>方向上的方向导数定义为<span
+class="math display">\[D_{\boldsymbol{u}}f(\boldsymbol{x})= \lim_{ h \to
+0 }
+\frac{f(\boldsymbol{x}+h\boldsymbol{u})-f(\boldsymbol{x})}{h}\]</span>方向导数表示函数<span
+class="math inline">\(f\)</span>在给定方向<span
+class="math inline">\(\boldsymbol{u}\)</span>上的变化率。当<span
+class="math inline">\(f:\mathbb{R}\to
+\mathbb{R}\)</span>时，方向导数即导数。</p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 1.1.2 (梯度).
+</div>
+<div class="block-content">
+<p>设可微函数<span class="math inline">\(f:\mathbb{R}^{n}\to
+\mathbb{R}\)</span>，在点<span
+class="math inline">\(\boldsymbol{x}=\begin{pmatrix} x_1 \\ x_2 \\
+\vdots \\ x_n \end{pmatrix}\)</span>处的梯度是一个向量，记为<span
+class="math inline">\(\nabla f(\boldsymbol{x})\)</span>或<span
+class="math inline">\(\mathrm{grad}f(\boldsymbol{x})\)</span>，其每个分量是函数<span
+class="math inline">\(f\)</span>在该点关于各个坐标轴的偏导数，即<span
+class="math display">\[\nabla f(\boldsymbol{x})=\frac{ \partial
+f(\boldsymbol{x}) }{ \partial \boldsymbol{x} } =\begin{pmatrix} \frac{
+\partial f }{ \partial \boldsymbol{x}_1 }  \\ \frac{ \partial f }{
+\partial \boldsymbol{x}_2 }  \\ \vdots \\ \frac{ \partial f }{ \partial
+\boldsymbol{x}_n }  \end{pmatrix} \]</span></p>
+</div>
+</div>
+<hr />
+<div class="block theorem">
+<div class="block-title">
+Theorem 1.1.1 (方向导数与梯度向量关系).
+</div>
+<div class="block-content">
+<p>如果<span class="math inline">\(f\)</span>在点<span
+class="math inline">\(\boldsymbol{x}\)</span>处可微，则在单位向量<span
+class="math inline">\(\boldsymbol{u}\)</span>上的方向导数可表示为单位向量<span
+class="math inline">\(\boldsymbol{u}\)</span>与梯度的点积，即<span
+class="math display">\[D_{\boldsymbol{u}}f(\boldsymbol{x})=\nabla
+f(\boldsymbol{x})\cdot \boldsymbol{u}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 注意到有以下引理：</p>
+<div class="block lemma">
+<div class="block-title">
+Lemma 1.1.1 (多元链式法则).
+</div>
+<div class="block-content">
+<p>设可微函数<span
+class="math inline">\(f(\boldsymbol{x}):\mathbb{R}^{n}\to
+\mathbb{R}\)</span>，<span
+class="math inline">\(\boldsymbol{x}(t):\mathbb{R}\to
+\mathbb{R}^{n}\)</span>，链式法则扩展为：<span
+class="math display">\[\frac{d}{dt}f(\boldsymbol{x}(t))=\nabla
+f(\boldsymbol{x}(t))\cdot \frac{d\boldsymbol{x}(t)}{dt}\]</span></p>
+</div>
+</div>
+<p>设<span class="math inline">\(\boldsymbol{x}(t)=\begin{pmatrix}
+x_{1}(t) \\ x_{2}(t) \\ \vdots \\ x_{n}(t)
+\end{pmatrix}\)</span>，由多元函数链式法则<span
+class="math display">\[\frac{d}{dt}f(\boldsymbol{x}(t))=\sum_{i = 1}^{n}
+\frac{ \partial f(\boldsymbol{x}(t)) }{ \partial x_{i}(t) }\cdot
+\frac{dx_{i}(t)}{dt}\]</span>即<span
+class="math display">\[\frac{d}{dt}f(\boldsymbol{x}(t))=\nabla
+f(\boldsymbol{x}(t))\cdot \frac{d\boldsymbol{x}(t)}{dt}\]</span></p>
+<p>因此设<span
+class="math inline">\(\gamma(t)=\boldsymbol{x}+t\boldsymbol{u}\)</span>，由引理有<span
+class="math display">\[\begin{align}
+\frac{d}{dt}f(\gamma(t)) &amp; =\nabla f(\gamma(t))\cdot
+\frac{d\gamma(t)}{dt} \\
+&amp; = \nabla f(\boldsymbol{x}+t\boldsymbol{u})\cdot \boldsymbol{u}
+\end{align}\]</span>显然<span
+class="math display">\[D_{\boldsymbol{u}}f(\boldsymbol{x})=
+\frac{d}{dt}f(\gamma(t))\Big|_{t=0}\]</span>因此<span
+class="math display">\[D_{\boldsymbol{u}}f(\boldsymbol{x})=\nabla
+f(\boldsymbol{x})\cdot \boldsymbol{u}\]</span></p>
+<div class="block corollary">
+<div class="block-title">
+Corollary 1.1.1 (梯度性质).
+</div>
+<div class="block-content">
+<p>梯度指向函数增长最快的方向，其大小为函数变化率的最大值。</p>
+</div>
+</div>
+<h3 data-number="1.2" id="向量函数的中值定理与泰勒展开"><span
+class="header-section-number">1.2</span>
+向量函数的中值定理与泰勒展开</h3>
+<div class="block theorem">
+<div class="block-title">
+Theorem 1.2.1 (向量函数的中值定理).
+</div>
+<div class="block-content">
+<p>设函数<span class="math inline">\(f:\mathbb{R}^{n}\to
+\mathbb{R}\)</span>在闭球<span
+class="math inline">\(\overline{B}(\boldsymbol{a},\boldsymbol{b})\)</span>上连续，开球<span
+class="math inline">\(B(\boldsymbol{a},\boldsymbol{b})\)</span>内可微，则存在<span
+class="math inline">\(\boldsymbol{c}\)</span>在<span
+class="math inline">\(\boldsymbol{a}\)</span>和<span
+class="math inline">\(\boldsymbol{b}\)</span>之间的连线上，使得<span
+class="math display">\[f(\boldsymbol{b})-f(\boldsymbol{a})=\nabla
+f(\boldsymbol{c})\cdot(\boldsymbol{b}-\boldsymbol{a})\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 定义<span class="math inline">\(g:[0,1]\to
+\mathbb{R}\)</span>，有<span
+class="math display">\[g(t)=f(\boldsymbol{a}+t(\boldsymbol{b}-\boldsymbol{a}))\]</span>显然<span
+class="math inline">\(g\)</span>在区间<span
+class="math inline">\([0,1]\)</span>上连续，<span
+class="math inline">\((0,1)\)</span>内可微。由一元中值定理，存在<span
+class="math inline">\(\theta \in(0,1)\)</span>使得<span
+class="math display">\[g(1)-g(0)=g&#39;(\theta)(1-0)\]</span>注意到由链式法则<span
+class="math display">\[g&#39;(\theta)=\nabla
+f(\boldsymbol{a}+\theta(\boldsymbol{b}-\boldsymbol{a}))\cdot(\boldsymbol{b}-\boldsymbol{a})\]</span>因此有<span
+class="math display">\[f(\boldsymbol{b})-f(\boldsymbol{a})=\nabla
+f(\boldsymbol{c})\cdot(\boldsymbol{b}-\boldsymbol{a})\]</span>其中<span
+class="math inline">\(\boldsymbol{c}=\boldsymbol{a}+\theta(\boldsymbol{b}-\boldsymbol{a})\)</span>。</p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 1.2.2 (向量函数的泰勒展开).
+</div>
+<div class="block-content">
+<p>在这里我们只给出二阶的形式。设可微函数<span
+class="math inline">\(f:\mathbb{R}^{n}\to \mathbb{R}\)</span>，则在<span
+class="math inline">\(\boldsymbol{x}+h\boldsymbol{u}\)</span>处的二阶泰勒展开式为<span
+class="math display">\[f(\boldsymbol{x}+h\boldsymbol{u})=f(\boldsymbol{x})+h\nabla
+f(\boldsymbol{x})\cdot
+\boldsymbol{u}+\frac{h^{2}}{2}\boldsymbol{u}^{T}H(\boldsymbol{x})\boldsymbol{u}+o(h^{2})\]</span>其中<span
+class="math inline">\(H(\boldsymbol{x})\)</span>为Hessian矩阵，定义为<span
+class="math display">\[H(\boldsymbol{x})=\frac{ \partial( \nabla
+f(\boldsymbol{x})^{T}) }{ \partial \boldsymbol{x} } = \frac{
+\partial^{2} f(\boldsymbol{x}) }{ \partial \boldsymbol{x}\partial
+\boldsymbol{x}^{T} }  = \left( \begin{matrix} \frac{ \partial^{2} f }{
+\partial x_{1}^{2} }   &amp;  \frac{ \partial^{2} f }{ \partial
+x_{1}\partial x_{2} }   &amp;  \dots  &amp; \frac{ \partial^{2} f }{
+\partial x_{1}\partial x_{n} }  \\ \frac{ \partial^{2} f }{ \partial
+x_{2}\partial x_{1} }   &amp;  \frac{ \partial^{2} f }{ \partial
+x_{2}^{2} }   &amp;  \dots  &amp; \frac{ \partial^{2} f }{ \partial
+x_{2}\partial x_{n} }  \\ \vdots  &amp;  \vdots  &amp;  \ddots &amp;
+\vdots \\ \frac{ \partial^{2} f }{ \partial x_{n}\partial x_{1}
+}   &amp;  \frac{ \partial^{2} f }{ \partial x_{n}\partial x_{2}
+}   &amp;  \dots  &amp; \frac{ \partial^{2} f }{ \partial x_{n}^{2}
+}  \end{matrix} \right)\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 设<span
+class="math inline">\(g(h)=f(\boldsymbol{x}+h\boldsymbol{u})\)</span>，下面对<span
+class="math inline">\(g(h)\)</span>进行泰勒展开，有<span
+class="math display">\[g(h)=g(0)+g&#39;(0)h+\frac{g&#39;&#39;(0)}{2!}h^{2}+o(h^{2})\]</span>已证<span
+class="math display">\[g&#39;(0)=\nabla f(\boldsymbol{x})\cdot
+\boldsymbol{u}\]</span>下面只需考虑求<span
+class="math inline">\(g&#39;&#39;(0)\)</span>。注意到<span
+class="math display">\[\begin{align}
+g&#39;&#39;(h) &amp; =\frac{dg&#39;(h)}{dh} \\
+&amp; = \frac{d((\nabla f(\boldsymbol{x}+h\boldsymbol{u}))^{T}
+\boldsymbol{u} )}{dh} \\
+&amp; = \boldsymbol{u}^{T}H(\boldsymbol{x}+h\boldsymbol{u})
+\boldsymbol{u}
+    \end{align}\]</span>这里用到性质<span class="math display">\[\frac{
+\partial h(f(\boldsymbol{x}))^{T} }{ \partial \boldsymbol{x} }= \frac{
+\partial f(\boldsymbol{x})^{T} }{ \partial \boldsymbol{x} } \frac{
+\partial h(f(\boldsymbol{x}))^{T} }{ \partial f(\boldsymbol{x})
+}  \]</span>本题中为<span class="math display">\[\begin{align}
+\frac{d((\nabla f(\boldsymbol{x}+h\boldsymbol{u}))^{T}  )}{dh} &amp; =
+\frac{d(\boldsymbol{x}+h\boldsymbol{u})^{T}}{dh} \frac{ \partial (\nabla
+f(\boldsymbol{x}+h\boldsymbol{u}) ^{T})}{ \partial
+(\boldsymbol{x}+h\boldsymbol{u} )}  \\
+&amp; = \boldsymbol{u}^{T}H(\boldsymbol{x}+h\boldsymbol{u})
+\end{align} \]</span> 此时得到<span
+class="math display">\[g&#39;&#39;(0)=\boldsymbol{u}^{T}H(\boldsymbol{x})\boldsymbol{u}\]</span>故证毕。</p>
+</div><div class="tags"></div><div class="post-nav"><a class="next" href="/2024/09/14/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B/">【随机过程】02泊松过程</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/09/18/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【最优化方法】01预备知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/14/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B/">【随机过程】02泊松过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/10/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【随机过程】01预备知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/08/12/Docker%20%E9%95%9C%E5%83%8F/">Docker 镜像</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/07/29/%E5%88%A9%E7%94%A8%20Hexo%20%E4%B8%8E%20Github%20Page%20%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">利用 Hexo 与 Github Page 搭建个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/07/28/%E6%98%9F%E7%A9%BA%E7%9A%84%E7%90%B4%E5%BC%A6/">星空的琴弦</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
