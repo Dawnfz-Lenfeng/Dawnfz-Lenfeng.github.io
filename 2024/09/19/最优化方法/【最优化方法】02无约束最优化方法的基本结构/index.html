@@ -7,7 +7,118 @@ html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
 toggle.addEventListener('click', () => {
 localStorage.dark = !(html.dataset.dark == 'true');
 html.dataset.dark = localStorage.dark;
-});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【最优化方法】02无约束最优化方法的基本结构</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【最优化方法】02无约束最优化方法的基本结构</h1><div class="post-meta">2024-09-19</div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div></div></div><div class="post-content">
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【最优化方法】02无约束最优化方法的基本结构</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【最优化方法】02无约束最优化方法的基本结构</h1><div class="post-meta">2024-09-19<span> | </span><span class="category"><a href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%B6%E6%95%9B%E6%80%A7%E5%92%8C%E6%94%B6%E6%95%9B%E9%80%9F%E5%BA%A6"><span class="toc-text">1 收敛性和收敛速度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%90%9C%E7%B4%A2%E5%87%86%E5%88%99"><span class="toc-text">2 线搜索准则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%BE%E7%A1%AE%E7%BA%BF%E6%90%9C%E7%B4%A2%E5%87%86%E5%88%99"><span class="toc-text">2.1 精确线搜索准则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E7%B2%BE%E7%A1%AE%E7%BA%BF%E6%90%9C%E7%B4%A2%E5%87%86%E5%88%99"><span class="toc-text">2.2 非精确线搜索准则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%90%9C%E7%B4%A2%E6%B1%82%E6%AD%A5%E9%95%BF"><span class="toc-text">3 线搜索求步长</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95"><span class="toc-text">3.1 0.618方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%8F%92%E5%80%BC%E6%B3%95"><span class="toc-text">3.2 多项式插值法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E8%B5%96%E5%9F%9F%E6%96%B9%E6%B3%95"><span class="toc-text">4 信赖域方法</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="收敛性和收敛速度"><span
+class="header-section-number">1</span> 收敛性和收敛速度</h2>
+<div class="block definition">
+<div class="block-title">
+Definition 1.1 (收敛速度).
+</div>
+<div class="block-content">
+<p>若<span class="math display">\[\lim_{ k \to \infty }
+\frac{\left\lVert x_{k+1}-x^{*} \right\rVert}{\left\lVert x_{k}-x^{*}
+\right\rVert }=a \]</span>当<span
+class="math inline">\(0&lt;a&lt;1\)</span>时，称算法是线性收敛的；当<span
+class="math inline">\(a=0\)</span>时，称算法是超线性收敛的。</p>
+<p>若<span class="math display">\[\lim_{ k \to \infty }
+\frac{\left\lVert x_{k+1}-x^{*} \right\rVert }{\left\lVert x_{k}-x^{*}
+\right\rVert ^{2}}=a\]</span>其中<span
+class="math inline">\(a\)</span>为任意常数，此时称算法是二阶收敛的。</p>
+</div>
+</div>
+<h2 data-number="2" id="线搜索准则"><span
+class="header-section-number">2</span> 线搜索准则</h2>
+<h3 data-number="2.1" id="精确线搜索准则"><span
+class="header-section-number">2.1</span> 精确线搜索准则</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 2.1.1 (精确线搜索).
+</div>
+<div class="block-content">
+<p>当迭代方向<span
+class="math inline">\(\boldsymbol{d}_{k}\)</span>已知时，精确线搜索准则使<span
+class="math inline">\(f(\boldsymbol{x})\)</span>沿<span
+class="math inline">\(\boldsymbol{d}_{k}\)</span>关于步长<span
+class="math inline">\(\alpha\)</span>取极小值，即<span
+class="math display">\[\min_{\alpha}f(\boldsymbol{x}_{k}+\alpha
+\boldsymbol{d}_{k})\]</span></p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 2.1.1 (精确线搜索性质).
+</div>
+<div class="block-content">
+<p>达到精确线搜索时，令<span
+class="math inline">\(\boldsymbol{x}_{k+1}=\boldsymbol{x}_{k}+\alpha
+\boldsymbol{d}_{k}\)</span>，此时有<span
+class="math display">\[g^{T}_{k+1}\boldsymbol{d}_{k}=0\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 令<span
+class="math display">\[\frac{df(\boldsymbol{x}_{k}+\alpha
+\boldsymbol{d}_{k})}{d\alpha}=0\]</span>注意到由链式法则<span
+class="math display">\[\frac{df(\boldsymbol{x}_{k}+\alpha
+\boldsymbol{d}_{k})}{d\alpha}=g(\boldsymbol{x}_{k}+\alpha
+\boldsymbol{d}_{k})^{T}\boldsymbol{d_{k}}\]</span>即得<span
+class="math display">\[g^{T}_{k+1}\boldsymbol{d}_{k}=0\]</span></p>
+<h3 data-number="2.2" id="非精确线搜索准则"><span
+class="header-section-number">2.2</span> 非精确线搜索准则</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 2.2.1 (Armijo准则).
+</div>
+<div class="block-content">
+<p><span class="math display">\[f(\boldsymbol{x}_{k}+\alpha
+\boldsymbol{d}_{k})\leq f(\boldsymbol{x}_{k})+\rho
+g_{k}^{T}\boldsymbol{d}_{k}\alpha\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 2.2.2 (Goldstein准则).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\begin{align}
+f(\boldsymbol{x}_{k}+\alpha \boldsymbol{d}_{k})&amp;\leq
+f(\boldsymbol{x}_{k})+\rho g_{k}^{T}\boldsymbol{d} _{k}\alpha \\
+f(\boldsymbol{x}_{k}+\alpha \boldsymbol{d}_{k}) &amp;\geq
+f(\boldsymbol{x}_{k})+(1-\rho)g_{k}^{T}\boldsymbol{d}_{k}\alpha\end{align}\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 2.2.3 (Wolfe准则).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\begin{align}
+f(\boldsymbol{x}_{k}+\alpha \boldsymbol{d}_{k})&amp;\leq
+f(\boldsymbol{x}_{k})+\rho g_{k}^{T}\boldsymbol{d} _{k}\alpha \\
+g(\boldsymbol{x}_{k}+\alpha
+\boldsymbol{d}_{k})^{T}\boldsymbol{d}_{k}&amp; \geq \sigma
+g_{k}^{T}\boldsymbol{d}_{k}\end{align}\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 2.2.4 (强Wolfe准则).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\begin{align}
+f(\boldsymbol{x}_{k}+\alpha \boldsymbol{d}_{k})&amp;\leq
+f(\boldsymbol{x}_{k})+\rho g_{k}^{T}\boldsymbol{d} _{k}\alpha \\ \lvert
+g(\boldsymbol{x}_{k}+\alpha \boldsymbol{d}_{k})^{T}\boldsymbol{d}_{k}
+\rvert &amp; \leq -\sigma
+g_{k}^{T}\boldsymbol{d}_{k}\end{align}\]</span></p>
+</div>
+</div>
+<h2 data-number="3" id="线搜索求步长"><span
+class="header-section-number">3</span> 线搜索求步长</h2>
+<h3 data-number="3.1" id="方法"><span
+class="header-section-number">3.1</span> 0.618方法</h3>
+<h3 data-number="3.2" id="多项式插值法"><span
+class="header-section-number">3.2</span> 多项式插值法</h3>
+<h2 data-number="4" id="信赖域方法"><span
+class="header-section-number">4</span> 信赖域方法</h2>
 </div><div class="tags"></div><div class="post-nav"><a class="next" href="/2024/09/18/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【最优化方法】01预备知识</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/09/19/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9102%E6%97%A0%E7%BA%A6%E6%9D%9F%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84/">【最优化方法】02无约束最优化方法的基本结构</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/18/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【最优化方法】01预备知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/14/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B/">【随机过程】02泊松过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/10/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【随机过程】01预备知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/08/12/Docker%20%E9%95%9C%E5%83%8F/">Docker 镜像</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/07/29/%E5%88%A9%E7%94%A8%20Hexo%20%E4%B8%8E%20Github%20Page%20%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">利用 Hexo 与 Github Page 搭建个人博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/07/28/%E6%98%9F%E7%A9%BA%E7%9A%84%E7%90%B4%E5%BC%A6/">星空的琴弦</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
   tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   });

@@ -59,9 +59,8 @@ class="math inline">\(\boldsymbol{x}\)</span>处可微，则在单位向量<span
 class="math inline">\(\boldsymbol{u}\)</span>上的一阶方向导数可表示为单位向量<span
 class="math inline">\(\boldsymbol{u}\)</span>与梯度的点积，即<span
 class="math display">\[\frac{ \partial f(\boldsymbol{x}) }{ \partial
-\boldsymbol{u} }=\nabla f(\boldsymbol{x})\cdot
-\boldsymbol{u}=\boldsymbol{u}^{T}\nabla
-f(\boldsymbol{x})\]</span>二阶方向导数可表示为<span
+\boldsymbol{u} }=\nabla f(\boldsymbol{x})\cdot \boldsymbol{u}=\nabla
+f(\boldsymbol{x})^{T}\boldsymbol{u}\]</span>二阶方向导数可表示为<span
 class="math display">\[\frac{ \partial^{2} f(\boldsymbol{x}) }{ \partial
 \boldsymbol{u}^{2} }= \boldsymbol{u}^{T}H(\boldsymbol{x})\boldsymbol{u}
 \]</span>其中<span
@@ -177,10 +176,13 @@ Theorem 1.2.2 (向量函数的Taylor展开).
 <p>在这里我们只给出二阶的形式。设可微函数<span
 class="math inline">\(f:\mathbb{R}^{n}\to \mathbb{R}\)</span>，则在<span
 class="math inline">\(\boldsymbol{x}+t\boldsymbol{u}\)</span>处的二阶泰勒展开式为<span
-class="math display">\[f(\boldsymbol{x}+t\boldsymbol{u})=f(\boldsymbol{x})+t
-\frac{ \partial f(\boldsymbol{x}) }{ \partial \boldsymbol{u} }
-+\frac{t^{2}}{2!} \frac{ \partial^{2} f(\boldsymbol{x}) }{ \partial
-\boldsymbol{u}^{2} }  +o(t^{2})\]</span></p>
+class="math display">\[\begin{align}  f(\boldsymbol{x}+t\boldsymbol{u})
+&amp; =f(\boldsymbol{x})+t \frac{ \partial f(\boldsymbol{x}) }{ \partial
+\boldsymbol{u} } +\frac{t^{2}}{2!} \frac{ \partial^{2} f(\boldsymbol{x})
+}{ \partial \boldsymbol{u}^{2} }  +o(t^{2}) \\ &amp;
+=f(\boldsymbol{x})+t \nabla f(\boldsymbol{x})^{T}\boldsymbol{u}
++\frac{t^{2}}{2!}\boldsymbol{u} ^{T}H(\boldsymbol{x})\boldsymbol{u}
++o(t^{2})  \end{align}\]</span></p>
 </div>
 </div>
 <p><strong>证明</strong> 设<span
