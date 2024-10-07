@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>【随机过程】03更新过程 | What was I thinking?</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/pure-min.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="https://unpkg.com/jquery/dist/jquery.min.js"></script><link rel="stylesheet" href="/css/custom.css"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"><link rel="Shortcut Icon" href="/images/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="https://unpkg.com/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="https://unpkg.com/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="https://unpkg.com/toastr/build/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【随机过程】03更新过程</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【随机过程】03更新过程</h1><div class="post-meta">2024-10-06<span> | </span><span class="category"><a href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B%E7%9A%84%E5%AE%9A%E4%B9%89%E5%8F%8A%E6%80%A7%E8%B4%A8"><span class="toc-text">1 更新过程的定义及性质</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">1.1 定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%B4%A8"><span class="toc-text">1.2 性质</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E6%96%B9%E7%A8%8B"><span class="toc-text">2 更新方程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E6%96%B9%E7%A8%8B%E5%92%8C%E6%9B%B4%E6%96%B0%E5%AE%9A%E7%90%86"><span class="toc-text">2.1 更新方程和更新定理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E6%9B%B4%E6%96%B0%E5%AE%9A%E7%90%86"><span class="toc-text">2.2 关键更新定理</span></a></li></ol></li></ol></div></div><div class="post-content"><h2 data-number="1" id="更新过程的定义及性质"><span
+class="header-section-number">1</span> 更新过程的定义及性质</h2>
+<h3 data-number="1.1" id="定义"><span
+class="header-section-number">1.1</span> 定义</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 1.1.1 (更新过程).
+</div>
+<div class="block-content">
+<p>设<span class="math inline">\(\{ X_{n},n=1,2,\dots
+\}\)</span>是一串独立同分布的非负随机变量，分布函数为<span
+class="math inline">\(F(x)\)</span>，令<span
+class="math inline">\(T_{n}=\sum_{i = 1}^{n}X_{i}\)</span>，<span
+class="math inline">\(n\geq 1\)</span>，<span
+class="math inline">\(T_{0}=0\)</span>。我们把<span
+class="math display">\[N(t)=\sup\{ n\mid T_{n}\leq
+t\}\]</span>定义的计数过程称为更新过程。</p>
+</div>
+</div>
+<h3 data-number="1.2" id="性质"><span
+class="header-section-number">1.2</span> 性质</h3>
+<div class="block theorem">
+<div class="block-title">
+Theorem 1.2.1 (性质一).
+</div>
+<div class="block-content">
+<p><span class="math display">\[P\{ N(t)&lt;+\infty \}=1\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 由强大数定理<span
+class="math display">\[\frac{\sum_{i =
+i}^{n}X_{i}}{n}=\frac{T_{n}}{n}\stackrel{a.s}{\longrightarrow}\mu
+\]</span>因此在有限时间内最多只能发生有限次更新。</p>
+<hr />
+<div class="block theorem">
+<div class="block-title">
+Theorem 1.2.2 (性质二).
+</div>
+<div class="block-content">
+<p><span class="math display">\[P\{ N(t)=n \}=P\left\{  \sum_{i = 1}^{n}
+X_{i}\leq t  \right\}-P\left\{  \sum_{i = 1}^{n+1} X_{i}\leq
+t  \right\}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 注意到<span class="math display">\[\{ N(t)\geq
+n \} \iff \{ T_{n}\leq t \}\]</span>因此<span
+class="math display">\[\begin{align}
+P\{ N(t)=n \} &amp; = P\{ N(t)\geq n \}-P\{ N(t)\geq n+1 \} \\
+&amp; = P\{ T_{n}\leq t \}-P\{ T_{n+1}\leq t \} \\
+&amp; = P\left\{  \sum_{i = 1}^{n} X_{i}\leq
+t  \right\}-P\left\{  \sum_{i = 1}^{n+1} X_{i}\leq t  \right\} \\
+&amp; = F_{n}(t)-F_{n+1}(t)
+\end{align}\]</span></p>
+<div class="block corollary">
+<div class="block-title">
+Corollary 1.2.1 (泊松分布与伽马分布关系恒等式).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\sum_{k = n}^{\infty} \frac{(\lambda
+t)^{k}}{k!}e^{-\lambda t}=\int _{0}^{t}
+\frac{\lambda^{n}}{\Gamma(n)}x^{n-1}e^{-\lambda x} \, dx  \]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 该等式即泊松过程中有：<span
+class="math display">\[P\{ N(t)\geq n\}=P\{ T_{n}\leq t
+\}\]</span>故显然成立。</p>
+<hr />
+<div class="block theorem">
+<div class="block-title">
+Theorem 1.2.3 (性质三).
+</div>
+<div class="block-content">
+<p><span class="math display">\[M(t)=E(N(t))=\sum_{n = 1}^{\infty} P\{
+N(t)\geq n \}=\sum_{n = 1}^{\infty} P\{ T_{n}\leq t \}=\sum_{n =
+1}^{\infty} F_{n}(t)\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 由分布函数期望公式知显然成立。</p>
+<h2 data-number="2" id="更新方程"><span
+class="header-section-number">2</span> 更新方程</h2>
+<h3 data-number="2.1" id="更新方程和更新定理"><span
+class="header-section-number">2.1</span> 更新方程和更新定理</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 2.1.1 (更新方程).
+</div>
+<div class="block-content">
+<p><span class="math display">\[K(t)=H(t)+\int _{0}^{t}K(t-s) \, dF(s)
+\]</span></p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 2.1.1 (更新函数性质).
+</div>
+<div class="block-content">
+<p><span class="math display">\[M(t)=F(t)+\int _{0}^{t}M(t-s) \, dF(s)
+\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 由条件期望公式<span
+class="math display">\[\begin{align}
+M(t) = E(N(t)) &amp; = E(E(N(t)\mid T_{1})) \\
+&amp; = \int _{0}^{\infty}E(N(t)\mid T_{1}=x) \, dF(x)  \\
+&amp; = \int _{0}^{t} E(N(t)\mid T_{1}=x) \, dF(x)+\int _{t}^{\infty}
+E(N(t)\mid T_{1}=x) \, dF(x) \\
+&amp; = \int _{0}^{t}(1+M(t-x)) \, dF(x)  \\
+&amp; = F(t)+\int _{0}^{t}M(t-s) \, dF(s)
+\end{align}\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 2.1.2 (更新方程的解).
+</div>
+<div class="block-content">
+<p>若更新方程中<span
+class="math inline">\(H(t)\)</span>为有界函数，则方程存在唯一的在有限区间内有界的解<span
+class="math display">\[K(t)=H(t)+\int _{0}^{t}H(t-s) \, dM(s)
+\]</span>其中<span class="math inline">\(M(t)\)</span>是分布函数<span
+class="math inline">\(F(t)\)</span>的更新函数</p>
+</div>
+</div>
+<hr />
+<div class="block example">
+<div class="block-title">
+Example 2.1.1 (Wald等式).
+</div>
+<div class="block-content">
+<p>设<span class="math inline">\(\{ X_{i} \}\)</span>独立同分布，<span
+class="math inline">\(E(X_{i})&lt;+\infty\)</span>，<span
+class="math inline">\(i=1,2,\dots,\)</span>，则<span
+class="math display">\[E(T_{N(t)+1})=E(X_{1}+X_{2}+\dots+X_{N(t)+1})=E(X_{1})(E(N(t)+1))\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong></p>
+<p><strong>法一</strong> 注意到<span
+class="math display">\[E(T_{N(t)+1}\mid X_{1}=x)=\left\{\begin{align}
+&amp; x,\quad \quad \quad \quad \quad \quad \quad \,\,\,\,x&gt;t \\
+&amp; x+E(T_{N(t-x)+1}),\quad x\leq t
+\end{align}\right.\]</span>此时令<span
+class="math inline">\(K(t)=E(T_{N(t)+1})\)</span>，则<span
+class="math display">\[\begin{align}
+K(t) &amp; =E(T_{N(t)+1})  \\
+&amp; = E(E(T_{N(t)+1})\mid X_{1}) \\
+&amp; = \int _{0}^{t}(x+K(t-x)) \, dF(x)+\int _{t}^{+\infty}x \, dF(x)
+\\
+&amp; = E(X_{1})+\int _{0}^{t}K(t-x) \, dF(x)
+\end{align}\]</span>注意到这是一个更新方程，由定理知解为<span
+class="math display">\[\begin{align}
+K(t) &amp; =E(X_{1})+\int _{0}^{t}E(X_{1}) \, dM(x)  \\
+&amp; = E(X_{1})(1+M(t)) \\
+&amp; = E(X_{1})E(N(t)+1)
+\end{align}\]</span></p>
+<p><strong>法二</strong> 注意到<span class="math display">\[\{
+N(t)+1\geq i \}\iff \{ N(t)\geq i-1 \}\iff \left\{  \sum_{k = 1}^{i-1}
+X_{k}\leq t  \right\}\]</span>因此<span class="math inline">\(\{
+N(t)+1\geq i \}\)</span>与<span
+class="math inline">\(X_{i}\)</span>独立。此时<span
+class="math display">\[\begin{align}
+E(T_{N(t)+1}) &amp; = E\left( \sum_{i = 1}^{N(t)+1} X_{i} \right) \\
+&amp; = E\left( \sum_{i = 1}^{\infty} I_{\{ N(t)+1\geq i \}}X_{i}
+\right)  \\
+&amp; = \sum_{i = 1}^{\infty} E(I_{\{ N(t)+1\geq i \}})E(X_{i}) \\
+&amp; = E(X_{1})\sum_{i = 1}^{\infty} P\{ N(t)+1\geq i \} \\
+&amp; = E(X_{1})E(N(t)+1)
+\end{align}\]</span></p>
+<h3 data-number="2.2" id="关键更新定理"><span
+class="header-section-number">2.2</span> 关键更新定理</h3>
+<div class="block theorem">
+<div class="block-title">
+Theorem 2.2.1 (关键更新定理).
+</div>
+<div class="block-content">
+<p>记<span class="math inline">\(\mu=E(X_{n})\)</span>，设函数<span
+class="math inline">\(h(t)\)</span>，满足</p>
+<ol type="1">
+<li><span class="math inline">\(h(t)\)</span>非负不增</li>
+<li><span class="math inline">\(\int _{0}^{\infty}h(t) \,
+dt&lt;+\infty\)</span></li>
+</ol>
+<p><span class="math inline">\(H(t)\)</span>是更新方程<span
+class="math display">\[H(t)=h(t)+\int _{0}^{t}H(t-x) \, dF(x)
+\]</span>的解，同时若<span
+class="math inline">\(F\)</span>为连续分布，则<span
+class="math display">\[\lim_{ t \to \infty } H(t)=\left\{\begin{align}
+\frac{1}{\mu}\int _{0}^{\infty}h(x) \, dx ,\quad \mu&lt;\infty \\ 0,
+\quad \mu=\infty \end{align}\right.\]</span></p>
+</div>
+</div>
+<hr />
+<div class="block example">
+<div class="block-title">
+Example 2.2.1 (剩余寿命与年龄的极限分布).
+</div>
+<div class="block-content">
+<p>设<span class="math inline">\(r(t)=T_{N(t)+1}-t\)</span>表示<span
+class="math inline">\(t\)</span>时刻的剩余寿命，<span
+class="math inline">\(s(t)=t-T_{N(t)}\)</span>为<span
+class="math inline">\(t\)</span>时刻的年龄。求<span
+class="math inline">\(r(t)\)</span>和<span
+class="math inline">\(s(t)\)</span>的极限分布。</p>
+</div>
+</div>
+<p><strong>解</strong> 令<span class="math inline">\(R_{y}(t)=P\{
+r(t)&gt;y \}\)</span>，此时<span class="math display">\[P\{ r(t)&gt;y
+\mid X_{1}=x\}=\left\{\begin{align}
+1, \quad  &amp; x&gt;t+y \\
+0, \quad  &amp; t&lt;x\leq t+y \\
+R_{y}(t-x) ,\quad  &amp; 0&lt;x&lt;t
+\end{align}\right.\]</span>因此<span
+class="math display">\[\begin{align}
+R_{y}(t) &amp; = \int _{0}^{\infty}P\{ r(t)&gt;y\mid X_{1}=x  \} \,
+dF(x) \\
+&amp; = \int _{t+y}^{\infty} \, dF(x)+\int _{0}^{t}R(t-x) \, dF(x) \\   
+    &amp; = 1-F(t+y)+\int _{0 }^{t}R_{y}(t-x) \, dF(x)
+\end{align}\]</span>这是一个更新方程，由关键更新定理<span
+class="math display">\[\lim_{ t \to \infty } P\{ r(t)&gt;y \}=\lim_{ t
+\to \infty } R_{y}(t)= \frac{1}{\mu}\int _{y}^{\infty}(1-F(z)) \, dz
+\]</span>注意到<span class="math display">\[\{ r(t)&gt;x,s(t)&gt;y
+\}\iff \{ r(t-y)&gt;x+y \}\]</span>因此<span
+class="math display">\[\lim_{ t \to \infty } P\{ s(t)&gt;y \}=\lim_{ t
+\to \infty } P\{ s(t)&gt;y,r(t)&gt;0 \}= \frac{1}{\mu}\int
+_{y}^{+\infty}(1-F(z)) \, dz  \]</span></p>
+</div><div class="tags"></div><div class="post-nav"><a class="next" href="/2024/09/25/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96/">【最优化方法】03无约束优化</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/10/06/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/">【随机过程】03更新过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/25/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96/">【最优化方法】03无约束优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/24/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9101%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】01一元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/23/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B-%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】02泊松过程-泊松过程的推广</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/21/%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93/">一些总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/19/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9102%E6%97%A0%E7%BA%A6%E6%9D%9F%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84/">【最优化方法】02无约束最优化方法的基本结构</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/18/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【最优化方法】01预备知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/14/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B/">【随机过程】02泊松过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/10/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【随机过程】01预备知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/08/12/Docker%20%E9%95%9C%E5%83%8F/">Docker 镜像</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
