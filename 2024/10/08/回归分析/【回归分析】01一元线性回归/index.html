@@ -1,0 +1,490 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>【回归分析】01一元线性回归 | What was I thinking?</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/pure-min.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="https://unpkg.com/jquery/dist/jquery.min.js"></script><link rel="stylesheet" href="/css/custom.css"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"><link rel="Shortcut Icon" href="/images/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="https://unpkg.com/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="https://unpkg.com/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="https://unpkg.com/toastr/build/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【回归分析】01一元线性回归</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【回归分析】01一元线性回归</h1><div class="post-meta">2024-10-08<span> | </span><span class="category"><a href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">1 定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1%E6%96%B9%E6%B3%95"><span class="toc-text">2 参数估计方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95"><span class="toc-text">2.1 最小二乘法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E6%B3%95"><span class="toc-text">2.2 极大似然法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E4%BC%B0%E8%AE%A1"><span class="toc-text">2.3 矩估计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1%E6%80%A7%E8%B4%A8"><span class="toc-text">3 参数估计性质</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7"><span class="toc-text">3.1 线性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E5%81%8F%E6%80%A7"><span class="toc-text">3.2 无偏性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hatbeta_0%E5%92%8Chatbeta_1%E6%96%B9%E5%B7%AE"><span class="toc-text">3.3 \(\hat{\beta_{0}}\)和\(\hat{\beta_{1}}\)方差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hatbeta_0%E4%B8%8Ehatbeta_1%E7%9A%84%E5%8D%8F%E6%96%B9%E5%B7%AE"><span class="toc-text">3.4 \(\hat{\beta_{0}}\)与\(\hat{\beta_{1}}\)的协方差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E6%96%AF-%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E5%AE%9A%E7%90%86"><span class="toc-text">3.5 高斯-马尔科夫定理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD"><span class="toc-text">4 模型推断</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#t%E6%A3%80%E9%AA%8C"><span class="toc-text">4.1 t检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#f%E6%A3%80%E9%AA%8C"><span class="toc-text">4.2 F检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-text">4.3 相关系数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AE%8B%E5%B7%AE%E5%88%86%E6%9E%90"><span class="toc-text">5 残差分析</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="定义"><span
+class="header-section-number">1</span> 定义</h2>
+<div class="block definition">
+<div class="block-title">
+Definition 1.1 (一元线性回归模型).
+</div>
+<div class="block-content">
+<p>给定样本<span class="math inline">\((X_{1},Y_{1})\)</span>，<span
+class="math inline">\((X_{2},Y_{2})\)</span>，<span
+class="math inline">\(\dots\)</span>，<span
+class="math inline">\((X_{n},Y_{n})\)</span>，有样本回归模型<span
+class="math display">\[Y_{i}=\beta_{0}+\beta_{1}X_{i}+\varepsilon_{i},\quad
+i=1,\dots,n\]</span>其中<span
+class="math inline">\(Y_{1},Y_{2},\dots,Y_{n}\)</span>以及<span
+class="math inline">\(\varepsilon_{1},\varepsilon_{2},\dots,\varepsilon_{n}\)</span>都是相互独立的随机变量，而<span
+class="math inline">\(X_{i}\)</span>是非随机变量。</p>
+</div>
+</div>
+<p>其中随机误差项<span
+class="math inline">\(\varepsilon\)</span>满足高斯-马尔可夫条件（Gauss-Markov）条件，即<span
+class="math display">\[\left\{\begin{align}
+E(\varepsilon_{i})=0, &amp; \quad i=1,\dots,n \\
+Var(\varepsilon_{i})=\sigma^{2}, &amp; \quad i=1,\dots,n \\
+Cov(\varepsilon_{i},\varepsilon_{j}) =0, &amp; \quad i\neq j
+\end{align}\right.\]</span>同时满足正态性假定<span
+class="math display">\[\varepsilon_{i}\sim N(0,\sigma^{2}),\quad
+i=1,\dots,n\]</span></p>
+<div class="block corollary">
+<div class="block-title">
+Corollary 1.1 ($Y$的性质).
+</div>
+<div class="block-content">
+<p>在高斯-马尔科夫条件下，有<span
+class="math display">\[\begin{align}  E(Y_{i})&amp;=\beta_{0}
++\beta_{1}X_{i} \\ Var(Y_{i})&amp;=\sigma^{2}
+\end{align}\]</span>在正态性假设下有<span
+class="math display">\[Y_{i}\sim
+N(\beta_{0}+\beta_{1}X_{i},\sigma^{2})\]</span></p>
+</div>
+</div>
+<h2 data-number="2" id="参数估计方法"><span
+class="header-section-number">2</span> 参数估计方法</h2>
+<div class="block theorem">
+<div class="block-title">
+Theorem 2.1 ($\hat{\beta_{0}}$和$\hat{\beta_{1}}$表达式).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\begin{align} \hat{\beta_{1}}&amp;=
+\frac{L_{xy}}{L_{xx}} \\ \hat{\beta_{0}}&amp;=
+\bar{Y}-\hat{\beta_{1}}\bar{X}\end{align}\]</span></p>
+</div>
+</div>
+<h3 data-number="2.1" id="最小二乘法"><span
+class="header-section-number">2.1</span> 最小二乘法</h3>
+<p>考虑<span class="math display">\[\begin{align}
+Q(\hat{\beta_{0}},\hat{\beta_{1}}) &amp; =\sum_{i = 1}^{n}
+(Y_{i}-\hat{\beta_{0}}-\hat{\beta_{1}}X_{i} )^{2} \\
+&amp; = \min_{\beta_{0},\beta_{1}}\sum_{i = 1}^{n}
+(Y_{i}-\beta_{0}-\beta_{1}X_{i})^{2}
+\end{align}\]</span> 此时考虑<span class="math display">\[\begin{align}
+\frac{ \partial Q }{ \partial \beta_{0}
+}\Big|_{\beta_{0}=\hat{\beta_{0}}}  &amp; =-2\sum_{i = 1}^{n}
+(Y_{i}-\hat{\beta_{0}}-\hat{\beta_{1}}X_{i})=0 \\
+\frac{ \partial Q }{ \partial \beta_{1} }
+\Big|_{\beta_{1}=\hat{\beta_{1}}} &amp; =-2\sum_{i = 1}^{n}
+(Y_{i}-\hat{\beta_{0}}-\hat{\beta_{1}}X_{i})X_{i}=0
+\end{align}\]</span>解得<span class="math display">\[\begin{align}
+\hat{\beta_{0}} &amp; =\bar{Y}-\hat{\beta_{1}}\bar{X} \\
+\hat{\beta_{1} } &amp; = \frac{\sum_{i = 1}^{n}
+(X_{i}-\bar{X})(Y_{i}-\bar{Y})}{\sum_{i = 1}^{n} (X_{i}-\bar{X})^{2}}=
+\frac{L_{xy}}{L_{xx}}
+\end{align}\]</span></p>
+<h3 data-number="2.2" id="极大似然法"><span
+class="header-section-number">2.2</span> 极大似然法</h3>
+<p>注意到<span class="math display">\[Y_{i}\sim
+N(\beta_{0}+\beta_{1}X_{i},\sigma^{2})\]</span>因此构建<span
+class="math display">\[L(\beta_{0},\beta_{1},\sigma^{2})=\prod_{i=1}^{n}
+\frac{1}{\sqrt{ 2\pi }\sigma}\exp
+\left\{  -\frac{(Y_{i}-\beta_{0}-\beta_{1}X_{i})^{2}}{2\sigma^{2}}  \right\}\]</span>此时<span
+class="math display">\[l(\beta_{0},\beta_{1},\sigma^{2})=-\frac{n}{2}\ln\sigma^{2}-\frac{\sum_{i
+= 1}^{n}
+(Y_{i}-\beta_{0}-\beta_{1}X_{i})^{2}}{2\sigma^{2}}\]</span>同样考虑<span
+class="math display">\[\begin{align}
+\frac{ \partial l }{ \partial \sigma^{2} }  &amp; = -
+\frac{n}{2\sigma^{2}}+ \frac{\sum_{i = 1}^{n}
+(Y_{i}-\beta_{0}-\beta_{1}X_{i})^{2}}{2\sigma^{4}}=0 \\
+\frac{ \partial l }{ \partial \beta_{0} }  &amp; = \frac{\sum_{i =
+1}^{n} (Y_{i}-\beta_{0}-\beta_{1}X_{i})}{\sigma^{2}}=0\\
+\frac{ \partial l }{ \partial \beta_{1} }  &amp; = \frac{\sum_{i =
+1}^{n} (Y_{i}-\beta_{0}-\beta_{1}X_{i})X_{i}}{\sigma^{2}}=0
+\end{align}\]</span>此时得到相同结果，并得到方差的极大似然估计<span
+class="math display">\[\hat{\sigma^{2}}= \frac{1}{n}\sum_{i = 1}^{n}
+(Y_{i}-\hat{\beta_{0}}-\hat{\beta_{1}}X_{i})^{2}= \frac{1}{n}\sum_{i =
+1}^{n} (Y_{i}-\hat{Y_{i}})^{2}\]</span></p>
+<h3 data-number="2.3" id="矩估计"><span
+class="header-section-number">2.3</span> 矩估计</h3>
+<p>对于随机变量<span
+class="math inline">\(\varepsilon_{i}\)</span>，有<span
+class="math display">\[\begin{align}
+E(\varepsilon_{i}) &amp; =0 \\
+E(X_{i}\varepsilon_{i}) &amp; = 0
+\end{align}\]</span>使用矩估计<span class="math display">\[\begin{align}
+\hat{\varepsilon_{i}} &amp; = \frac{1}{n}
+(Y_{i}-\hat{\beta_{0}}-\hat{\beta_{1}}X_{i})=0 \\
+X_{i}\hat{\varepsilon_{i}} &amp; =
+\frac{1}{n}X_{i}(Y_{i}-\hat{\beta_{0}}-\hat{\beta_{1}}X_{i})=0
+\end{align}\]</span>显然也能得到相同条件。</p>
+<h2 data-number="3" id="参数估计性质"><span
+class="header-section-number">3</span> 参数估计性质</h2>
+<h3 data-number="3.1" id="线性"><span
+class="header-section-number">3.1</span> 线性</h3>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.1.1 (线性).
+</div>
+<div class="block-content">
+<p>估计量<span class="math inline">\(\hat{\beta_{0}}\)</span>，<span
+class="math inline">\(\hat{\beta_{1}}\)</span>为随机变量<span
+class="math inline">\(Y_{i}\)</span>的线性函数。其中<span
+class="math display">\[\begin{align} \hat{\beta_{1}} &amp; = \sum_{i =
+1}^{n} \frac{(X_{i}-\bar{X} )}{L_{xx}}Y_{i} \\ \hat{\beta_{0}} &amp; =
+\sum_{i = 1}^{n} \left( \frac{1}{n}-
+\frac{(X_{i}-\bar{X})\bar{X}}{L_{xx}} \right)
+Y_{i}\end{align}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 注意到<span
+class="math display">\[\begin{align}
+\hat{\beta_{1}} &amp; = \frac{L_{xy}}{L_{x x}} \\
+&amp; = \frac{\sum_{i = 1}^{n} (X_{i}-\bar{X})(Y_{i}-\bar{Y})}{\sum_{i =
+1}^{n} (X_{i}-\bar{X})^{2}} \\
+&amp; = \frac{\sum_{i = 1}^{n} (X_{i}-\bar{X})Y_{i}}{\sum_{i = 1}^{n}
+(X_{i}-\bar{X})^{2}} \\
+&amp; = \sum_{i = 1}^{n} \frac{(X_{i}-\bar{X})}{\sum_{i = 1}^{n}
+(X_{i}-\bar{X})^{2 }} Y_{i} \\
+&amp; = \sum_{i = 1}^{n} \frac{ (X_{i}-\bar{X})}{L_{x x}}Y_{i}
+\end{align}\]</span>因此<span class="math display">\[\begin{align}
+\hat{\beta_{0}} &amp; = \bar{Y}-\hat{\beta_{1}}\bar{X} \\
+     &amp; = \frac{1}{n}  \sum_{i = 1}^{n}Y_{i} - \sum_{i = 1}^{n}
+\frac{(X_{i}-\bar{X})\bar{X}}{L_{x x}} Y_{i} \\
+     &amp; = \sum_{i = 1}^{n} \left(  \frac{1}{n}-
+\frac{(X_{i}-\bar{X})\bar{X}}{L_{x x}} \right)Y_{i}
+\end{align}\]</span></p>
+<h3 data-number="3.2" id="无偏性"><span
+class="header-section-number">3.2</span> 无偏性</h3>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.2.1 (无偏性).
+</div>
+<div class="block-content">
+<p><span class="math inline">\(\hat{\beta_{0}}\)</span>，<span
+class="math inline">\(\hat{\beta_{1}}\)</span>是<span
+class="math inline">\(\beta_{0}\)</span>，<span
+class="math inline">\(\beta_{1}\)</span>的无偏估计。即<span
+class="math display">\[\begin{align} E(\hat{\beta_{1}})&amp;=\beta_{1}
+\\ E(\hat{\beta_{0}})&amp;= \beta_{0}\end{align}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 考虑<span
+class="math display">\[E(Y_{i})=\beta_{0}+\beta_{1}X_{i}\]</span>因此<span
+class="math display">\[\begin{align}
+E(\hat{\beta_{1}})  &amp; = \sum_{i = 1}^{n} \frac{(X_{i}-\bar{X})}{L_{x
+x}}E(Y_{i}) \\
+&amp; = \sum_{i = 1}^{n} \frac{(X_{i}-\bar{X})}{L_{x
+x}}(\beta_{0}+\beta_{1}X_{i}) \\
+&amp; = \beta_{1}\sum_{i = 1}^{n} \frac{(X_{i}-\bar{X})X_{i}}{L_{x x}}
+\\
+&amp; =  \beta_{1}
+\end{align}\]</span>同时<span
+class="math display">\[E(\bar{Y})=\beta_{0}+\beta_{1}\bar{X}\]</span>因此<span
+class="math display">\[E(\hat{\beta_{0}})=E(\bar{Y}-\hat{\beta_{1}}\bar{X})=\beta_{0}\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.2.2 ($\sigma^{2}$的无偏估计).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\hat{\sigma^{2}}=\frac{1}{n-2}\sum_{i =
+1}^{n} (Y_{i}-\hat{Y_i})^{2}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 注意到<span
+class="math display">\[\begin{align}
+E(SST) &amp; = E\left( \sum_{i = 1}^{n} (Y_{i}-\bar{Y})^{2} \right) \\
+&amp; = E\left( \sum_{i = 1}^{n}
+(\beta_{1}(X_{i}-\bar{X})+(\varepsilon_{i}-\bar{\varepsilon}))^{2}
+\right) \\
+&amp; = \beta_{1}^{2}L_{xx}+\sum_{i = 1}^{n}
+E((\varepsilon_{i}-\bar{\varepsilon})^{2}) \\
+&amp; = \beta_{1}^{2}L_{xx}+(n-1)\sigma^{2}
+\end{align}\]</span>同时<span class="math display">\[\begin{align}
+SSR &amp; = \sum_{i = 1}^{n} (\hat{Y_i}-\bar{Y})^{2} \\
+&amp; = \hat{\beta_{1}^{2}}\sum_{i = 1}^{n} (X_{i}-\bar{X})^{2} \\
+&amp; = \hat{\beta_{1}^{2}}L_{xx}
+\end{align}\]</span>注意到<span class="math display">\[\begin{align}
+E(\hat{\beta_{1}^{2}} ) &amp; =Var(\hat{\beta_{1}}
+)+E^{2}(\hat{\beta_{1}} ) \\
+&amp; = \frac{\sigma^{2}}{L_{xx}}+ \beta_{1}^{2}
+    \end{align}\]</span>因此<span class="math display">\[\begin{align}
+E(SSR) &amp; =E(\hat{\beta_{1}^{2}} )L_{xx} \\
+&amp; =  \left( \frac{\sigma^{2}}{L_{xx}}+ \beta_{1}^{2} \right) L_{xx}
+\\
+&amp; =\sigma^{2 }+\beta_{1}^{2}L_{xx}
+\end{align}\]</span>最后<span class="math display">\[\begin{align}
+E(SSE) &amp; =E(SST)-E(SSR) \\
+&amp; = (n-2)\sigma^{2}
+\end{align}\]</span></p>
+<h3 data-number="3.3" id="hatbeta_0和hatbeta_1方差"><span
+class="header-section-number">3.3</span> <span
+class="math inline">\(\hat{\beta_{0}}\)</span>和<span
+class="math inline">\(\hat{\beta_{1}}\)</span>方差</h3>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.3.1 ($\hat{\beta_{0}}$和$\hat{\beta_{1}}$方差).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\begin{align} \hat{\beta_{1}} &amp; =
+\frac{\sigma^{2}}{L_{xx}} \\ \hat{\beta_{2}}&amp;= \left( \frac{1}{n}+
+\frac{\bar{X}^{2}}{L_{xx}} \right)\sigma^{2} \end{align}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 由于<span
+class="math inline">\(Y_{i}\)</span>相互独立，因此<span
+class="math display">\[\begin{align}
+Var(\hat{\beta_{1}}) &amp; =\sum_{i = 1}^{n} \left(
+\frac{(X_{i}-\bar{X})}{L_{x x} } \right)^{2}Var(Y_{i}) \\
+&amp; = \frac{\sigma^{2}}{L_{x x}}
+\end{align}
+\]</span>同理<span class="math display">\[\begin{align}
+Var(\hat{\beta_{0}}) &amp; =\sum_{i = 1}^{n} \left( \frac{1}{n}-
+\frac{(X_{i}-\bar{X})\bar{X}}{L_{x x}} \right)^{2} \sigma^{2}\\
+&amp; =  \left(  \frac{1}{n} + \frac{\bar{X}^{2}}{L_{x
+x}}  \right)\sigma^{2 }
+\end{align}\]</span></p>
+<div class="block corollary">
+<div class="block-title">
+Corollary 3.3.1 ($\hat{\beta_{0}}$和$\hat{\beta_{1}}$的分布).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\begin{align}   \hat{\beta_{0}} &amp;
+\sim N\left( \beta_{0}, \left( \frac{1}{n}+ \frac{\bar{X}^{2}}{L_{x x}}
+\right)\sigma^{2} \right) \\ \hat{\beta_{1}} &amp; \sim N\left(
+\beta_{1}, \frac{\sigma^{2}}{L_{x x}} \right)\end{align}\]</span></p>
+</div>
+</div>
+<h3 data-number="3.4" id="hatbeta_0与hatbeta_1的协方差"><span
+class="header-section-number">3.4</span> <span
+class="math inline">\(\hat{\beta_{0}}\)</span>与<span
+class="math inline">\(\hat{\beta_{1}}\)</span>的协方差</h3>
+<p><span class="math display">\[\begin{align}
+Cov(\hat{\beta_{0}},\hat{\beta_{1}} ) &amp; = Cov\left( \sum_{i =
+1}^{n}  \frac{(X_{i}-\bar{X})}{L_{x x}}Y_{i}, \sum_{i = 1}^{n} \left(
+\frac{1}{n}- \frac{(X_{i}-\bar{X})\bar{X}}{L_{x x} } \right)
+Y_{i}\right) \\
+&amp; = \sigma^{2}\sum_{i = 1}^{n} \frac{(X_{i}-\bar{X})}{L_{xx}} \left(
+\frac{1}{n}- \frac{(X_{i}-\bar{X})\bar{X}}{L_{xx}} \right) \\
+&amp; =  -\frac{\bar{X}}{L_{x x}} \sigma^{2}
+\end{align}\]</span></p>
+<div class="block corollary">
+<div class="block-title">
+Corollary 3.4.1 ($\hat{\beta_{0}}$与$\hat{\beta_{1}}$相关性).
+</div>
+<div class="block-content">
+<p>当<span class="math inline">\(\bar{X}=0\)</span>时，<span
+class="math inline">\(\hat{\beta_{0}}\)</span>与<span
+class="math inline">\(\hat{\beta_{1}}\)</span>相互独立。</p>
+</div>
+</div>
+<h3 data-number="3.5" id="高斯-马尔科夫定理"><span
+class="header-section-number">3.5</span> 高斯-马尔科夫定理</h3>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.5.1 (高斯-马尔科夫定理).
+</div>
+<div class="block-content">
+<p><span class="math inline">\(\hat{\beta_{0}}\)</span>和<span
+class="math inline">\(\hat{\beta_{1}}\)</span>是<span
+class="math inline">\(\beta_{0}\)</span>和<span
+class="math inline">\(\beta_{1}\)</span>的最佳无偏估计，即最小方差线性无偏估计。</p>
+</div>
+</div>
+<p><strong>证明</strong> 设<span
+class="math inline">\(\tilde{\beta_{1}}=\sum_{i =
+1}^{n}a_{i}Y_{i}\)</span>，且其为<span
+class="math inline">\(\beta_{1}\)</span>的无偏估计。此时有<span
+class="math display">\[\begin{align}
+E(\tilde{\beta_{1}}) &amp; =\sum_{i = 1}^{n}
+a_{i}(\beta_{0}+\beta_{1}X_{i}) \\
+&amp; = \beta_{0}\sum_{i = 1}^{n} a_{i}+\beta_{1}\sum_{i = 1}^{n}
+a_{i}X_{i} \\
+&amp; = \beta_{1}
+\end{align}\]</span>因此得到<span class="math display">\[\begin{align}
+\sum_{i = 1}^{n} a_{i} &amp; =0 \\
+\sum_{i = 1}^{n} a_{i}X_{i} &amp; = 1
+\end{align}\]</span>此时<span class="math display">\[\begin{align}
+Var(\tilde{\beta_{1}}) &amp; = Var(\hat{\beta_{1}}+
+\tilde{\beta_{1}}-\hat{\beta_{1}}) \\
+&amp; =
+Var(\hat{\beta_{1}})+Var(\tilde{\beta_{1}}-\hat{\beta_{1}})+2Cov(\hat{\beta_{1}},
+\tilde{\beta_{1}}-\hat{\beta_{1}})
+\end{align}\]</span>注意到<span class="math display">\[\begin{align}
+Cov(\hat{\beta_{1}}, \tilde{\beta_{1}}-\hat{\beta_{1}}) &amp; =
+Cov(\hat{\beta_{1}}, \tilde{\beta_{1}})-Var(\hat{\beta_{1}}) \\
+&amp; = Cov\left( \sum_{i = 1}^{n} \frac{(X_{i}-\bar{X})}{L_{x x}}Y_{i},
+\sum_{i = 1}^{n} a_{i}Y_{i} \right)- \frac{\sigma^{2}}{L_{x x}} \\
+&amp; = \frac{\sigma^{2}}{L_{x x}} \sum_{i = 1}^{n} a_{i}
+(X_{i}-\bar{X})- \frac{\sigma^{2}}{L_{x x}} \\
+&amp; = 0
+\end{align}\]</span>故证毕。</p>
+<p>同理，设<span class="math inline">\(\tilde{\beta_{0}}=\sum_{i =
+1}^{n}b_{i}Y_{i}\)</span>，也有<span
+class="math display">\[\begin{align}
+\sum_{i = 1}^{n} b_{i} &amp; =1 \\
+\sum_{i = 1}^{n} b_{i}X_{i} &amp; =0
+\end{align}\]</span>此时<span class="math display">\[\begin{align}
+Cov(\hat{\beta_{0}}, \tilde{\beta_{0}}-\hat{\beta_{0}}) &amp; =
+Cov(\hat{\beta_{0}}, \tilde{\beta_{0}})-Var(\hat{\beta_{0}}) \\
+&amp; = Cov\left( \sum_{i = 1}^{n} \left( \frac{1}{n}-
+\frac{(X_{i}-\bar{X})\bar{X}}{L_{xx}} \right)Y_{i}, \sum_{i = 1}^{n}
+b_{i}Y_{i}  \right)- \left( \frac{1}{n}+ \frac{\bar{X}^{2}}{L_{xx}}
+\right)\sigma^{2} \\
+&amp; = \sigma^{2}\sum_{i = 1}^{n} b_{i}\left( \frac{1}{n}-
+\frac{(X_{i}-\bar{X} )\bar{X}}{L_{xx}} \right)- \left( \frac{1}{n}+
+\frac{\bar{X}^{2}}{L_{xx}} \right)\sigma^{2} \\
+&amp; =0
+\end{align}\]</span>故证毕。</p>
+<h2 data-number="4" id="模型推断"><span
+class="header-section-number">4</span> 模型推断</h2>
+<h3 data-number="4.1" id="t检验"><span
+class="header-section-number">4.1</span> t检验</h3>
+<p>我们建立统计假设为<span class="math display">\[\begin{align}
+H_{0}: \beta_{1}=0 \\
+H_{1}:\beta_{1}\neq 0
+\end{align}\]</span> 此时若原假设成立，有<span
+class="math display">\[\hat{\beta_{1}}\sim N\left( 0,
+\frac{\sigma^{2}}{L_{xx}} \right)\]</span>因此构造<span
+class="math display">\[t= \frac{\hat{\beta_{1}}}{\hat{\sigma} /\sqrt{
+L_{xx} }}= \frac{\hat{\beta_{1}}\sqrt{ L_{xx}
+}}{\hat{\sigma}}\]</span>其中<span
+class="math display">\[\hat{\sigma}^{2}= \frac{1}{n-2}\sum_{i = 1}^{n}
+(Y_{i}-\hat{Y})^{2}\]</span>此时<span
+class="math inline">\(t\)</span>自由度为<span
+class="math inline">\(n-2\)</span>的<span
+class="math inline">\(t\)</span>分布。</p>
+<h3 data-number="4.2" id="f检验"><span
+class="header-section-number">4.2</span> F检验</h3>
+<div class="block theorem">
+<div class="block-title">
+Theorem 4.2.1 (平方和分解式).
+</div>
+<div class="block-content">
+<p><span class="math display">\[SST=SSR+SSE\]</span>即<span
+class="math display">\[\sum_{i = 1}^{n} (Y_{i}-\bar{Y_{i}})^{2}=\sum_{i
+= 1}^{n} (\hat{Y_{i}}-\bar{Y})^{2}+\sum_{i = 1}^{n}
+(Y_{i}-\hat{Y_{i}})^{2}\]</span></p>
+</div>
+</div>
+<p>此时构造<span class="math display">\[F= \frac{SSR / 1}{SSE /
+(n-2)}\]</span>服从自由度为<span
+class="math inline">\((1,n-2)\)</span>的<span
+class="math inline">\(F\)</span>分布。</p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 4.2.2 (t检验和F检验的等价性).
+</div>
+<div class="block-content">
+<p><span class="math display">\[t^{2}=F\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 注意到<span
+class="math display">\[\begin{align}
+SSR &amp; = \sum_{i = 1}^{n} (\hat{Y_i}-\bar{Y})^{2} \\
+&amp; = \hat{\beta_{1}}^{2}\sum_{i = 1}^{n} (X_{i}-\bar{X})^{2} \\
+&amp; = \hat{\beta_{1}}^{2}L_{xx}
+\end{align}\]</span>代入即得结果。</p>
+<h3 data-number="4.3" id="相关系数"><span
+class="header-section-number">4.3</span> 相关系数</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 4.3.1 (相关系数).
+</div>
+<div class="block-content">
+<p><span class="math display">\[r= \frac{\sum_{i = 1}^{n}(X_{i}-\bar{X})
+(Y_{i}-\bar{Y})}{\sqrt{ \sum_{i = 1}^{n} (X_{i}-\bar{X})^{2}\sum_{i =
+1}^{n} (Y_{i}-\bar{Y})^{2} }}= \frac{L_{xy}}{\sqrt{ L_{xx}L_{yy}
+}}=\hat{\beta_{1}}\sqrt{ \frac{L_{xx}}{L_{yy}} }\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 4.3.2 (决定系数).
+</div>
+<div class="block-content">
+<p><span class="math display">\[R^{2}= \frac{SSR}{SST}=\frac{\sum_{i =
+1}^{n} (\hat{Y_i}-\bar{Y})^{2}}{\sum_{i = 1}^{n}
+(Y_{i}-\bar{Y})^{2}}\]</span></p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 4.3.1 (相关系数与决定系数的关系).
+</div>
+<div class="block-content">
+<p><span class="math display">\[r^{2}=R^{2}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 显然<span class="math display">\[\begin{align}
+R^{2} &amp; = \frac{SSR}{SST} \\
+&amp; = \frac{\hat{\beta_{1}}^{2}L_{xx}}{L_{xy}} \\
+&amp; = r^{2}
+\end{align}\]</span></p>
+<h2 data-number="5" id="残差分析"><span
+class="header-section-number">5</span> 残差分析</h2>
+<div class="block theorem">
+<div class="block-title">
+Theorem 5.1 (性质一).
+</div>
+<div class="block-content">
+<p><span class="math display">\[E(e_{i})=0\]</span></p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 5.2 (性质二).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[Var(e_{i})=(1-h_{ii})\sigma^{2}\]</span>其中<span
+class="math display">\[h_{ii}=\frac{1}{n}+\frac{(X_{i}-\bar{X})^{2}}{L_{xx}}\]</span></p>
+</div>
+</div>
+<p>注意到<span class="math display">\[\begin{align}
+Var(\hat{Y_i}) &amp; =Var(\hat{\beta_{1}}X_{i}+\hat{\beta_{0}} ) \\
+&amp; = X_{i}^{2 }Var(\hat{\beta_{1}} )+Var(\hat{\beta_{0}} )
++2X_{i}Cov(\hat{\beta_{1}} ,\hat{\beta_{0}} )\\
+&amp; = \frac{X_{i}^{2}}{L_{xx}}\sigma^{2}+\left(
+\frac{1}{n}+\frac{\bar{X}^{2}}{L_{xx}}
+\right)\sigma^{2}-\frac{2X_{i}\bar{X}}{L_{xx}}\sigma^{2} \\
+&amp; = \left( \frac{1}{n}+ \frac{(X_{i}-\bar{X})^{2}}{L_{xx}}
+\right)\sigma^{2}
+\end{align}\]</span>同时<span class="math display">\[\begin{align}
+\hat{Y_i} &amp; = \hat{\beta_{1}} X_{i}+\hat{\beta_{0}}  \\
+&amp; = \sum_{j = 1}^{n}
+\frac{(X_{j}-\bar{X})X_{i}}{L_{xx}}Y_{j}+\sum_{j = 1}^{n} \left(
+\frac{1}{n}- \frac{(X_{j}-\bar{X})\bar{X}}{L_{xx}} \right)Y_{j} \\
+&amp; = \sum_{j = 1}^{n} \left( \frac{1}{n}-
+\frac{(X_{j}-\bar{X})(X_{i}-\bar{X})}{L_{xx}} \right)Y_{j}
+\end{align}\]</span>因此<span
+class="math display">\[Cov(\hat{Y_i},Y_{i})=\left( \frac{1}{n} -
+\frac{(X_{i}-\bar{X})^{2}}{L_{xx}} \right)\sigma^{2}\]</span>此时<span
+class="math display">\[\begin{align}
+Var(e_{i}) &amp; =Var(Y_{i}-\hat{Y_i}) \\
+&amp; = Var(Y_{i})+Var(\hat{Y_i})-2Cov(Y_{i},\hat{Y_i}) \\
+&amp; = \sigma^{2}+ \left( \frac{1}{n}+
+\frac{(X_{i}-\bar{X})^{2}}{L_{xx}} \right)\sigma^{2}-2\left(
+\frac{1}{n}- \frac{(X_{i}-\bar{X})^{2}}{L_{xx}} \right)\sigma^{2} \\
+&amp; = \left( 1-\frac{1}{n}- \frac{(X_{i}-\bar{X})^{2}}{L_{xx}}
+\right)\sigma^{2}
+\end{align}\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 5.3 (性质三).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\begin{align} \sum_{i = 1}^{n} e_{i}
+&amp;=0 \\ \sum_{i = 1}^{n} X_{i}e_{i}&amp;=0\end{align}\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 5.1 (改进残差).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\begin{align} ZRE_{i}&amp;=
+\frac{e_{i}}{\hat{\sigma}} \\ SRE_{i}&amp;=
+\frac{e_{i}}{\hat{\sigma}\sqrt{ 1-h_{i i} }}\end{align}\]</span></p>
+</div>
+</div>
+</div><div class="tags"></div><div class="post-nav"><a class="next" href="/2024/10/06/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/">【随机过程】03更新过程</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/10/08/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9101%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】01一元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/06/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/">【随机过程】03更新过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/25/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96/">【最优化方法】03无约束优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/23/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B-%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】02泊松过程-泊松过程的推广</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/21/%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93/">一些总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/19/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9102%E6%97%A0%E7%BA%A6%E6%9D%9F%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84/">【最优化方法】02无约束最优化方法的基本结构</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/18/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【最优化方法】01预备知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/14/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B/">【随机过程】02泊松过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/10/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【随机过程】01预备知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/08/12/Docker%20%E9%95%9C%E5%83%8F/">Docker 镜像</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
