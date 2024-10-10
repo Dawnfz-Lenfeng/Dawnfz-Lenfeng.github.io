@@ -178,41 +178,6 @@ x}}(\beta_{0}+\beta_{1}X_{i}) \\
 \end{align}\]</span>同时<span
 class="math display">\[E(\bar{Y})=\beta_{0}+\beta_{1}\bar{X}\]</span>因此<span
 class="math display">\[E(\hat{\beta_{0}})=E(\bar{Y}-\hat{\beta_{1}}\bar{X})=\beta_{0}\]</span></p>
-<div class="block theorem">
-<div class="block-title">
-Theorem 3.2.2 ($\sigma^{2}$的无偏估计).
-</div>
-<div class="block-content">
-<p><span class="math display">\[\hat{\sigma^{2}}=\frac{1}{n-2}\sum_{i =
-1}^{n} (Y_{i}-\hat{Y_i})^{2}\]</span></p>
-</div>
-</div>
-<p><strong>证明</strong> 注意到<span
-class="math display">\[\begin{align}
-E(SST) &amp; = E\left( \sum_{i = 1}^{n} (Y_{i}-\bar{Y})^{2} \right) \\
-&amp; = E\left( \sum_{i = 1}^{n}
-(\beta_{1}(X_{i}-\bar{X})+(\varepsilon_{i}-\bar{\varepsilon}))^{2}
-\right) \\
-&amp; = \beta_{1}^{2}L_{xx}+\sum_{i = 1}^{n}
-E((\varepsilon_{i}-\bar{\varepsilon})^{2}) \\
-&amp; = \beta_{1}^{2}L_{xx}+(n-1)\sigma^{2}
-\end{align}\]</span>同时<span class="math display">\[\begin{align}
-SSR &amp; = \sum_{i = 1}^{n} (\hat{Y_i}-\bar{Y})^{2} \\
-&amp; = \hat{\beta_{1}^{2}}\sum_{i = 1}^{n} (X_{i}-\bar{X})^{2} \\
-&amp; = \hat{\beta_{1}^{2}}L_{xx}
-\end{align}\]</span>注意到<span class="math display">\[\begin{align}
-E(\hat{\beta_{1}^{2}} ) &amp; =Var(\hat{\beta_{1}}
-)+E^{2}(\hat{\beta_{1}} ) \\
-&amp; = \frac{\sigma^{2}}{L_{xx}}+ \beta_{1}^{2}
-    \end{align}\]</span>因此<span class="math display">\[\begin{align}
-E(SSR) &amp; =E(\hat{\beta_{1}^{2}} )L_{xx} \\
-&amp; =  \left( \frac{\sigma^{2}}{L_{xx}}+ \beta_{1}^{2} \right) L_{xx}
-\\
-&amp; =\sigma^{2 }+\beta_{1}^{2}L_{xx}
-\end{align}\]</span>最后<span class="math display">\[\begin{align}
-E(SSE) &amp; =E(SST)-E(SSR) \\
-&amp; = (n-2)\sigma^{2}
-\end{align}\]</span></p>
 <h3 data-number="3.3" id="hatbeta_0和hatbeta_1方差"><span
 class="header-section-number">3.3</span> <span
 class="math inline">\(\hat{\beta_{0}}\)</span>和<span
@@ -417,6 +382,20 @@ R^{2} &amp; = \frac{SSR}{SST} \\
 &amp; = \frac{\hat{\beta_{1}}^{2}L_{xx}}{L_{xy}} \\
 &amp; = r^{2}
 \end{align}\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 4.3.2 (决定系数与t检验的关系).
+</div>
+<div class="block-content">
+<p><span class="math display">\[t= \frac{\sqrt{ n-2 }r^{2}}{\sqrt{
+1-r^{2} }}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 只需证明<span
+class="math display">\[\frac{(n-2)r^{2}}{1-r^{2}}=F= \frac{SSR / 1}{SSE
+/ (n-2)}\]</span>即证<span class="math display">\[\frac{r^{2}}{1-r^{2}}=
+\frac{SSR}{SSE}\]</span>而<span
+class="math display">\[r^{2}=R^{2}=\frac{SSR}{SST}\]</span>故显然成立。</p>
 <h2 data-number="5" id="残差分析"><span
 class="header-section-number">5</span> 残差分析</h2>
 <div class="block theorem">
@@ -432,12 +411,14 @@ Theorem 5.1 (性质一).
 Theorem 5.2 (性质二).
 </div>
 <div class="block-content">
-<p><span
-class="math display">\[Var(e_{i})=(1-h_{ii})\sigma^{2}\]</span>其中<span
-class="math display">\[h_{ii}=\frac{1}{n}+\frac{(X_{i}-\bar{X})^{2}}{L_{xx}}\]</span></p>
+<p><span class="math display">\[\begin{align}
+Var(e_{i})&amp;=(1-h_{ii})\sigma^{2} \\ Cov(e_{i},e_{j}) &amp; =
+-h_{ij}\sigma^{2}\end{align}\]</span>其中<span
+class="math display">\[h_{ij}=\frac{1}{n}+\frac{(X_{i}-\bar{X})(X_{j}-\bar{X})}{L_{xx}}\]</span></p>
 </div>
 </div>
-<p>注意到<span class="math display">\[\begin{align}
+<p><strong>证明</strong> 注意到<span
+class="math display">\[\begin{align}
 Var(\hat{Y_i}) &amp; =Var(\hat{\beta_{1}}X_{i}+\hat{\beta_{0}} ) \\
 &amp; = X_{i}^{2 }Var(\hat{\beta_{1}} )+Var(\hat{\beta_{0}} )
 +2X_{i}Cov(\hat{\beta_{1}} ,\hat{\beta_{0}} )\\
@@ -445,29 +426,96 @@ Var(\hat{Y_i}) &amp; =Var(\hat{\beta_{1}}X_{i}+\hat{\beta_{0}} ) \\
 \frac{1}{n}+\frac{\bar{X}^{2}}{L_{xx}}
 \right)\sigma^{2}-\frac{2X_{i}\bar{X}}{L_{xx}}\sigma^{2} \\
 &amp; = \left( \frac{1}{n}+ \frac{(X_{i}-\bar{X})^{2}}{L_{xx}}
-\right)\sigma^{2}
+\right)\sigma^{2} \\
+&amp; = h_{ii}\sigma^{2}
 \end{align}\]</span>同时<span class="math display">\[\begin{align}
 \hat{Y_i} &amp; = \hat{\beta_{1}} X_{i}+\hat{\beta_{0}}  \\
-&amp; = \sum_{j = 1}^{n}
-\frac{(X_{j}-\bar{X})X_{i}}{L_{xx}}Y_{j}+\sum_{j = 1}^{n} \left(
-\frac{1}{n}- \frac{(X_{j}-\bar{X})\bar{X}}{L_{xx}} \right)Y_{j} \\
-&amp; = \sum_{j = 1}^{n} \left( \frac{1}{n}-
-\frac{(X_{j}-\bar{X})(X_{i}-\bar{X})}{L_{xx}} \right)Y_{j}
+&amp; = \sum_{k = 1}^{n}
+\frac{(X_{k}-\bar{X})X_{i}}{L_{xx}}Y_{k}+\sum_{k = 1}^{n} \left(
+\frac{1}{n}- \frac{(X_{k}-\bar{X})\bar{X}}{L_{xx}} \right)Y_{k} \\
+&amp; = \sum_{k = 1}^{n} \left( \frac{1}{n}+
+\frac{(X_{k}-\bar{X})(X_{i}-\bar{X})}{L_{xx}} \right)Y_{k}
 \end{align}\]</span>因此<span
-class="math display">\[Cov(\hat{Y_i},Y_{i})=\left( \frac{1}{n} -
-\frac{(X_{i}-\bar{X})^{2}}{L_{xx}} \right)\sigma^{2}\]</span>此时<span
+class="math display">\[Cov(\hat{Y_i},Y_{i})=\left( \frac{1}{n} +
+\frac{(X_{i}-\bar{X})^{2}}{L_{xx}}
+\right)\sigma^{2}=h_{ii}\sigma^{2}\]</span>此时<span
 class="math display">\[\begin{align}
 Var(e_{i}) &amp; =Var(Y_{i}-\hat{Y_i}) \\
 &amp; = Var(Y_{i})+Var(\hat{Y_i})-2Cov(Y_{i},\hat{Y_i}) \\
-&amp; = \sigma^{2}+ \left( \frac{1}{n}+
-\frac{(X_{i}-\bar{X})^{2}}{L_{xx}} \right)\sigma^{2}-2\left(
-\frac{1}{n}- \frac{(X_{i}-\bar{X})^{2}}{L_{xx}} \right)\sigma^{2} \\
-&amp; = \left( 1-\frac{1}{n}- \frac{(X_{i}-\bar{X})^{2}}{L_{xx}}
-\right)\sigma^{2}
+&amp; = \sigma^{2}+ h_{ii}\sigma^{2}-2h_{ii}\sigma^{2} \\
+&amp; =(1-h_{ii})\sigma^{2}
+\end{align}\]</span></p>
+<p>下面计算协方差。注意到<span class="math display">\[\begin{align}
+Cov(e_{i},e_{j}) &amp; =Cov(Y_{i}-\hat{Y_i},Y_{j}-\hat{Y_j}) \\
+&amp; =
+Cov(\hat{Y_i},\hat{Y_j})-Cov(Y_{i},\hat{Y_j})-Cov(\hat{Y_i},Y_{j})
+\end{align}\]</span>此时<span class="math display">\[\begin{align}
+Cov(\hat{Y_i},\hat{Y_j}) &amp; = Cov\left( \sum_{k = 1}^{n} \left(
+\frac{1}{n}+ \frac{(X_{k}-\bar{X})(X_{i}-\bar{X})}{L_{xx}} \right)
+Y_{k}, \sum_{k = 1}^{n} \left( \frac{1}{n}+
+\frac{(X_{k}-\bar{X})(X_{j}-\bar{X})}{L_{xx}} \right)Y_{k}\right) \\
+&amp; = \sigma^{2}\sum_{k = 1}^{n} \left( \frac{1}{n}+
+\frac{(X_{k}-\bar{X})(X_{i}-\bar{X})}{L_{xx}} \right)\left(
+\frac{1}{n}+\frac{(X_{k}-\bar{X})(X_{j}-\bar{X})}{L_{xx}} \right) \\
+&amp; = \sigma^{2}\left( \frac{1}{n}+
+\frac{(X_{i}-\bar{X})(X_{j}-\bar{X})}{L_{xx}} \right) \\
+&amp; = h_{ij}\sigma^{2}
+\end{align}\]</span>同时<span
+class="math display">\[Cov(Y_{i},\hat{Y_j})  = \left( \frac{1}{n}+
+\frac{(X_{i}-\bar{X})(X_{j}-\bar{X})}{L_{xx}} \right)\sigma^{2} =
+h_{ij}\sigma^{2}
+\]</span>因此<span class="math display">\[\begin{align}
+Cov(e_{i},e_{j}) &amp; =
+h_{ij}\sigma^{2}-2h_{ij}\sigma^{2}=-h_{ij}\sigma^{2}
 \end{align}\]</span></p>
 <div class="block theorem">
 <div class="block-title">
-Theorem 5.3 (性质三).
+Theorem 5.3 ($\sigma^{2}$的无偏估计).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\hat{\sigma^{2}}=\frac{1}{n-2}\sum_{i =
+1}^{n} (Y_{i}-\hat{Y_i})^{2}= \frac{1}{n-2}\sum_{i = 1}^{n}
+e_{i}^{2}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong></p>
+<p><strong>法一</strong> 注意到<span
+class="math display">\[\begin{align}
+E(SST) &amp; = E\left( \sum_{i = 1}^{n} (Y_{i}-\bar{Y})^{2} \right) \\
+&amp; = E\left( \sum_{i = 1}^{n}
+(\beta_{1}(X_{i}-\bar{X})+(\varepsilon_{i}-\bar{\varepsilon}))^{2}
+\right) \\
+&amp; = \beta_{1}^{2}L_{xx}+ E\left( \sum_{i = 1}^{n}
+(\varepsilon_{i}-\bar{\varepsilon})^{2} \right) \\
+&amp; = \beta_{1}^{2}L_{xx}+(n-1)\sigma^{2}
+\end{align}\]</span>同时<span class="math display">\[\begin{align}
+SSR &amp; = \sum_{i = 1}^{n} (\hat{Y_i}-\bar{Y})^{2} \\
+&amp; = \hat{\beta_{1}^{2}}\sum_{i = 1}^{n} (X_{i}-\bar{X})^{2} \\
+&amp; = \hat{\beta_{1}^{2}}L_{xx}
+\end{align}\]</span>注意到<span class="math display">\[\begin{align}
+E(\hat{\beta_{1}^{2}} ) &amp; =Var(\hat{\beta_{1}}
+)+E^{2}(\hat{\beta_{1}} ) \\
+&amp; = \frac{\sigma^{2}}{L_{xx}}+ \beta_{1}^{2}
+    \end{align}\]</span>因此<span class="math display">\[\begin{align}
+E(SSR) &amp; =E(\hat{\beta_{1}^{2}} )L_{xx} \\
+&amp; =  \left( \frac{\sigma^{2}}{L_{xx}}+ \beta_{1}^{2} \right) L_{xx}
+\\
+&amp; =\sigma^{2 }+\beta_{1}^{2}L_{xx}
+\end{align}\]</span>最后<span class="math display">\[\begin{align}
+E(SSE) &amp; =E(SST)-E(SSR) \\
+&amp; = (n-2)\sigma^{2}
+\end{align}\]</span></p>
+<p><strong>法二</strong> <span class="math display">\[\begin{align}
+E\left( \sum_{i = 1}^{n} e_{i}^{2} \right) &amp; = \sum_{i = 1}^{n}
+E(e_{i}^{2}) \\
+&amp; = \sum_{i = 1}^{n} (Var(e_{i})+E^{2}(e_{i})) \\
+&amp; = \sum_{i = 1}^{n} \left( 1- \frac{1}{n}-
+\frac{(X_{i}-\bar{X})^{2}}{L_{xx}} \right)\sigma^{2} \\
+&amp; =(n-2)\sigma^{2}
+\end{align}\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 5.4 (性质三).
 </div>
 <div class="block-content">
 <p><span class="math display">\[\begin{align} \sum_{i = 1}^{n} e_{i}
