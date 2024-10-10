@@ -7,18 +7,189 @@ html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
 toggle.addEventListener('click', () => {
 localStorage.dark = !(html.dataset.dark == 'true');
 html.dataset.dark = localStorage.dark;
-});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【最优化方法】03无约束优化-二阶方法</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【最优化方法】03无约束优化-二阶方法</h1><div class="post-meta">2024-10-10<span> | </span><span class="category"><a href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#newton%E6%96%B9%E6%B3%95"><span class="toc-text">1 Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%ACnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.1 基本Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E5%B0%BCnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.2 阻尼Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E6%96%B9%E6%B3%95"><span class="toc-text">1.3 混合方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lm%E6%96%B9%E6%B3%95"><span class="toc-text">1.4 LM方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%9Fnewton%E6%96%B9%E6%B3%95"><span class="toc-text">2 拟Newton方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%96%B9%E6%B3%95"><span class="toc-text">3 共轭梯度方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95"><span class="toc-text">4 最小二乘法</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="newton方法"><span
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【最优化方法】03无约束优化-二阶方法</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【最优化方法】03无约束优化-二阶方法</h1><div class="post-meta">2024-10-10<span> | </span><span class="category"><a href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#newton%E6%96%B9%E6%B3%95"><span class="toc-text">1 Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%ACnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.1 基本Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E5%B0%BCnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.2 阻尼Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E6%96%B9%E6%B3%95"><span class="toc-text">1.3 混合方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lm%E6%96%B9%E6%B3%95"><span class="toc-text">1.4 LM方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%9Fnewton%E6%96%B9%E6%B3%95"><span class="toc-text">2 拟Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sr1%E6%96%B9%E6%B3%95"><span class="toc-text">2.1 SR1方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%96%B9%E6%B3%95"><span class="toc-text">3 共轭梯度方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95"><span class="toc-text">4 最小二乘法</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="newton方法"><span
 class="header-section-number">1</span> Newton方法</h2>
 <h3 data-number="1.1" id="基本newton方法"><span
 class="header-section-number">1.1</span> 基本Newton方法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 1.1.1 (基本Newton方法).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[\boldsymbol{x}_{k+1}=\boldsymbol{x}_{k}-G_{k}^{-1}g_{k}\]</span></p>
+</div>
+</div>
+<p>对<span class="math inline">\(f(\boldsymbol{x})\)</span>在<span
+class="math inline">\(\boldsymbol{x}_{k}\)</span>处进行泰勒展开<span
+class="math display">\[f(\boldsymbol{x}_{k}+\boldsymbol{d})=f(\boldsymbol{x}_{k})+g_{k}^{T}\boldsymbol{d}+\frac{1}{2}\boldsymbol{d}^{T}G_{k}\boldsymbol{d}+o(\left\lVert
+\boldsymbol{d} \right\rVert ^{2})\]</span>此时用二次函数近似求解<span
+class="math display">\[\min_{\boldsymbol{d}}
+q_{k}(\boldsymbol{d})=\min_{\boldsymbol{d}}\left(
+f(\boldsymbol{x}_{k})+g_{k}^{T}\boldsymbol{d}+\frac{1}{2}\boldsymbol{d}^{T}G_{k}\boldsymbol{d}
+\right)\]</span>得到<span
+class="math display">\[\boldsymbol{d}_{k}=-G_{k}^{-1}g_{k}\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 1.1.1 (Newton方法局部收敛性).
+</div>
+<div class="block-content">
+<p>设<span
+class="math inline">\(f(\boldsymbol{x})\)</span>二次可微，<span
+class="math inline">\(f(\boldsymbol{x})\)</span>的Hessian矩阵<span
+class="math inline">\(G(\boldsymbol{x})\)</span>在<span
+class="math inline">\(\boldsymbol{x}^{*}\)</span>的邻域<span
+class="math inline">\(\delta\)</span>内满足Lipschitz条件<span
+class="math display">\[\left\lVert G(\boldsymbol{x})-G(\boldsymbol{y})
+\right\rVert \leq L\left\lVert \boldsymbol{x}-\boldsymbol{y}
+\right\rVert \]</span>则当<span
+class="math inline">\(\boldsymbol{x}_{0}\)</span>充分接近<span
+class="math inline">\(f(\boldsymbol{x})\)</span>的局部极小点<span
+class="math inline">\(\boldsymbol{x}^{*}\)</span>，且<span
+class="math inline">\(G(\boldsymbol{x}^{*})\)</span>正定，则Newton方法具有二次收敛速度。同时梯度序列<span
+class="math inline">\(g_{k}\)</span>二次收敛到0。</p>
+</div>
+</div>
+<p><strong>证明</strong> 首先由于<span
+class="math inline">\(g^{*}=0\)</span>，此时<span
+class="math display">\[\begin{align}
+\boldsymbol{x}_{k+1}-\boldsymbol{x}^{*} &amp;
+=\boldsymbol{x}_{k}-\boldsymbol{x}^{* }-G_{k}^{-1}g_{k} \\
+&amp; =
+G_{k}^{-1}(G_{k}(\boldsymbol{x}_{k}-\boldsymbol{x}^{*})-(g_{k}-g^{*}))
+    \end{align}\]</span>同时注意到<span
+class="math display">\[g_{k}-g^{*}=\int
+_{0}^{1}G(\boldsymbol{x}_{k}+t(\boldsymbol{x}^{*}-\boldsymbol{x}_{k}))(\boldsymbol{x}_{k}-\boldsymbol{x}^{*})
+\, dt \]</span>因此<span class="math display">\[\begin{align}
+\left\lVert
+G_{k}(\boldsymbol{x}_{k}-\boldsymbol{x}^{*})-(g_{k}-g^{*})\right\rVert  &amp;
+=\left\lVert \int
+_{0}^{1}(G_{k}-G(\boldsymbol{x}_{k}+t(\boldsymbol{x}^{*}-\boldsymbol{x}_{k})))(\boldsymbol{x}_{k}-\boldsymbol{x}^{*})
+\, dt   \right\rVert  \\
+&amp; \leq \int _{0}^{1}\left\lVert G_{k}-
+G(\boldsymbol{x}_{k}+t(\boldsymbol{x}^{*}-\boldsymbol{x}_{k}))
+\right\rVert \left\lVert \boldsymbol{x}_{k}-\boldsymbol{x}^{*}
+\right\rVert   \, dt  \\
+&amp; \leq L\left\lVert \boldsymbol{x}_{k}-\boldsymbol{x}^{*}
+\right\rVert ^{2}\int _{0}^{1} t \, dt= \frac{1}{2}L\left\lVert
+\boldsymbol{x}_{k}-\boldsymbol{x}^{*} \right\rVert ^{2}
+\end{align}\]</span>同时<span class="math inline">\(\exists
+r&gt;0\)</span>，当<span class="math inline">\(\left\lVert
+\boldsymbol{x}_{k}-\boldsymbol{x}^{*} \right\rVert\leq
+r\)</span>时，有<span class="math display">\[\left\lVert G(x)^{-1}
+\right\rVert \leq 2\left\lVert G(\boldsymbol{x}^{*})^{-1} \right\rVert
+\]</span>有界。因此<span class="math inline">\(\{ \boldsymbol{x}_{k}
+\}\)</span>二次收敛到<span
+class="math inline">\(\boldsymbol{x}^{*}\)</span>。</p>
+<p>同时<span class="math display">\[\begin{align}
+\left\lVert g_{k+1} \right\rVert  &amp; = \left\lVert
+g_{k+1}-g_{k}-G_{k}\boldsymbol{d}_{k} \right\rVert  \\
+&amp; = \left\lVert \int
+_{0}^{1}G(\boldsymbol{x}_{k}+t\boldsymbol{d}_{k})\boldsymbol{d}_{k} \,
+dt-G_{k}\boldsymbol{d}_{k}  \right\rVert  \\
+&amp; = \int _{0}^{1}\left\lVert
+G(\boldsymbol{x}_{k}+t\boldsymbol{d}_{k})-G(\boldsymbol{x}_{k})
+\right\rVert \left\lVert \boldsymbol{d}_{k} \right\rVert  \, dt \\
+  &amp; = \frac{1}{2}L\left\lVert \boldsymbol{d}_{k} \right\rVert^{2}
+\leq \frac{1}{2}L\left\lVert G_{k}^{-1} \right\rVert ^{2 }\left\lVert
+g_{k} \right\rVert ^{2}
+\end{align}\]</span></p>
 <h3 data-number="1.2" id="阻尼newton方法"><span
 class="header-section-number">1.2</span> 阻尼Newton方法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 1.2.1 (阻尼Newton方法).
+</div>
+<div class="block-content">
+<p>在Newton方法的基础上，使用一维搜索计算步长<span
+class="math display">\[\boldsymbol{x}_{k+1}=\boldsymbol{x}_{k}+\alpha
+\boldsymbol{d}_{k}\]</span></p>
+</div>
+</div>
 <h3 data-number="1.3" id="混合方法"><span
 class="header-section-number">1.3</span> 混合方法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 1.3.1 (混合方法).
+</div>
+<div class="block-content">
+<p>将Newton方法与负梯度方法混合。当Hesse矩阵<span
+class="math inline">\(G_{k}\)</span>奇异或者<span
+class="math inline">\(g_{k}\)</span>与<span
+class="math inline">\(\boldsymbol{d}_{k}\)</span>几乎正交时，采用负梯度方向；在<span
+class="math inline">\(G_{k}\)</span>负定，但<span
+class="math inline">\(G_{k}^{-1}\)</span>存在时，取<span
+class="math inline">\(\boldsymbol{d}_{k}=G_{k}^{-1}g_{k}\)</span>。</p>
+</div>
+</div>
 <h3 data-number="1.4" id="lm方法"><span
 class="header-section-number">1.4</span> LM方法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 1.4.1 (LM方法).
+</div>
+<div class="block-content">
+<p>对于<span
+class="math inline">\(G_{k}\)</span>奇异或者不正定的情况，我们求解<span
+class="math display">\[(G_{k}+\boldsymbol{v}_{k}I)\boldsymbol{d}_{k}=-g_{k}\]</span>当<span
+class="math inline">\(\boldsymbol{v}_{k}\)</span>充分大时，可以保证<span
+class="math inline">\(G_{k}+\boldsymbol{v}_{k}I\)</span>正定。当<span
+class="math inline">\(\boldsymbol{v}_{k}\)</span>较小时，<span
+class="math inline">\(\boldsymbol{d}_{k}\)</span>偏向Newton方法；较大时则偏向负梯度方向。</p>
+</div>
+</div>
 <h2 data-number="2" id="拟newton方法"><span
 class="header-section-number">2</span> 拟Newton方法</h2>
+<div class="block definition">
+<div class="block-title">
+Definition 2.1 (拟Newton条件).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[B_{k+1}\boldsymbol{s}_{k}=\boldsymbol{y}_{k}\]</span>或<span
+class="math display">\[H_{k+1}\boldsymbol{y}_{k}=\boldsymbol{s}_{k}\]</span>其中<span
+class="math inline">\(\boldsymbol{s}_{k}=\boldsymbol{x}_{k+1}-\boldsymbol{x}_{k}\)</span>，<span
+class="math inline">\(\boldsymbol{y}_{k}=g_{k+1}-g_{k}\)</span>。</p>
+</div>
+</div>
+<p><strong>解</strong> 注意到<span
+class="math inline">\(\boldsymbol{x}_{k}\)</span>靠近<span
+class="math inline">\(\boldsymbol{x}_{k+1}\)</span>时，有<span
+class="math display">\[g_{k}-g_{k+1}\approx
+G_{k+1}(\boldsymbol{x}_{k}-\boldsymbol{x}_{k+1})\]</span>因此即得条件。</p>
+<h3 data-number="2.1" id="sr1方法"><span
+class="header-section-number">2.1</span> SR1方法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 2.1.1 (对称秩方法, SR1).
+</div>
+<div class="block-content">
+<p><span class="math display">\[B_{k+1}=B_{k}+
+\frac{(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})^{T}}{(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})^{T}\boldsymbol{s}_{k}}\]</span></p>
+</div>
+</div>
+<p><strong>解</strong> 设<span
+class="math display">\[B_{k+1}=B_{k}+\sigma
+\boldsymbol{v}\boldsymbol{v}^{T}\]</span>代入拟Newton方程有<span
+class="math display">\[\begin{align}
+\boldsymbol{y}_{k} &amp; =B_{k}\boldsymbol{s}_{k}+\sigma
+\boldsymbol{v}\boldsymbol{v}^{T}\boldsymbol{s}_{k} \\
+&amp; = B_{k}\boldsymbol{s}_{k}+ (\sigma
+\boldsymbol{v}^{T}\boldsymbol{s}_{k})\boldsymbol{v}
+\end{align}\]</span>此时必有<span
+class="math inline">\(\boldsymbol{v}\)</span>与<span
+class="math inline">\(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k}\)</span>共线。因此设<span
+class="math inline">\(\boldsymbol{v}=\delta(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})\)</span>，此时<span
+class="math display">\[\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k}=\delta^{2}\sigma((\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})^{T}\boldsymbol{s}_{k})(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})\]</span>因此<span
+class="math display">\[\delta^{2}\sigma=
+\frac{1}{(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})^{T}\boldsymbol{s}_{k}}\]</span>故<span
+class="math display">\[\begin{align}
+\sigma \boldsymbol{v}\boldsymbol{v}^{T} &amp;
+=\sigma\delta^{2}(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})^{T}
+\\
+&amp; =
+\frac{(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})^{T}}{(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})^{T}\boldsymbol{s}_{k}}
+\end{align}\]</span></p>
 <h2 data-number="3" id="共轭梯度方法"><span
 class="header-section-number">3</span> 共轭梯度方法</h2>
 <h2 data-number="4" id="最小二乘法"><span
