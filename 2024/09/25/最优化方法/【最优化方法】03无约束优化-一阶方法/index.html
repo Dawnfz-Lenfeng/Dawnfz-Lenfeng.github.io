@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>【最优化方法】03无约束优化 | What was I thinking?</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/pure-min.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="https://unpkg.com/jquery/dist/jquery.min.js"></script><link rel="stylesheet" href="/css/custom.css"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"><link rel="Shortcut Icon" href="/images/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="https://unpkg.com/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="https://unpkg.com/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="https://unpkg.com/toastr/build/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【最优化方法】03无约束优化</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【最优化方法】03无约束优化</h1><div class="post-meta">2024-09-25<span> | </span><span class="category"><a href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E9%80%9F%E4%B8%8B%E9%99%8D%E6%96%B9%E6%B3%95"><span class="toc-text">1 最速下降方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%90%E6%A0%87%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="toc-text">2 坐标下降法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%96%B9%E6%B3%95"><span class="toc-text">3 梯度下降方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95"><span class="toc-text">4 梯度下降优化算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E9%87%8F%E6%B3%95"><span class="toc-text">4.1 动量法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nesterov-%E5%8A%A0%E9%80%9F%E6%A2%AF%E5%BA%A6%E6%B3%95"><span class="toc-text">4.2 Nesterov 加速梯度法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E6%A2%AF%E5%BA%A6%E6%B3%95"><span class="toc-text">4.3 自适应梯度法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rmsprop"><span class="toc-text">4.4 RMSProp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#adam"><span class="toc-text">4.5 Adam</span></a></li></ol></li></ol></div></div><div class="post-content"><h2 data-number="1" id="最速下降方法"><span
+class="header-section-number">1</span> 最速下降方法</h2>
+<div class="block definition">
+<div class="block-title">
+Definition 1.1 (最速下降法).
+</div>
+<div class="block-content">
+<p>以负梯度为迭代方向，即<span
+class="math display">\[\boldsymbol{d}_{k}=-g_{k}\]</span>同时采用精确线搜索的步长的方法，满足<span
+class="math display">\[g_{k+1}^{T}\boldsymbol{d}_{k}=0\]</span></p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 1.1 (最速下降法的收敛速度).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\frac{\left\lVert
+\boldsymbol{x}_{k+1}-\boldsymbol{x}^{*} \right\rVert
+_{G}^{2}}{\left\lVert \boldsymbol{x}_{k}-\boldsymbol{x} \right\rVert
+_{G}^{2}}\leq\left(
+\frac{\lambda_{max}-\lambda_{min}}{\lambda_{max}+\lambda_{min}}
+\right)^{2}\]</span></p>
+</div>
+</div>
+<h2 data-number="2" id="坐标下降法"><span
+class="header-section-number">2</span> 坐标下降法</h2>
+<div class="block definition">
+<div class="block-title">
+Definition 2.1 (坐标下降法).
+</div>
+<div class="block-content">
+<p>对于<span
+class="math inline">\(n\)</span>维目标函数，每次只对一个坐标方向进行优化，其他坐标方向保持不变<span
+class="math display">\[x_{i}^{k+1}=\arg\min_{y}f(x_{1}^{k+1},\dots
+x_{i-1}^{k+1},y,x_{i+1}^{k},\dots,x_{n}^{k})\]</span>即<span
+class="math display">\[x_{i}^{k+1}=x_{i}^{k}-\alpha_{i}\frac{ \partial
+f(x) }{ \partial x_{i} } \]</span></p>
+</div>
+</div>
+<h2 data-number="3" id="梯度下降方法"><span
+class="header-section-number">3</span> 梯度下降方法</h2>
+<div class="block definition">
+<div class="block-title">
+Definition 3.1 (批量梯度下降法 Batch Gradiant Descent, BGD).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[\boldsymbol{x}_{k+1}=\boldsymbol{x}_{k}-\alpha  \frac{1}{n}\sum_{i
+= 1}^{n} \nabla f_{i}(\boldsymbol{x}_{k})\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 3.2 (随机梯度下降 Stochastic Gradient Descent, SGD).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[\boldsymbol{x}_{nk+i}=\boldsymbol{x}_{nk+i-1}-\alpha
+\nabla f_{i}(\boldsymbol{x}_{nk+i-1}) \]</span>此时<span
+class="math inline">\(i\)</span>依次取<span
+class="math inline">\(1,2\dots,n\)</span>。</p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 3.3 (小批量梯度下降 Mini-Batch Gradient Descent, MBGD).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[\boldsymbol{x}_{k+1}=\boldsymbol{x}_{k}-\alpha
+\frac{1}{\lvert \mathcal{B}  \rvert }\sum_{i \in \mathcal{B} } \nabla
+f_{i}(\boldsymbol{x}) \]</span></p>
+</div>
+</div>
+<h2 data-number="4" id="梯度下降优化算法"><span
+class="header-section-number">4</span> 梯度下降优化算法</h2>
+<h3 data-number="4.1" id="动量法"><span
+class="header-section-number">4.1</span> 动量法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 4.1.1 (动量法 Momentum).
+</div>
+<div class="block-content">
+<p>在更新时，不仅参考当前点的梯度方向，还参考之前累计的梯度方向。每步迭代方向为两者矢量和的方向<span
+class="math display">\[\begin{align} \boldsymbol{v}_{k+1}&amp;=\gamma
+\boldsymbol{v}_{k}+\alpha \nabla f(\boldsymbol{x}_{k}) \\
+\boldsymbol{x}_{k+1} &amp;=
+\boldsymbol{x}_{k}-\boldsymbol{v}_{k+1}\end{align}\]</span></p>
+</div>
+</div>
+<h3 data-number="4.2" id="nesterov-加速梯度法"><span
+class="header-section-number">4.2</span> Nesterov 加速梯度法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 4.2.1 (Nesterov 加速梯度法 Nesterov Accelerated Gradient,
+NAG).
+</div>
+<div class="block-content">
+<p>先沿着之前累计方向进行更新，通过下一位置的梯度更新当前位置的方向<span
+class="math display">\[\begin{align} \boldsymbol{v}_{k+1}&amp;=\gamma
+\boldsymbol{v}_{k}+\alpha \nabla f(\boldsymbol{x}_{k}-\gamma
+\boldsymbol{v}_{k}) \\
+\boldsymbol{x}_{k+1}&amp;=\boldsymbol{x}_{k}-\boldsymbol{v}_{k+1}\end{align}\]</span></p>
+</div>
+</div>
+<h3 data-number="4.3" id="自适应梯度法"><span
+class="header-section-number">4.3</span> 自适应梯度法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 4.3.1 (自适应梯度法 Adagrad).
+</div>
+<div class="block-content">
+<p>根据参数调整步长，使累计梯度大的参数更新步长小，累计梯度小的参数更新步长大<span
+class="math display">\[\begin{align}
+\boldsymbol{s}_{k+1}&amp;=\boldsymbol{s}_{k}+g_{k}\odot g_{k} \\
+\boldsymbol{x}_{k+1}&amp;=\boldsymbol{x}_{k}- \frac{\alpha}{\sqrt{
+\boldsymbol{s}_{k+1}+\varepsilon }}\odot g_{k}\end{align}\]</span></p>
+</div>
+</div>
+<h3 data-number="4.4" id="rmsprop"><span
+class="header-section-number">4.4</span> RMSProp</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 4.4.1 (RMSProp).
+</div>
+<div class="block-content">
+<p>从累计梯度平方和转换为对梯度平方进行指数加权移动平均<span
+class="math display">\[\begin{align} \boldsymbol{s}_{k+1}&amp;=\gamma
+\boldsymbol{s}_{k+1}+(1-\gamma)g_{k}\odot g_{k}\\
+\boldsymbol{x}_{k+1}&amp;=\boldsymbol{x}_{k}- \frac{\alpha}{\sqrt{
+\boldsymbol{s}_{k+1}+\varepsilon }}\odot g_{k} \end{align}\]</span></p>
+</div>
+</div>
+<h3 data-number="4.5" id="adam"><span
+class="header-section-number">4.5</span> Adam</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 4.5.1 (Adam, Adaptive Moment Estimation).
+</div>
+<div class="block-content">
+<p>同时计算动量并且调整步长<span class="math display">\[\begin{align}
+\boldsymbol{v}_{k+1} &amp;
+=\beta_{1}\boldsymbol{v}_{k}+(1-\beta_{1})g_{k} \\
+\boldsymbol{s}_{k+1}&amp;=
+\beta_{2}\boldsymbol{s}_{k}+(1-\beta_{2})g_{k}\odot
+g_{k}\end{align}\]</span>并同时进行偏差修正<span
+class="math display">\[\begin{align} \hat{\boldsymbol{v}}_{k+1}&amp;=
+\frac{\boldsymbol{v}_{k+1}}{1-\beta_{1}^{k+1}}
+\\  \hat{\boldsymbol{s}}_{k+1}&amp;=
+\frac{\boldsymbol{s}_{k+1}}{1-\beta_{2}^{k+1}}\end{align}\]</span>最后进行更新<span
+class="math display">\[\boldsymbol{x}_{k+1}=\boldsymbol{x}_{k}-
+\frac{\alpha}{\sqrt{ \hat{\boldsymbol{s}}_{k+1}+\varepsilon }}\odot
+\hat{\boldsymbol{v}} _{k+1} \]</span></p>
+</div>
+</div>
+</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/10/06/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/">【随机过程】03更新过程</a><a class="next" href="/2024/09/23/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B-%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】02泊松过程-泊松过程的推广</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/10/10/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%BA%8C%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化-二阶方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/08/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9101%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】01一元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/06/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/">【随机过程】03更新过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/25/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%B8%80%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/23/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B-%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】02泊松过程-泊松过程的推广</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/21/%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93/">一些总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/19/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9102%E6%97%A0%E7%BA%A6%E6%9D%9F%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84/">【最优化方法】02无约束最优化方法的基本结构</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/18/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【最优化方法】01预备知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/14/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B/">【随机过程】02泊松过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/10/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9101%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">【随机过程】01预备知识</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
