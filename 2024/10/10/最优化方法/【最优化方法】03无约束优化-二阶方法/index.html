@@ -7,7 +7,7 @@ html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
 toggle.addEventListener('click', () => {
 localStorage.dark = !(html.dataset.dark == 'true');
 html.dataset.dark = localStorage.dark;
-});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【最优化方法】03无约束优化-二阶方法</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【最优化方法】03无约束优化-二阶方法</h1><div class="post-meta">2024-10-10<span> | </span><span class="category"><a href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#newton%E6%96%B9%E6%B3%95"><span class="toc-text">1 Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%ACnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.1 基本Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E5%B0%BCnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.2 阻尼Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E6%96%B9%E6%B3%95"><span class="toc-text">1.3 混合方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lm%E6%96%B9%E6%B3%95"><span class="toc-text">1.4 LM方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%9Fnewton%E6%96%B9%E6%B3%95"><span class="toc-text">2 拟Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sr1%E6%96%B9%E6%B3%95"><span class="toc-text">2.1 SR1方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%96%B9%E6%B3%95"><span class="toc-text">3 共轭梯度方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95"><span class="toc-text">4 最小二乘法</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="newton方法"><span
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【最优化方法】03无约束优化-二阶方法</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【最优化方法】03无约束优化-二阶方法</h1><div class="post-meta">2024-10-10<span> | </span><span class="category"><a href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#newton%E6%96%B9%E6%B3%95"><span class="toc-text">1 Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%ACnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.1 基本Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E5%B0%BCnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.2 阻尼Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E6%96%B9%E6%B3%95"><span class="toc-text">1.3 混合方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lm%E6%96%B9%E6%B3%95"><span class="toc-text">1.4 LM方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%9Fnewton%E6%96%B9%E6%B3%95"><span class="toc-text">2 拟Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sr1%E6%96%B9%E6%B3%95"><span class="toc-text">2.1 SR1方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bfgs%E5%85%AC%E5%BC%8F"><span class="toc-text">2.2 BFGS公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dfp%E5%85%AC%E5%BC%8F"><span class="toc-text">2.3 DFP公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#broyden%E6%97%8F%E6%96%B9%E6%B3%95"><span class="toc-text">2.4 Broyden族方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bb%E6%96%B9%E6%B3%95"><span class="toc-text">2.5 BB方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%96%B9%E6%B3%95"><span class="toc-text">3 共轭梯度方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95"><span class="toc-text">4 最小二乘法</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="newton方法"><span
 class="header-section-number">1</span> Newton方法</h2>
 <h3 data-number="1.1" id="基本newton方法"><span
 class="header-section-number">1.1</span> 基本Newton方法</h3>
@@ -190,6 +190,116 @@ class="math display">\[\begin{align}
 &amp; =
 \frac{(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})^{T}}{(\boldsymbol{y}_{k}-B_{k}\boldsymbol{s}_{k})^{T}\boldsymbol{s}_{k}}
 \end{align}\]</span></p>
+<h3 data-number="2.2" id="bfgs公式"><span
+class="header-section-number">2.2</span> BFGS公式</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 2.2.1 (BFGS公式).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\begin{align} B_{k+1}&amp;=B_{k}+
+\frac{y_{k}y_{k}^{T}}{y_{k}^{T}s_{k}}-
+\frac{B_{k}s_{k}s_{k}^{T}B_{k}}{s_{k}^{T}B_{k}s_{k}} \\ H_{k+1}&amp;=
+H_{k}+\left(
+1+\frac{y_{k}^{T}H_{k}y_{k}}{y_{k}^{T}s_{k}}  \right)  \frac{s_{k}s_{k}^{T}}{y_{k}^{T}s_{k}}-\left(
+\frac{s_{k}y_{k}^{T}H_{k}+H_{k}y_{k}s_{k}^{T}}{y_{k}^{T}s_{k}}
+\right)\end{align}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 考虑构造<span
+class="math display">\[B_{k+1}=B_{k}+\beta u u^{T}+\gamma v v
+^{T}\]</span>此时有<span class="math display">\[y_{k}=B_{k}s_{k}+\beta
+uu^{T}s_{k}+\gamma v v^{T}s_{k}\]</span> 取特解<span
+class="math display">\[\begin{align}
+u=y_{k},\quad \beta u^{T}s_{k}=1 \\
+v=B_{k}s_{k},\quad \gamma v^{T}s_{k}=-1
+\end{align}\]</span>即得。</p>
+<h3 data-number="2.3" id="dfp公式"><span
+class="header-section-number">2.3</span> DFP公式</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 2.3.1 (DFP公式).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\begin{align} H_{k+1}&amp;=H_{k}+
+\frac{s_{k}s_{k}^{T}}{s_{k}^{T}y_{k}}-
+\frac{H_{k}y_{k}y_{k}^{T}H_{k}}{y_{k}^{T}H_{k}y_{k}} \\ B_{k+1}&amp;=
+B_{k}+\left(
+1+\frac{s_{k}^{T}B_{k}s_{k}}{s_{k}^{T}y_{k}}  \right)  \frac{y_{k}y_{k}^{T}}{s_{k}^{T}y_{k}}-\left(
+\frac{y_{k}s_{k}^{T}B_{k}+B_{k}s_{k}y_{k}^{T}}{s_{k}^{T}y_{k}}
+\right)\end{align}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 类似于BFGS方法，只是从<span
+class="math inline">\(H_{k+1}\)</span>方向进行构造。</p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 2.3.1 ($B_{k+1}^{DFP}$性质).
+</div>
+<div class="block-content">
+<p><span class="math inline">\(B_{k+1}^{DFP}\)</span>是下面问题的解<span
+class="math display">\[\begin{align} \min\left\lVert
+W^{-T}(B-B_{k})W^{-1} \right\rVert_{F} \\ s.t. B=B^{T},\quad
+Bs_{k}=y_{k}  \end{align}\]</span>其中<span
+class="math inline">\(W^{T}W=B\)</span>。即满足对称与拟Newton条件中，在Frobenius范数意义下与<span
+class="math inline">\(B_{k}\)</span>距离最近的矩阵。</p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 2.3.2 ($B_{k+1}$与$H_{k+1}$对称正定性).
+</div>
+<div class="block-content">
+<p>若<span class="math inline">\(H_{k}\)</span>对称正定，则如果<span
+class="math inline">\(s_{k}^{T}y_{k}&gt;0\)</span>，则DFP构造出的<span
+class="math inline">\(H_{k+1}^{DFP}\)</span>也是对称正定。此时使用精确线搜索或者非精确线搜索Wolfe准则的DFP方法和BFGS方法有<span
+class="math inline">\(s_{k}^{T}y_{k}&gt;0\)</span>。</p>
+</div>
+</div>
+<h3 data-number="2.4" id="broyden族方法"><span
+class="header-section-number">2.4</span> Broyden族方法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 2.4.1 (Broyden族方法).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[\begin{align}B_{k+1}&amp;=(1-\phi)B_{k+1}^{BFGS}+\phi
+B_{k+1}^{DFP} \\ &amp;= B_{k+1}^{BFGS}+\phi
+v_{k}v_{k}^{T}\end{align}\]</span>其中<span
+class="math display">\[v_{k}=(s_{k}^{T}B_{k}s_{k})^{1/2}\left(
+\frac{y_{k}}{y_{k}^{T}s_{k}}-\frac{B_{k}s_{k}}{s_{k}^{T}B_{k}s_{k}}
+\right)\]</span></p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 2.4.1 ($B_{k+1}$的对称正定性).
+</div>
+<div class="block-content">
+<p>若<span
+class="math inline">\(B_{k+1}^{BFGS}\)</span>为对称正定阵，则当.<span
+class="math inline">\(\phi&gt;0\)</span>s时，Broyden族公式得到<span
+class="math inline">\(B_{k+1}\)</span>也是对称正定阵。</p>
+</div>
+</div>
+<h3 data-number="2.5" id="bb方法"><span
+class="header-section-number">2.5</span> BB方法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 2.5.1 (BB方法).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[x_{k+1}=x_{k}-\alpha_{k}g_{k}\]</span>其中<span
+class="math display">\[\alpha_{k}=\arg\min\left\lVert s_{k-1}-\alpha
+y_{k-1} \right\rVert _{2}^{2},\quad\alpha_{k}=\arg\min\left\lVert
+\alpha^{-1}s_{k-1}-y_{k-1} \right\rVert _{2}^{2}\]</span>得到<span
+class="math display">\[\alpha_{k}=
+\frac{s_{k-1}^{T}y_{k-1}}{y_{k-1}^{T}y_{k_{1}}},\quad \alpha_{k}=
+\frac{s_{k-1}^{T}s_{k-1}}{s_{k-1}^{T}y_{k-1}}\]</span></p>
+</div>
+</div>
 <h2 data-number="3" id="共轭梯度方法"><span
 class="header-section-number">3</span> 共轭梯度方法</h2>
 <h2 data-number="4" id="最小二乘法"><span
