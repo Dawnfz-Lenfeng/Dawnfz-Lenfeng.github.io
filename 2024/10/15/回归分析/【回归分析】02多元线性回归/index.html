@@ -7,7 +7,7 @@ html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
 toggle.addEventListener('click', () => {
 localStorage.dark = !(html.dataset.dark == 'true');
 html.dataset.dark = localStorage.dark;
-});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【回归分析】多元线性回归</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【回归分析】多元线性回归</h1><div class="post-meta">2024-10-15<span> | </span><span class="category"><a href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">1 定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="toc-text">2 参数估计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E4%BC%B0%E8%AE%A1"><span class="toc-text">2.1 最小二乘估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1"><span class="toc-text">2.2 极大似然估计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E6%80%A7%E8%B4%A8"><span class="toc-text">3 参数性质</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%BD%E5%AD%90%E7%9F%A9%E9%98%B5%E6%80%A7%E8%B4%A8"><span class="toc-text">3.1 帽子矩阵性质</span></a></li></ol></li></ol></div></div><div class="post-content"><h2 data-number="1" id="定义"><span
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【回归分析】多元线性回归</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【回归分析】多元线性回归</h1><div class="post-meta">2024-10-15<span> | </span><span class="category"><a href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">1 定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="toc-text">2 参数估计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E4%BC%B0%E8%AE%A1"><span class="toc-text">2.1 最小二乘估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1"><span class="toc-text">2.2 极大似然估计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E6%80%A7%E8%B4%A8"><span class="toc-text">3 参数性质</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%BD%E5%AD%90%E7%9F%A9%E9%98%B5"><span class="toc-text">3.1 帽子矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#boldsymbolhatbeta%E6%80%A7%E8%B4%A8"><span class="toc-text">3.2 \(\boldsymbol{\hat{\beta}}\)性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AE%8B%E5%B7%AEboldsymbole%E6%80%A7%E8%B4%A8"><span class="toc-text">3.3 残差\(\boldsymbol{e}\)性质</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD"><span class="toc-text">4 模型推断</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ssr%E6%80%A7%E8%B4%A8"><span class="toc-text">4.1 SSR性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#f%E6%A3%80%E9%AA%8C"><span class="toc-text">4.2 F检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#t%E6%A3%80%E9%AA%8C"><span class="toc-text">4.3 t检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%8Ff%E6%A3%80%E9%AA%8C"><span class="toc-text">4.4 偏F检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%BF%E4%B9%89%E6%A3%80%E9%AA%8C"><span class="toc-text">4.5 广义检验</span></a></li></ol></li></ol></div></div><div class="post-content"><h2 data-number="1" id="定义"><span
 class="header-section-number">1</span> 定义</h2>
 <div class="block definition">
 <div class="block-title">
@@ -15,11 +15,10 @@ Definition 1.1 (多元线性回归).
 </div>
 <div class="block-content">
 <p>对于<span class="math inline">\(p\)</span>元线性回归，我们有<span
-class="math display">\[\boldsymbol{Y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}\]</span>其中<span
-class="math inline">\(\boldsymbol{Y}=\begin{pmatrix} Y_1 \\ Y_2 \\
-\vdots \\ Y_n \end{pmatrix}\)</span>，<span
-class="math inline">\(\boldsymbol{X}=\left( \begin{matrix} 1 &amp;
-X_{11}  &amp;    \dots  &amp; X_{1p} \\ 1 &amp;
+class="math display">\[Y=X\boldsymbol{\beta}+\boldsymbol{\varepsilon}\]</span>其中<span
+class="math inline">\(Y=\begin{pmatrix} Y_1 \\ Y_2 \\ \vdots \\ Y_n
+\end{pmatrix}\)</span>，<span class="math inline">\(X=\left(
+\begin{matrix} 1 &amp; X_{11}  &amp;    \dots  &amp; X_{1p} \\ 1 &amp;
 X_{21}  &amp;  \dots  &amp; X_{2p}
 \\  \vdots  &amp;  \vdots  &amp;  \ddots &amp; \vdots
 \\  1  &amp;  X_{n1}  &amp;  \dots  &amp; X_{np}  \end{matrix}
@@ -29,8 +28,8 @@ class="math inline">\(\boldsymbol{\beta}=\begin{pmatrix} \beta_0 \\
 class="math inline">\(\boldsymbol{\varepsilon}=\begin{pmatrix}
 \varepsilon_1 \\ \varepsilon_2 \\ \vdots \\ \varepsilon_n
 \end{pmatrix}\)</span>。且<span
-class="math inline">\(\boldsymbol{X}\)</span>列满秩，即<span
-class="math inline">\(r(\boldsymbol{X})\geq p+1\)</span>，且<span
+class="math inline">\(X\)</span>列满秩，即<span
+class="math inline">\(r(X)\geq p+1\)</span>，且<span
 class="math inline">\(n\geq p+1\)</span>。</p>
 </div>
 </div>
@@ -45,11 +44,11 @@ class="math display">\[\varepsilon_{i}\sim N(0,\sigma^{2}),\quad
 i=1,\dots,n\]</span></p>
 <div class="block corollary">
 <div class="block-title">
-Corollary 1.1 ($\boldsymbol{Y}$的分布).
+Corollary 1.1 ($Y$的分布).
 </div>
 <div class="block-content">
-<p><span class="math display">\[\boldsymbol{Y}\sim
-N(\boldsymbol{X}\boldsymbol{\beta},\sigma^{2}\boldsymbol{I}_{n})\]</span></p>
+<p><span class="math display">\[Y\sim
+N(X\boldsymbol{\beta},\sigma^{2}\boldsymbol{I}_{n})\]</span></p>
 </div>
 </div>
 <h2 data-number="2" id="参数估计"><span
@@ -58,73 +57,61 @@ class="header-section-number">2</span> 参数估计</h2>
 class="header-section-number">2.1</span> 最小二乘估计</h3>
 <p>考虑<span class="math display">\[\boldsymbol{\hat{\beta}
 }=\min_{\boldsymbol{\beta}}Q(\boldsymbol{\beta})=\min_{\boldsymbol{\beta}}\left\lVert
-\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta} \right\rVert
-=\min_{\boldsymbol{\beta}}(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta})^{T}(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta})\]</span>
+Y-X\boldsymbol{\beta} \right\rVert
+=\min_{\boldsymbol{\beta}}(Y-X\boldsymbol{\beta})^{T}(Y-X\boldsymbol{\beta})\]</span>
 因此有<span class="math display">\[\begin{align}
 \frac{ \partial Q(\boldsymbol{\beta}) }{ \partial \boldsymbol{\beta}
 }  &amp; = \frac{ \partial
-((\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta})^{T}(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta})
-)}{ \partial \boldsymbol{\beta} }  \\
-&amp; = \frac{ \partial
-(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta})^{T} }{ \partial
+((Y-X\boldsymbol{\beta})^{T}(Y-X\boldsymbol{\beta}) )}{ \partial
+\boldsymbol{\beta} }  \\
+&amp; = \frac{ \partial (Y-X\boldsymbol{\beta})^{T} }{ \partial
 \boldsymbol{\beta} } \cdot \frac{ \partial
-((\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta})^{T}(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta}))
-}{ \partial (\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta}) }  \\
-&amp; =
--2\boldsymbol{X}^{T}(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta}) \\
-&amp; =
-2(\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{\beta}-\boldsymbol{X}^{T}\boldsymbol{Y})=0
+((Y-X\boldsymbol{\beta})^{T}(Y-X\boldsymbol{\beta})) }{ \partial
+(Y-X\boldsymbol{\beta}) }  \\
+&amp; = -2X^{T}(Y-X\boldsymbol{\beta}) \\
+&amp; = 2(X^{T}X\boldsymbol{\beta}-X^{T}Y)=0
     \end{align}\]</span>即有<span
 class="math display">\[\boldsymbol{\hat{\beta} }=
-(\boldsymbol{X}^{T}\boldsymbol{X})^{-1}\boldsymbol{X}^{T}\boldsymbol{Y}\]</span></p>
+(X^{T}X)^{-1}X^{T}Y\]</span></p>
 <h3 data-number="2.2" id="极大似然估计"><span
 class="header-section-number">2.2</span> 极大似然估计</h3>
 <p>考虑似然函数<span
 class="math display">\[L(\boldsymbol{\beta},\sigma^{2})= \left(
 \frac{1}{\sqrt{ 2\pi }\sigma} \right)^{n}\exp
-\left\{  -\frac{1}{2\sigma^{2}}(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta})^{T}(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta})  \right\}\]</span>因此<span
+\left\{  -\frac{1}{2\sigma^{2}}(Y-X\boldsymbol{\beta})^{T}(Y-X\boldsymbol{\beta})  \right\}\]</span>因此<span
 class="math display">\[l(\boldsymbol{\beta}.\sigma^{2})=
--\frac{n}{2}\ln\sigma^{2}-\frac{1}{2\sigma^{2}}(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta})^{T}(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta})
+-\frac{n}{2}\ln\sigma^{2}-\frac{1}{2\sigma^{2}}(Y-X\boldsymbol{\beta})^{T}(Y-X\boldsymbol{\beta})
 \]</span> 此时<span class="math display">\[\begin{align}
 \frac{ \partial l }{ \partial \boldsymbol{\beta} }  &amp; =
-\frac{1}{\sigma^{2}}\boldsymbol{X}^{T}(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta}
-)\\
+\frac{1}{\sigma^{2}}X^{T}(Y-X\boldsymbol{\beta} )\\
 \frac{ \partial l }{ \partial \sigma^{2} }  &amp; =
 -\frac{n}{2\sigma^{2}}+
-\frac{1}{2\sigma^{4}}(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta})^{T}(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta})
+\frac{1}{2\sigma^{4}}(Y-X\boldsymbol{\beta})^{T}(Y-X\boldsymbol{\beta})
 \end{align}\]</span>同样可以得到<span
 class="math inline">\(\sigma^{2}\)</span>的极大似然估计<span
 class="math display">\[\hat{\sigma^{2}}=
-\frac{1}{n}(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\hat{\beta} })^{T}
-(\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\hat{\beta} })\]</span></p>
+\frac{1}{n}(Y-X\boldsymbol{\hat{\beta} })^{T}
+(Y-X\boldsymbol{\hat{\beta} })\]</span></p>
 <h2 data-number="3" id="参数性质"><span
 class="header-section-number">3</span> 参数性质</h2>
-<p>注意到<span
-class="math display">\[\boldsymbol{Y}=\boldsymbol{X}\boldsymbol{\hat{\beta}
-}=\boldsymbol{X}(\boldsymbol{X}^{T}\boldsymbol{X})^{-1}\boldsymbol{X}^{T}\boldsymbol{Y}\]</span>令<span
-class="math display">\[\boldsymbol{H}=\boldsymbol{X}(\boldsymbol{X}^{T}\boldsymbol{X})^{-1}\boldsymbol{X}^{T}\]</span>称为投影阵或帽子矩阵，从而<span
-class="math display">\[\boldsymbol{\hat{Y}}=\boldsymbol{H}\boldsymbol{Y}\]</span></p>
-<h3 data-number="3.1" id="帽子矩阵性质"><span
-class="header-section-number">3.1</span> 帽子矩阵性质</h3>
+<h3 data-number="3.1" id="帽子矩阵"><span
+class="header-section-number">3.1</span> 帽子矩阵</h3>
+<p>注意到<span class="math display">\[Y=X\boldsymbol{\hat{\beta}
+}=X(X^{T}X)^{-1}X^{T}Y\]</span>令<span
+class="math display">\[H=X(X^{T}X)^{-1}X^{T}\]</span>称为投影阵或帽子矩阵，从而<span
+class="math display">\[\hat{Y}=HY\]</span></p>
 <div class="block theorem">
 <div class="block-title">
 Theorem 3.1.1 (对称性).
 </div>
 <div class="block-content">
-<p><span
-class="math display">\[\boldsymbol{H}^{T}=\boldsymbol{H}\]</span></p>
+<p><span class="math display">\[H^{T}=H\]</span></p>
 </div>
 </div>
 <p><strong>证明</strong> 显然<span class="math display">\[\begin{align}
-\boldsymbol{H}^{T} &amp;
-=(\boldsymbol{X}(\boldsymbol{X}^{T}\boldsymbol{X})^{-1}\boldsymbol{X}^{T})^{T}
-\\
-&amp; =
-\boldsymbol{X}((\boldsymbol{X}^{T}\boldsymbol{X})^{T})^{-1}\boldsymbol{X}^{T}
-\\
-&amp; =
-\boldsymbol{X}(\boldsymbol{X}^{T}\boldsymbol{X})^{-1}\boldsymbol{X}^{T}
-= \boldsymbol{H}
+H^{T} &amp; =(X(X^{T}X)^{-1}X^{T})^{T} \\
+&amp; = X((X^{T}X)^{T})^{-1}X^{T} \\
+&amp; = X(X^{T}X)^{-1}X^{T} = H
 \end{align}\]</span></p>
 <hr />
 <div class="block theorem">
@@ -132,18 +119,13 @@ class="math display">\[\boldsymbol{H}^{T}=\boldsymbol{H}\]</span></p>
 Theorem 3.1.2 (幂等性).
 </div>
 <div class="block-content">
-<p><span
-class="math display">\[\boldsymbol{H}^{2}=\boldsymbol{H}\]</span></p>
+<p><span class="math display">\[H^{2}=H\]</span></p>
 </div>
 </div>
 <p><strong>证明</strong> <span class="math display">\[\begin{align}
-\boldsymbol{H}^{2} &amp; =
-\boldsymbol{X}(\boldsymbol{X}^{T}\boldsymbol{X})^{-1}\boldsymbol{X}^{T}\boldsymbol{X}(\boldsymbol{X}^{T}\boldsymbol{X})^{-1}\boldsymbol{X}^{T}
-\\
-&amp; =
-\boldsymbol{X}(\boldsymbol{X}^{T}\boldsymbol{X})^{-1}\boldsymbol{X}^{T}
-\\
-&amp; = \boldsymbol{H}
+H^{2} &amp; = X(X^{T}X)^{-1}X^{T}X(X^{T}X)^{-1}X^{T} \\
+&amp; = X(X^{T}X)^{-1}X^{T} \\
+&amp; = H
 \end{align}\]</span></p>
 <hr />
 <div class="block theorem">
@@ -151,12 +133,489 @@ class="math display">\[\boldsymbol{H}^{2}=\boldsymbol{H}\]</span></p>
 Theorem 3.1.3 (迹).
 </div>
 <div class="block-content">
-<p><span class="math display">\[tr(\boldsymbol{H})=p+1\]</span></p>
+<p><span class="math display">\[tr(H)=p+1\]</span></p>
 </div>
 </div>
 <p><strong>证明</strong> 由幂等性与<span
-class="math inline">\(r(\boldsymbol{X})=p+1\)</span>可得。</p>
-</div><div class="tags"></div><div class="post-nav"><a class="next" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B-%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】03更新过程-更新过程的推广</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/10/15/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】多元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B-%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】03更新过程-更新过程的推广</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE/">【随机过程】04Markov链</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/10/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%BA%8C%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化-二阶方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/08/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9101%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】01一元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/06/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/">【随机过程】03更新过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/25/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%B8%80%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/23/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B-%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】02泊松过程-泊松过程的推广</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/21/%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93/">一些总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/19/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9102%E6%97%A0%E7%BA%A6%E6%9D%9F%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84/">【最优化方法】02无约束最优化方法的基本结构</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+class="math inline">\(r(X)=p+1\)</span>可得。</p>
+<div class="block definition">
+<div class="block-title">
+Definition 3.1.1 (非负定).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\xi ^{T} H\xi\geq 0\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong>
+由幂等性知特征值均为0或1，因此特征值大于等于0<span
+class="math inline">\(\implies\)</span>非负定性。</p>
+<hr />
+<div class="block definition">
+<div class="block-title">
+Definition 3.1.2 (误差项的投影矩阵).
+</div>
+<div class="block-content">
+<p>与<span class="math inline">\(H\)</span>互补的投影矩阵为<span
+class="math display">\[I-H\]</span></p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.1.4 (对称幂等性).
+</div>
+<div class="block-content">
+<p><span class="math display">\[(I-H)^{2}=I-H\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 对称性显然，而<span
+class="math display">\[(I-H)^{2}=I-2H+H=I-H\]</span>故证毕。</p>
+<div class="block definition">
+<div class="block-title">
+Definition 3.1.3 (迹).
+</div>
+<div class="block-content">
+<p><span class="math display">\[tr(I-H)=n-p-1\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong></p>
+<p><strong>法一</strong> 注意到<span
+class="math display">\[H(I-H)=0\]</span>因此<span
+class="math display">\[r(I-H)\leq\dim
+N(H)=n-r(H)=n-p-1\]</span>另一方面<span class="math inline">\(\forall
+\xi \in N(H)\)</span>，由定义有<span
+class="math display">\[H\xi=0\]</span>此时<span
+class="math display">\[\xi=\xi-0=\xi-H\xi=(I-H)\xi\]</span>因此<span
+class="math inline">\(\xi \in \mathrm{Im}(I-H)\)</span>，从而<span
+class="math display">\[r(I-H)\geq \dim N(H)=n-p-1\]</span>故证毕。</p>
+<p><strong>法二</strong> 由特征值分解<span
+class="math display">\[H=Q\Lambda Q^{T}\]</span>其中<span
+class="math inline">\(Q\)</span>为正交矩阵。此时<span
+class="math display">\[I-H=QQ^{T}-Q\Lambda
+Q^{T}=Q(I-\Lambda)Q^{T}\]</span>由于<span
+class="math inline">\(\Lambda\)</span>只能取0或1，易得<span
+class="math display">\[r(I-H)=n-p-1\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.1.5 (与$X$正交).
+</div>
+<div class="block-content">
+<p><span class="math display">\[(I-H)X=0\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 注意到<span
+class="math display">\[HX=X(X^{T}X)^{-1}X^{T}X=X\]</span>即得。</p>
+<div class="block corollary">
+<div class="block-title">
+Corollary 3.1.1 ($H$特征向量).
+</div>
+<div class="block-content">
+<p><span class="math inline">\(H\)</span>特征向量组为<span
+class="math inline">\(X\)</span>，对应特征值为1。</p>
+</div>
+</div>
+<h3 data-number="3.2" id="boldsymbolhatbeta性质"><span
+class="header-section-number">3.2</span> <span
+class="math inline">\(\boldsymbol{\hat{\beta}}\)</span>性质</h3>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.2.1 (无偏性).
+</div>
+<div class="block-content">
+<p><span class="math display">\[E(\boldsymbol{\hat{\beta}
+})=\boldsymbol{\beta}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> <span
+class="math display">\[E(\boldsymbol{\hat{\beta} })=
+(X^{T}X)^{-1}X^{T}E(Y)=(X^{T}X)^{-1}X^{T}X\boldsymbol{\beta}=\boldsymbol{\beta}\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.2.2 (方差).
+</div>
+<div class="block-content">
+<p><span class="math display">\[Var(\boldsymbol{\hat{\beta}
+})=\sigma^{2}(X^{T}X)^{-1}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> <span class="math display">\[\begin{align}
+Var(\boldsymbol{\hat{\beta} }) &amp; =
+\sigma^{2}(X^{T}X)^{-1}X^{T}((X^{T}X)^{-1}X^{T})^{T}
+\\ &amp; = \sigma^{2} (X^{T}X)^{-1} X^{T}X(X^{T}X)^{-1} \\
+&amp; = \sigma^{2}(X^{T}X)^{-1}
+\end{align}\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.2.3 (高斯-马尔可夫定理).
+</div>
+<div class="block-content">
+<p><span
+class="math inline">\(\boldsymbol{\beta}\)</span>任一线性函数<span
+class="math inline">\(\boldsymbol{a}^{T}\boldsymbol{\beta}\)</span>的最小方差无偏估计为<span
+class="math inline">\(\boldsymbol{a}^{T}\boldsymbol{\hat{\beta}}\)</span>，<span
+class="math inline">\(\boldsymbol{a}\)</span>为<span
+class="math inline">\(p+1\)</span>维列向量。</p>
+</div>
+</div>
+<p><strong>证明</strong> 显然<span
+class="math inline">\(\boldsymbol{a}\boldsymbol{\hat{\beta}}\)</span>为<span
+class="math inline">\(\boldsymbol{a}\boldsymbol{\beta}\)</span>的线性无偏估计，下面证明为最小方差无偏估计。</p>
+<p>设<span class="math inline">\(\boldsymbol{b}^{T}Y\)</span>为<span
+class="math inline">\(\boldsymbol{a}\boldsymbol{\beta}\)</span>的任一线性无偏估计，此时<span
+class="math display">\[E(\boldsymbol{b}^{T}Y)=\boldsymbol{b}^{T}X\boldsymbol{\beta}=\boldsymbol{a}^{T}\boldsymbol{\beta}\]</span>因此有<span
+class="math display">\[\boldsymbol{b}^{T}X=\boldsymbol{a}^{T}\]</span>考虑<span
+class="math display">\[\begin{align}
+Var(\boldsymbol{b}^{T}Y)-Var(\boldsymbol{a}\boldsymbol{\hat{\beta} })
+&amp; = \sigma^{2 }\boldsymbol{b
+}^{T}\boldsymbol{b}-\sigma^{2}\boldsymbol{a}^{T}(X^{T}X)^{-1}\boldsymbol{a}
+\\
+&amp;
+=\sigma^{2}\boldsymbol{b}^{T}\boldsymbol{b}-\sigma^{2}\boldsymbol{b}^{T}X(X^{T}X)^{-1}X^{T}\boldsymbol{b}
+\\
+&amp; =\sigma^{2}\boldsymbol{b}^{T}(I-H)\boldsymbol{b}\geq 0
+\end{align}\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.2.4 (协方差).
+</div>
+<div class="block-content">
+<p><span class="math display">\[Cov(\boldsymbol{\hat{\beta}
+,\boldsymbol{e}})=0\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> <span class="math display">\[\begin{align}
+Cov(\boldsymbol{\hat{\beta}
+},\boldsymbol{e})&amp;=Cov((X^{T}X)^{-1}X^{T}Y,(I-H)Y) \\
+&amp;= \sigma^{2}(X^{T}X)^{-1}X^{T}(I-H)^{T} \\
+&amp; = \sigma^{2}(X^{T}X)^{-1}((I-H)X)^{T} \\
+&amp; = 0
+\end{align}\]</span></p>
+<div class="block corollary">
+<div class="block-title">
+Corollary 3.2.1 ($\boldsymbol{\hat{\beta}}$分布).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\boldsymbol{\hat{\beta} }\sim
+N(\boldsymbol{\beta},\sigma^{2}(X^{T}X)^{-1})\]</span></p>
+</div>
+</div>
+<h3 data-number="3.3" id="残差boldsymbole性质"><span
+class="header-section-number">3.3</span> 残差<span
+class="math inline">\(\boldsymbol{e}\)</span>性质</h3>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.3.1 (无偏性).
+</div>
+<div class="block-content">
+<p><span class="math display">\[E(\boldsymbol{e})=0\]</span></p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.3.2 (方差).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[Var(\boldsymbol{e})=(I-H)\sigma^{2}\]</span></p>
+</div>
+</div>
+<div class="block corollary">
+<div class="block-title">
+Corollary 3.3.1 ($\sigma^{2}$无偏估计).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\hat{\sigma^{2}}=\frac{1}{n-p-1}\sum_{i
+= 1}^{n} e_{i}^{2}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> <span class="math display">\[\begin{align}
+E\left( \sum_{i = 1}^{n} e_{i}^{2} \right) &amp; = \sum_{i = 1}^{n}
+E(e_{i}^{2}) \\
+&amp; = \sum_{i = 1}^{n}Var(e_{i}) \\
+&amp; = \sum_{i = 1}^{n}(1-h_{ii})\sigma^{2} \\
+&amp; = (n-tr(H))\sigma^{2} \\
+&amp; = (n-p-1)\sigma^{2}
+\end{align}\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.3.3 (SSE性质).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\frac{SSE}{\sigma^{2}}\sim
+\chi^{2}(n-p-1)\]</span></p>
+</div>
+</div>
+<div class="block corollary">
+<div class="block-title">
+Corollary 3.3.2
+</div>
+<div class="block-content">
+<p>若<span class="math inline">\(X\sim N(0,I_{n})\)</span>，<span
+class="math inline">\(A\)</span>为实对称阵，<span
+class="math inline">\(r(A)=R\)</span>，若<span
+class="math inline">\(A^{2}=A\)</span>，则<span
+class="math display">\[X^{T}AX\sim \chi^{2}(r)\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 对<span
+class="math inline">\(A\)</span>进行特征值分解<span
+class="math display">\[A=Q^{T}\Lambda Q\]</span>其中<span
+class="math inline">\(Q\)</span>为正交矩阵。此时<span
+class="math display">\[X^{T}AX=(QX)^{T}\Lambda(QX)\]</span>设<span
+class="math inline">\(Y=QX\)</span>，由于<span
+class="math inline">\(Q\)</span>正交，因此<span
+class="math display">\[Y\sim N(0,QQ^{T})=N(0,I_{n})\]</span>此时<span
+class="math display">\[Y^{T}\Lambda Y=\sum_{i = 1}^{n}
+\lambda_{i}y_{i}=\sum_{i = 1}^{r} y_{i}\]</span>故证毕。</p>
+<p>再证明该定理。注意到<span class="math display">\[\begin{align}
+SSE &amp; =\left\lVert Y-\hat{Y} \right\rVert _{2}^{2} \\
+&amp; = Y^{T}(I-H)Y \\
+&amp;
+=(X\boldsymbol{\beta}+\boldsymbol{\varepsilon})^{T}(I-H)(X\boldsymbol{\beta}+\boldsymbol{\varepsilon})
+\\
+&amp; = \boldsymbol{\varepsilon }^{T}(I-H)\boldsymbol{\varepsilon}
+\end{align}\]</span>一方面<span
+class="math display">\[\boldsymbol{\varepsilon}\sim
+N(0,\sigma^{2})\]</span>另一方面<span
+class="math inline">\(I-H\)</span>对称幂等，由引理证毕。</p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.3.4 (SSE与$\boldsymbol{\hat{\beta}}$关系).
+</div>
+<div class="block-content">
+<p>SSE与<span
+class="math inline">\(\boldsymbol{\hat{\beta}}\)</span>独立。</p>
+</div>
+</div>
+<p><strong>证明</strong> 由<span
+class="math inline">\(\boldsymbol{e}\)</span>与<span
+class="math inline">\(\boldsymbol{\hat{\beta}}\)</span>独立易证。</p>
+<h2 data-number="4" id="模型推断"><span
+class="header-section-number">4</span> 模型推断</h2>
+<h3 data-number="4.1" id="ssr性质"><span
+class="header-section-number">4.1</span> SSR性质</h3>
+<div class="block theorem">
+<div class="block-title">
+Theorem 4.1.1 (SST分解).
+</div>
+<div class="block-content">
+<p><span class="math display">\[SST=SSR+SSE\]</span>即<span
+class="math display">\[\sum_{i = 1}^{n} (Y_{i}-\bar{Y})^{2}=\sum_{i =
+1}^{n} (\hat{Y}_{i}-\bar{Y})^{2}+\sum_{i = 1}^{n}
+(Y_{i}-\hat{Y}_{i})^{2}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 注意到<span
+class="math display">\[\begin{align}
+\sum_{i = 1}^{n}  (Y_{i}-\bar{Y})^{2} &amp; =\sum_{i = 1}^{n}
+(Y_{i}-\hat{Y}_{i}+\hat{Y}_{i}-\bar{Y})^{2} \\
+&amp; = \sum_{i = 1}^{n} (\hat{Y}_{i}-\bar{Y})^{2}+\sum_{i = 1}^{n}
+(Y_{i}-\hat{Y}_{i})^{2}+2\sum_{i = 1}^{n}
+(\hat{Y}_{i}-\bar{Y})(Y_{i}-\hat{Y}_{i})
+\end{align}\]</span>只需证交叉项为0。注意到<span
+class="math display">\[\begin{align}
+\sum_{i = 1}^{n} (\hat{Y}_{i}-\bar{Y})(Y_{i}-\hat{Y}_{i}) &amp;= \sum_{i
+= 1}^{n} e_{i}\hat{Y}_{i}-\bar{Y}\sum_{i = 1}^{n} e_{i} \\
+&amp; = \boldsymbol{e}^{T}\hat{Y}-\boldsymbol{e}^{T}AY \\
+&amp; = Y^{T}(I-H)X\boldsymbol{\hat{\beta} }- Y^{T}(I-H)AY \\
+&amp; = 0
+\end{align}\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 4.1.2 (SSR性质).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\frac{SSR}{\sigma^{2}}\sim
+\chi^{2}(p)\]</span>当<span
+class="math inline">\(\boldsymbol{\beta}=0\)</span>时成立。</p>
+</div>
+</div>
+<p><strong>证明</strong> 由定义<span
+class="math display">\[\begin{align}
+SSR &amp; =\sum_{i = 1}^{n} (\hat{Y}_{i}-\bar{Y})^{2} \\
+&amp; = \left\lVert \hat{Y}- \bar{Y} \right\rVert _{2}^{2} \\
+&amp; = Y^{T}\left( H-A \right)^{T}\left( H-A \right)Y
+\end{align}\]</span>其中<span
+class="math inline">\(A\)</span>为全为<span
+class="math inline">\(\frac{1}{n}\)</span>的矩阵，显然有<span
+class="math inline">\(A^{2}=A\)</span>，且<span
+class="math inline">\(HA=A\)</span>，故显然有<span
+class="math inline">\(H-A\)</span>对称幂等，故<span
+class="math display">\[\begin{align}
+SSR&amp;=Y^{T}(H-A)Y \\
+&amp; = (X\boldsymbol{\beta}+\varepsilon
+)^{T}(H-A)(X\boldsymbol{\beta}+\varepsilon) \\
+&amp; = \varepsilon ^{T}(H-A)\varepsilon
+\end{align}\]</span>下面只需证<span
+class="math display">\[r(H-A)=p\]</span></p>
+<p><strong>法一</strong> 由于<span
+class="math display">\[(I-H)A=A-A=0\]</span>因此<span
+class="math inline">\(A\)</span>与<span
+class="math inline">\(I-H\)</span>正交。而<span
+class="math display">\[\begin{align}
+(A,I-H)(H-A)=(A(H-A),(I-H)(H-A))=0
+\end{align}\]</span>因此<span class="math display">\[r(H-A)\leq \dim
+N((A,I-H)) = n-1-(n-p-1)=p\]</span>对于<span
+class="math inline">\(\forall \xi \in N(A,I-H)\)</span>，有<span
+class="math inline">\(A\xi=0\)</span>，<span
+class="math inline">\((I-H)\xi=0\)</span>。此时<span
+class="math display">\[(H-A)\xi=H\xi=\xi-(I-H)\xi=\xi\]</span>因此<span
+class="math display">\[r(H-A) \geq\dim N((A,I-A))=p\]</span>故证毕。</p>
+<p><strong>法二</strong></p>
+<div class="block corollary">
+<div class="block-title">
+Corollary 4.1.1 (矩阵同时对角化).
+</div>
+<div class="block-content">
+<p>若矩阵<span class="math inline">\(A\)</span>，<span
+class="math inline">\(B\)</span>可对角化，则<span
+class="math inline">\(AB=BA\)</span>的充要条件为<span
+class="math inline">\(A\)</span>，<span
+class="math inline">\(B\)</span>可同时对角化。</p>
+</div>
+</div>
+<p>此时<span
+class="math display">\[H-A=Q(\Lambda_{1}-\Lambda_{2})Q^{T}\]</span>注意到秩为1或0，显然有<span
+class="math display">\[r(H-A)=r(H)-r(A)=p\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 4.1.3 (SSR与SSE关系).
+</div>
+<div class="block-content">
+<p>SSR与SSE独立，当<span
+class="math inline">\(\boldsymbol{\beta}=0\)</span>。</p>
+</div>
+</div>
+<p>注意到<span class="math display">\[\begin{align}
+SSE  &amp; =\varepsilon ^{T}(I-H)\varepsilon \\
+SSR &amp; =\varepsilon ^{T}(H-A)\varepsilon
+\end{align}\]</span>欲证<span class="math inline">\(SSE\)</span>与<span
+class="math inline">\(SSR\)</span>独立，只需证<span
+class="math inline">\((I-H)\varepsilon\)</span>与<span
+class="math inline">\((H-A)\varepsilon\)</span>独立。而其均满足正态分布，故只需考虑<span
+class="math display">\[Cov((I-H)\varepsilon
+,(H-A)\varepsilon)=\sigma^{2}(I-H)(H-A)=0\]</span>故证毕。</p>
+<h3 data-number="4.2" id="f检验"><span
+class="header-section-number">4.2</span> F检验</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 4.2.1 (F检验).
+</div>
+<div class="block-content">
+<p><span class="math display">\[F=\frac{SSR / p}{SSE / (n-p-1)}\sim
+F(p,n-p-1)\]</span></p>
+</div>
+</div>
+<h3 data-number="4.3" id="t检验"><span
+class="header-section-number">4.3</span> t检验</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 4.3.1 (t检验).
+</div>
+<div class="block-content">
+<p><span class="math display">\[t= \frac{\boldsymbol{\hat{\beta_{j}}
+}}{\sqrt{ c_{jj} }\hat{\sigma}}\sim t(n-p-1)\]</span>其中<span
+class="math inline">\(c_{jj}\)</span>为<span
+class="math inline">\((X^{T}X)^{-1}\)</span>的第<span
+class="math inline">\(j\)</span>个主对角元素，<span
+class="math inline">\(\hat{\sigma^{2}}=\frac{1}{n-p-1}SSE\)</span>。</p>
+</div>
+</div>
+<h3 data-number="4.4" id="偏f检验"><span
+class="header-section-number">4.4</span> 偏F检验</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 4.4.1 (偏F检验).
+</div>
+<div class="block-content">
+<p><span class="math display">\[F_{j}=\frac{\Delta_{j}}{SSE /
+(n-p-1)}\sim F(1,n-p-1)\]</span></p>
+</div>
+</div>
+<h3 data-number="4.5" id="广义检验"><span
+class="header-section-number">4.5</span> 广义检验</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 4.5.1 (广义偏F检验).
+</div>
+<div class="block-content">
+<p>我们定义假设：<span class="math display">\[\begin{align} H_{0} &amp;
+:A\boldsymbol{\beta}=\boldsymbol{b} \\ H_{1} &amp; :A\beta\neq
+\boldsymbol{b} \end{align}\]</span>则检验量为<span
+class="math display">\[F=\frac{(SSE_{H}-SSE) / r}{SSE /
+(n-p-1)}\]</span>其中<span class="math inline">\(r=r(A)\)</span>。</p>
+</div>
+</div>
+<p>我们使用最小二乘法<span class="math display">\[\begin{align}
+&amp; \min_{\boldsymbol{\beta}}\left\lVert Y-X\boldsymbol{\beta}
+\right\rVert _{2}^{2}  \\
+&amp; s.t. A\boldsymbol{\beta}=\boldsymbol{b}
+\end{align}\]</span> 设<span
+class="math display">\[L(\boldsymbol{\beta})=\left\lVert
+Y-X\boldsymbol{\beta} \right\rVert _{2}^{2}+2\Lambda
+^{T}(A\boldsymbol{\beta}-\boldsymbol{b})\]</span>此时<span
+class="math display">\[\begin{align}
+\frac{ \partial L(\boldsymbol{\beta}) }{ \partial \boldsymbol{\beta} }
+&amp; = -2X^{T}(Y-X\boldsymbol{\beta})+2A^{T}\Lambda \\
+&amp; \propto X^{T}X\boldsymbol{\beta}- X^{T}Y+A^{T}\Lambda=0
+\end{align}\]</span>解得<span
+class="math display">\[\boldsymbol{\hat{\beta}
+}_{H}=(X^{T}X)^{-1}(X^{T}Y-A^{T}\Lambda)=\boldsymbol{\hat{\beta}
+}-(X^{T}X)^{-1}A^{T}\Lambda\]</span>此时代入约束条件有<span
+class="math display">\[A(\boldsymbol{\hat{\beta}
+}-(X^{T}X)^{-1}A^{T}\Lambda)=\boldsymbol{b}\]</span>从而<span
+class="math display">\[\Lambda=(A(X^{T}X)^{-1}A^{T})^{-1}(A\boldsymbol{\hat{\beta}
+-\boldsymbol{b}})\]</span>代回公式有<span
+class="math display">\[\boldsymbol{\hat{\beta}
+}_{H}=\boldsymbol{\hat{\beta}
+}-(X^{T}X)^{-1}A^{T}(A(X^{T}X)^{-1}A^{T})^{-1}(A\boldsymbol{\hat{\beta}
+-\boldsymbol{b}})\]</span>此时<span
+class="math display">\[SSE_{H}=\left\lVert Y-X\boldsymbol{\hat{\beta}
+}_{H} \right\rVert_{2}^{2} \]</span>考虑<span
+class="math display">\[\begin{align}
+SSE_{H}-SSE &amp; =\left\lVert Y-X\boldsymbol{\hat{\beta} }_{H}
+\right\rVert_{2}^{2}-\left\lVert Y-X\boldsymbol{\hat{\beta} }
+\right\rVert_{2}^{2}   \\
+&amp; = (Y-X\boldsymbol{\hat{\beta}
+}_{H})^{T}(Y-X\boldsymbol{\hat{\beta} }_{H})-(Y-X\boldsymbol{\hat{\beta}
+})^{T}(Y-X\boldsymbol{\hat{\beta} }) \\
+&amp; = 2Y^{T}X(\boldsymbol{\hat{\beta} }- \boldsymbol{\hat{\beta}
+}_{H})+\boldsymbol{\hat{\beta} }_{H}^{T}X^{T}X\boldsymbol{\hat{\beta}
+}_{H}-\boldsymbol{\hat{\beta} }^{T}X^{T}X\boldsymbol{\hat{\beta} }
+\end{align}\]</span>注意到<span
+class="math display">\[Y^{T}X=(X^{T}Y)^{T}=(X^{T}X\boldsymbol{\hat{\beta}
+})^{T}=\boldsymbol{\hat{\beta} }^{T}X^{T}X\]</span>代回有<span
+class="math display">\[\begin{align}
+SSE_{H}-SSE &amp; =2\boldsymbol{\hat{\beta}
+}^{T}X^{T}X(\boldsymbol{\hat{\beta} }-\boldsymbol{\hat{\beta}
+}_{H})+\boldsymbol{\hat{\beta} }_{H}^{T}X^{T}X\boldsymbol{\hat{\beta}
+}_{H}-\boldsymbol{\hat{\beta} }^{T}X^{T}X\boldsymbol{\hat{\beta} } \\
+&amp; =
+\boldsymbol{\hat{\beta}  }^{T}_{H}X^{T}X\boldsymbol{\hat{\beta}  }_{H}+\boldsymbol{\hat{\beta}  }^{T}X^{T}X\boldsymbol{\hat{\beta}  }-2\boldsymbol{\hat{\beta}  }^{T}X^{T}X\boldsymbol{\hat{\beta}  }_{H}
+\\
+&amp; =(\boldsymbol{\hat{\beta} }-\boldsymbol{\hat{\beta}
+}_{H})^{T}X^{T}X(\boldsymbol{\hat{\beta} }-\boldsymbol{\hat{\beta}
+}_{H}) \\
+&amp; =((X^{T}X)^{-1}A^{T}\Lambda)^{T}X^{T}X(X^{T}X)^{-1}A^{T}\Lambda \\
+&amp; = \Lambda ^{T}A(X^{T}X)^{-1}A^{T}\Lambda \\
+&amp; = (A\boldsymbol{\hat{\beta}
+}-\boldsymbol{b})^{T}(A(X^{T}X)^{-1}A^{T})^{-1}(A\boldsymbol{\hat{\beta}
+-\boldsymbol{b}})
+\end{align}\]</span> 注意到<span
+class="math display">\[\boldsymbol{\hat{\beta} }\sim
+N(\boldsymbol{\beta},\sigma^{2}(X^{T}X)^{-1})\]</span>如果假设成立，则<span
+class="math display">\[A\boldsymbol{\hat{\beta} }-\boldsymbol{b}\sim
+N(0,\sigma^{2}A(X^{T}X)^{-1}A^{T})\]</span>故<span
+class="math display">\[SSE_{H}-SSE\sim \chi^{2}(r)\]</span>其中<span
+class="math inline">\(r=r(A)\)</span>。</p>
+<p>再证明<span class="math inline">\(SSE_{H}-SSE\)</span>与<span
+class="math inline">\(SSE\)</span>独立。注意到<span
+class="math inline">\(SSE_{H}-SSE\)</span>仅依赖<span
+class="math inline">\(\boldsymbol{\hat{\beta}}\)</span>，<span
+class="math inline">\(SSE\)</span>仅依赖<span
+class="math inline">\(\boldsymbol{e}\)</span>。由<span
+class="math inline">\(\boldsymbol{\beta}\)</span>与<span
+class="math inline">\(\boldsymbol{e}\)</span>独立知成立。</p>
+</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/10/25/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%AE%9E%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%E5%AF%B9%E8%A7%92%E5%8C%96/">实对称矩阵对角化</a><a class="next" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B-%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】03更新过程-更新过程的推广</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/10/25/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%AE%9E%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%E5%AF%B9%E8%A7%92%E5%8C%96/">实对称矩阵对角化</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/15/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】多元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B-%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】03更新过程-更新过程的推广</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE/">【随机过程】04Markov链</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/10/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%BA%8C%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化-二阶方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/08/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9101%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】01一元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/06/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/">【随机过程】03更新过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/25/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%B8%80%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/23/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B-%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】02泊松过程-泊松过程的推广</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/21/%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93/">一些总结</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
   tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   });
 </script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
