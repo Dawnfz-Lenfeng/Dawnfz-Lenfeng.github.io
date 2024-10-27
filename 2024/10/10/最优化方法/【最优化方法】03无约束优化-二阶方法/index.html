@@ -7,7 +7,7 @@ html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
 toggle.addEventListener('click', () => {
 localStorage.dark = !(html.dataset.dark == 'true');
 html.dataset.dark = localStorage.dark;
-});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【最优化方法】03无约束优化-二阶方法</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【最优化方法】03无约束优化-二阶方法</h1><div class="post-meta">2024-10-10<span> | </span><span class="category"><a href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#newton%E6%96%B9%E6%B3%95"><span class="toc-text">1 Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%ACnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.1 基本Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E5%B0%BCnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.2 阻尼Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E6%96%B9%E6%B3%95"><span class="toc-text">1.3 混合方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lm%E6%96%B9%E6%B3%95"><span class="toc-text">1.4 LM方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%9Fnewton%E6%96%B9%E6%B3%95"><span class="toc-text">2 拟Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sr1%E6%96%B9%E6%B3%95"><span class="toc-text">2.1 SR1方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bfgs%E5%85%AC%E5%BC%8F"><span class="toc-text">2.2 BFGS公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dfp%E5%85%AC%E5%BC%8F"><span class="toc-text">2.3 DFP公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#broyden%E6%97%8F%E6%96%B9%E6%B3%95"><span class="toc-text">2.4 Broyden族方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bb%E6%96%B9%E6%B3%95"><span class="toc-text">2.5 BB方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%96%B9%E6%B3%95"><span class="toc-text">3 共轭梯度方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%B3%95"><span class="toc-text">3.1 线性共轭梯度法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%B3%95"><span class="toc-text">3.2 非线性共轭梯度法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95"><span class="toc-text">4 最小二乘法</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="newton方法"><span
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【最优化方法】03无约束优化-二阶方法</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【最优化方法】03无约束优化-二阶方法</h1><div class="post-meta">2024-10-10<span> | </span><span class="category"><a href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#newton%E6%96%B9%E6%B3%95"><span class="toc-text">1 Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%ACnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.1 基本Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E5%B0%BCnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.2 阻尼Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E6%96%B9%E6%B3%95"><span class="toc-text">1.3 混合方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lm%E6%96%B9%E6%B3%95"><span class="toc-text">1.4 LM方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%9Fnewton%E6%96%B9%E6%B3%95"><span class="toc-text">2 拟Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sr1%E6%96%B9%E6%B3%95"><span class="toc-text">2.1 SR1方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bfgs%E5%85%AC%E5%BC%8F"><span class="toc-text">2.2 BFGS公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dfp%E5%85%AC%E5%BC%8F"><span class="toc-text">2.3 DFP公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#broyden%E6%97%8F%E6%96%B9%E6%B3%95"><span class="toc-text">2.4 Broyden族方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bb%E6%96%B9%E6%B3%95"><span class="toc-text">2.5 BB方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%96%B9%E6%B3%95"><span class="toc-text">3 共轭梯度方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%B3%95"><span class="toc-text">3.1 共轭梯度法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%B3%95"><span class="toc-text">3.2 线性共轭梯度法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%B3%95"><span class="toc-text">3.3 非线性共轭梯度法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95"><span class="toc-text">4 最小二乘法</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="newton方法"><span
 class="header-section-number">1</span> Newton方法</h2>
 <h3 data-number="1.1" id="基本newton方法"><span
 class="header-section-number">1.1</span> 基本Newton方法</h3>
@@ -302,10 +302,169 @@ class="math display">\[\alpha_{k}=
 </div>
 <h2 data-number="3" id="共轭梯度方法"><span
 class="header-section-number">3</span> 共轭梯度方法</h2>
-<h3 data-number="3.1" id="线性共轭梯度法"><span
-class="header-section-number">3.1</span> 线性共轭梯度法</h3>
-<h3 data-number="3.2" id="非线性共轭梯度法"><span
-class="header-section-number">3.2</span> 非线性共轭梯度法</h3>
+<h3 data-number="3.1" id="共轭梯度法"><span
+class="header-section-number">3.1</span> 共轭梯度法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 3.1.1 (共轭方向).
+</div>
+<div class="block-content">
+<p>设<span
+class="math inline">\(G\)</span>是对称正定矩阵，若非零向量组<span
+class="math inline">\(\{ d_{0},d_{1},\dots,d_{n} \}\)</span>满足<span
+class="math display">\[d_{i}^{T}Gd_{j}=0,\quad i\neq
+j\]</span>则称非零向量组是矩阵<span
+class="math inline">\(G\)</span>的共轭方向。</p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.1.1 (共轭方向线性无关性).
+</div>
+<div class="block-content">
+<p>共轭向量组中的向量必然线性无关。</p>
+</div>
+</div>
+<p><strong>证明</strong> 定义内积<span class="math display">\[\langle
+u,v \rangle_{A}=u^{T}Av \]</span>若共轭向量组向量线性相关，则设<span
+class="math display">\[v=\sum_{i = 1}^{n} c_{i}d_{i}=0\]</span>此时<span
+class="math display">\[\begin{align}
+\langle v,v \rangle _{A} &amp; =\left\langle  \sum_{i = 1}^{n}
+c_{i}d_{i},\sum_{i = 1}^{n} c_{i}d_{i}  \right\rangle_{A}  \\
+&amp; = \sum_{i = 1}^{n} c_{i}^{2}\langle d_{i},d_{i} \rangle _{A}=0
+\end{align}\]</span>此时有且仅有<span class="math inline">\(c_{i}=0,
+i=1,\dots,n\)</span>。故证毕。</p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.1.2 (共轭迭代定理).
+</div>
+<div class="block-content">
+<p>对于正定二次函数，从任意初始点出发，依次沿共轭方向做精确线搜索，最多迭代n步就可以得到极小点。</p>
+</div>
+</div>
+<p><strong>证明</strong> 易知由精确线搜索<span
+class="math inline">\(g_{k+1}^{T}d_{k}=0\)</span>有<span
+class="math display">\[\alpha_{k}=-
+\frac{d_{k}^{T}g_{k}}{d_{k}^{T}Gd_{k}}=-\frac{\langle d_{k},g_{k}
+\rangle }{\langle d_{k},d_{k} \rangle
+_{G}}\]</span>由于共轭方向线性无关，因此构成一组基底。此时<span
+class="math display">\[x^{*}-x_{0}=\beta_{0}d_{0}+\dots+\beta_{n-1}d_{n-1}\]</span>两边与<span
+class="math inline">\(d_{k}\)</span>做内积有<span
+class="math display">\[\beta_{k}= \frac{\langle
+d_{k},  x^{*}-x_{0}\rangle_{G} }{\langle d_{k},d_{k} \rangle
+_{G}}\]</span>注意到<span class="math display">\[\langle
+d_{k},x_{k}-x_{0} \rangle _{G}=0\]</span>因此<span
+class="math display">\[\begin{align}
+-\langle d_{k},g_{k}  \rangle  &amp; =\langle d_{k},(g(x^{*})-g_{k})
+\rangle  \\
+&amp; =\langle d_{k},G(x^{*}-x_{k})\rangle \\
+&amp; = \langle d_{k},x^{*}-x_{k} \rangle _{G} \\
+&amp; = \langle d_{k},x^{*}-x_{0} \rangle _{G}
+\end{align}\]</span>故证毕。</p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.1.3 (子空间扩展定理).
+</div>
+<div class="block-content">
+<p>设<span
+class="math inline">\(f(x)=\frac{1}{2}x^{T}Gx-b^{T}x\)</span>，<span
+class="math inline">\(G\)</span>为正定矩阵，<span
+class="math inline">\(d_{0},\dots,d_{n-1}\)</span>为共轭方向，此时<span
+class="math display">\[g_{k}^{T}d_{j}=0,\quad
+j=0,1,\dots,k-1\]</span>且<span
+class="math inline">\(x_{k}\)</span>是<span
+class="math inline">\(f(x)\)</span>在<span class="math inline">\(\{
+x\mid x=x_{0}+span\{ d_{0},d_{1},\dots,d_{k-1} \}
+\}\)</span>上的最小点。</p>
+</div>
+</div>
+<p><strong>证明</strong> 类似的，注意到<span
+class="math display">\[\begin{align}
+-\langle d_{j},g_{k} \rangle  &amp; =\langle d_{j},G(x^{*}-x_{k})
+\rangle  \\
+&amp; =\langle d_{j},x^{*}-x_{k} \rangle _{G } \\
+&amp; = \left\langle  d_{j},\sum_{i = k+1}^{n}
+\alpha_{i}d_{i}  \right\rangle _{G}
+\end{align}\]</span>故证毕。</p>
+<div class="block corollary">
+<div class="block-title">
+Corollary 3.1.1 (凸优化最优化条件).
+</div>
+<div class="block-content">
+<p>对于凸函数，若一点的梯度与所有可行方向正交，则该点为可行集的最小点。</p>
+</div>
+</div>
+<p>由凸函数，有<span class="math display">\[f(x)-f(x^{*})\geq
+g(x^{*})(x-x^{*})\]</span>故证毕。</p>
+<h3 data-number="3.2" id="线性共轭梯度法"><span
+class="header-section-number">3.2</span> 线性共轭梯度法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 3.2.1 (线性共轭梯度法).
+</div>
+<div class="block-content">
+<p>对于正定二次函数，取迭代方向为<span
+class="math display">\[d_{k}=-g_{k}+\beta_{k-1}d_{k-1}\]</span>其中取<span
+class="math inline">\(d_{0}=-g_{0}\)</span>，且<span
+class="math display">\[\beta_{k-1}=
+\frac{g_{k}^{T}g_{k}}{g_{k-1}^{T}g_{k-1}}\]</span>此时<span
+class="math inline">\(\{ d_{i} \}\)</span>为一组共轭梯度，且有<span
+class="math display">\[g_{k}^{T}g_{i}=0,\quad i=1,\dots,k-1\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 我们使用数学归纳法，当<span
+class="math inline">\(k=1\)</span>时，由于<span
+class="math inline">\(g_{1}^{T}d_{0}=0\)</span>，显然有<span
+class="math inline">\(g_{1}^{T}g_{0}=0\)</span>。而注意到<span
+class="math display">\[\alpha_{0}Gd_{0}=G(x_{1}-x_{0})=g_{1}-g_{0}\]</span>因此<span
+class="math display">\[\begin{align}
+\alpha_{0} d_{1}^{T}Gd_{0} &amp;
+=(-g_{1}+\beta_{0}d_{0})^{T}(g_{1}-g_{0}) \\
+&amp; = -g_{1}^{T}g_{1}-\beta_{0}d_{0}^{T}g_{0} \\
+&amp; = -g_{1}^{T}g_{1}+\beta_{0}g_{0}^{T}g_{0}=0
+\end{align}\]</span>满足。</p>
+<p>此时假设<span
+class="math inline">\(d_{0},d_{1},\dots,d_{k-1}\)</span>都是<span
+class="math inline">\(G\)</span>-共轭，且<span
+class="math inline">\(g_{i}^{T}g_{j}=0\)</span>，<span
+class="math inline">\(0\leq i,j&lt;k,i\neq j\)</span>。首先注意到<span
+class="math display">\[g_{k}=g_{k-1}+\alpha_{k-1}Gd_{k-1}\]</span>由归纳假设知<span
+class="math inline">\(g_{k}^{T}g_{i}=0\)</span>，<span
+class="math inline">\(i=0,\dots,k-2\)</span>。而对于<span
+class="math inline">\(g_{k-1}\)</span>，有<span
+class="math display">\[g_{k-1}=-d_{k-1}+\beta
+_{k-2}d_{k-2}\]</span>显然<span
+class="math inline">\(g_{k}^{T}d_{k-2}=0\)</span>，而由精确线搜索<span
+class="math inline">\(g_{k}^{T}d_{k-1}=0\)</span>，因此<span
+class="math inline">\(g_{k}^{T}g_{k-1}=0\)</span>，进而<span
+class="math display">\[g_{k}^{T}g_{i}=0,\quad
+i=0,\dots,k-1\]</span>此时<span class="math display">\[\begin{align}
+\alpha_{k-1}d_{k}^{T}Gd_{k-1}  &amp; =
+(-g_{k}+\beta_{k-1}d_{k-1})^{T}(g_{k}-g_{k-1}) \\
+&amp; =
+-g_{k}^{T}g_{k}-\beta_{k-1}(-g_{k-1}+\beta_{k-2}d_{k-2})^{T}g_{k-1} \\
+&amp; = -g_{k}^{T}g_{k}+\beta_{k-1}g_{k-1}^{T}g_{k-1}=0
+\end{align}\]</span>成立。故证毕。</p>
+<h3 data-number="3.3" id="非线性共轭梯度法"><span
+class="header-section-number">3.3</span> 非线性共轭梯度法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 3.3.1 (FR公式).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[\beta_{k-1}^{FR}=\frac{g_{k}^{T}g_{k}}{g_{k-1}^{T}g_{k-1}}\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 3.3.2 (PRP公式).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[\beta^{PRP}=\frac{g_{k}^{T}(g_{k}-g_{k-1})}{g_{k-1}^{T}g_{k-1}}\]</span></p>
+</div>
+</div>
 <h2 data-number="4" id="最小二乘法"><span
 class="header-section-number">4</span> 最小二乘法</h2>
 </div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE/">【随机过程】04Markov链</a><a class="next" href="/2024/10/08/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9101%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】01一元线性回归</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/10/25/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%AE%9E%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%E5%AF%B9%E8%A7%92%E5%8C%96/">实对称矩阵对角化</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/15/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】多元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B-%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】03更新过程-更新过程的推广</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE/">【随机过程】04Markov链</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/10/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%BA%8C%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化-二阶方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/08/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9101%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】01一元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/06/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/">【随机过程】03更新过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/25/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%B8%80%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/23/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9102%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B-%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】02泊松过程-泊松过程的推广</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/21/%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93/">一些总结</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
