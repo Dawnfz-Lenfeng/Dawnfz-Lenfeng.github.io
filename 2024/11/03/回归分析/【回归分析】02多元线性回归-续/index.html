@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>【回归分析】02多元线性回归-续 | What was I thinking?</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/pure-min.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="https://unpkg.com/jquery/dist/jquery.min.js"></script><link rel="stylesheet" href="/css/custom.css"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"><link rel="Shortcut Icon" href="/images/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="https://unpkg.com/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="https://unpkg.com/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="https://unpkg.com/toastr/build/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【回归分析】02多元线性回归-续</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【回归分析】02多元线性回归-续</h1><div class="post-meta">2024-11-03<span> | </span><span class="category"><a href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E5%BF%83%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96"><span class="toc-text">1 中心化和标准化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E7%9F%A9%E9%98%B5%E4%B8%8E%E5%81%8F%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-text">2 相关性矩阵与偏相关系数</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="中心化和标准化"><span
+class="header-section-number">1</span> 中心化和标准化</h2>
+<div class="block definition">
+<div class="block-title">
+Definition 1.1 (中心化).
+</div>
+<div class="block-content">
+<p><span class="math display">\[X_{ij}&#39;=X_{ij}-\bar{X}_{j},\quad
+Y_{i}&#39;=Y_{i}-\bar{Y}\]</span></p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 1.1 (中心化性质).
+</div>
+<div class="block-content">
+<p>中心化后<span
+class="math inline">\(\hat{\beta}&#39;_{0}=0\)</span>，<span
+class="math inline">\(\hat{\beta}&#39;_{i}=\hat{\beta}_{i}\)</span>，<span
+class="math inline">\(i=1,\dots,p\)</span>。</p>
+</div>
+</div>
+<p><strong>证明</strong></p>
+<div class="block corollary">
+<div class="block-title">
+Corollary 1.1 (分块矩阵的逆).
+</div>
+<div class="block-content">
+<p>设分块矩阵<span class="math display">\[M=\begin{pmatrix} A &amp; B \\
+C &amp; D\end{pmatrix}\]</span>则<span
+class="math display">\[\begin{align}M^{-1} &amp;= \begin{pmatrix} I
+&amp; -A^{-1}B \\ 0 &amp; I \end{pmatrix}\begin{pmatrix} A^{-1} &amp; 0
+\\ I &amp; S^{-1}  \end{pmatrix}\begin{pmatrix} I &amp; 0\\ -CA^{-1}
+&amp; I \end{pmatrix}\\&amp; =\begin{pmatrix}
+A^{-1}+A^{-1}BS^{-1}CA^{-1} &amp; -A^{-1}BS^{-1}\\ -S^{-1}CA^{-1} &amp;
+S^{-1} \end{pmatrix}\end{align}\]</span>其中<span
+class="math inline">\(S=D-CA^{-1}B\)</span>为<span
+class="math inline">\(M\)</span>关于<span
+class="math inline">\(A\)</span>的舒尔补。</p>
+</div>
+</div>
+<p>设<span class="math display">\[\begin{align}
+L &amp; =\begin{pmatrix}
+I  &amp;  0 \\
+-CA^{-1} &amp; I
+\end{pmatrix} \\
+R  &amp; = \begin{pmatrix}
+I  &amp; -BA^{-1} \\
+0  &amp; I
+\end{pmatrix}
+\end{align}\]</span>此时<span class="math display">\[\begin{align}
+LMR &amp; = \begin{pmatrix}
+I  &amp;  0 \\
+-CA^{-1} &amp; I
+\end{pmatrix}\begin{pmatrix} A &amp; B \\ C &amp; D
+\end{pmatrix}\begin{pmatrix}
+I  &amp; -BA^{-1} \\
+0  &amp; I
+\end{pmatrix}\\
+&amp; = \begin{pmatrix}
+A  &amp; 0 \\
+0  &amp; S
+\end{pmatrix}
+\end{align}\]</span>因此<span
+class="math display">\[M^{-1}=R\begin{pmatrix}
+A^{-1} &amp; 0 \\
+0 &amp; S^{-1}
+\end{pmatrix}L\]</span>代入即得。</p>
+<p>考虑<span class="math display">\[\begin{align}
+\tilde{X} = \begin{pmatrix}
+\boldsymbol{1}  &amp; X
+\end{pmatrix}
+\end{align}\]</span>其中<span
+class="math inline">\(X\)</span>为没有添加常数项的自变量。此时<span
+class="math display">\[\begin{align} \\
+\tilde{X}^{T}\tilde{X} &amp; = \begin{pmatrix}
+\boldsymbol{1}^{T}  \\ X^{T}
+\end{pmatrix}\begin{pmatrix}
+\boldsymbol{1} &amp; X
+\end{pmatrix} \\
+&amp; = \begin{pmatrix}
+n &amp; n\bar{X}^{T} \\
+n\bar{X} &amp; X^{T}X
+\end{pmatrix}
+\end{align}\]</span>注意到<span
+class="math display">\[\tilde{X}^{T}Y=\begin{pmatrix}
+\boldsymbol{1}^{T} \\
+X^{T}
+\end{pmatrix}Y=\begin{pmatrix}
+n\bar{Y} \\
+X^{T}Y
+\end{pmatrix}\]</span>因此<span class="math display">\[\begin{align}
+\tilde{\boldsymbol{\beta}} &amp;
+=(\tilde{X}^{T}\tilde{X})^{-1}(\tilde{X}^{T}Y) \\
+&amp; =\begin{pmatrix}
+n &amp; n\bar{X}^{T} \\
+n\bar{X} &amp; X^{T}X
+\end{pmatrix}^{-1}\begin{pmatrix}
+n\bar{Y} \\
+X^{T}Y
+\end{pmatrix}
+\end{align}\]</span>由引理<span class="math display">\[\begin{align}
+\tilde{\boldsymbol{\beta}} &amp; =\begin{pmatrix}
+I  &amp; -\bar{X}^{T} \\ 0&amp; I
+\end{pmatrix}\begin{pmatrix}
+\frac{1}{n} &amp;0 \\
+0  &amp; (X^{T}X-n\bar{X}\bar{X}^{T})^{-1}
+\end{pmatrix} \begin{pmatrix}
+I  &amp; 0 \\
+-\bar{X}  &amp; I
+\end{pmatrix}\begin{pmatrix}
+n\bar{Y} \\
+X^{T}Y
+\end{pmatrix} \\
+&amp; = \begin{pmatrix}
+I  &amp; -\bar{X}^{T} \\ 0&amp; I
+\end{pmatrix}\begin{pmatrix}
+\frac{1}{n} &amp;0 \\
+0  &amp; (X^{T}X-n\bar{X}\bar{X}^{T})^{-1}
+\end{pmatrix}\begin{pmatrix}
+n\bar{Y} \\
+X^{T}Y-n\bar{X}\bar{Y}
+\end{pmatrix} \\
+&amp; = \begin{pmatrix}
+I  &amp; -\bar{X}^{T} \\ 0&amp; I
+\end{pmatrix} \begin{pmatrix}
+\bar{Y} \\
+(X^{T}X-n\bar{X}\bar{X}^{T})^{-1}(X^{T}Y-n\bar{X}\bar{Y})
+\end{pmatrix} \\
+&amp; =\begin{pmatrix}
+\bar{Y}-\bar{X}^{T}\boldsymbol{\beta} \\
+(X^{T}(I-A)X)^{-1}(X^{T}(I-A)Y)
+\end{pmatrix}
+\end{align}\]</span>注意到<span class="math display">\[\begin{align}
+X&#39; &amp; =(I-A)X \\
+Y&#39; &amp; =(I-A)Y
+\end{align}\]</span>由幂等性证毕。</p>
+<div class="block definition">
+<div class="block-title">
+Definition 1.2 (标准化).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\begin{align}
+X_{ij}^{*}=\frac{X_{ij}-\bar{X}_{j}}{\sqrt{ L_{jj} } } \\ Y_{i}^{*
+}=\frac{Y_{i}-\bar{Y}}{\sqrt{ L_{yy} }} \end{align}\]</span></p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 1.2 (标准化性质).
+</div>
+<div class="block-content">
+<p>标准化后<span
+class="math inline">\(\hat{\beta}_{0}^{*}=0\)</span>，<span
+class="math inline">\(\hat{\beta}_{i}^{*}= \frac{\sqrt{ L_{jj} }}{\sqrt{
+L_{yy} }}\hat{\beta}_{j}\)</span>，<span
+class="math inline">\(j=1,\dots,p\)</span>。</p>
+</div>
+</div>
+<p><strong>证明</strong> 已证中心化情况，故不妨设<span
+class="math inline">\(\bar{X}=\bar{Y}=0\)</span>。此时设<span
+class="math display">\[L_{x}=\mathrm{diag}( L_{11} ,\dots, L_{pp}
+)\]</span>因此<span
+class="math display">\[X^{*}=XL_{x}^{-1/2}\]</span>此时<span
+class="math display">\[\begin{align}
+\boldsymbol{\hat{\beta} }^{*} &amp; =  \frac{1}{\sqrt{ L_{yy} }}
+((X^{*})^{T}(X^{*}))^{-1}(X^{*})^{T}Y \\
+&amp; = \frac{1}{\sqrt{ L_{yy} }}
+(L_{x}^{-1/2}X^{T}XL_{x}^{-1/2})^{-1}L_{x}^{-1/2}X^{T}Y \\
+&amp; = \frac{1}{L_{yy}} L_{x}^{1/2} (X^{T}X)^{-1}X^{T}Y \\
+&amp;= \sqrt{ \frac{L_{x}}{L_{yy}}   }\boldsymbol{\hat{\beta} }
+\end{align}\]</span>故证毕。</p>
+<h2 data-number="2" id="相关性矩阵与偏相关系数"><span
+class="header-section-number">2</span> 相关性矩阵与偏相关系数</h2>
+<div class="block definition">
+<div class="block-title">
+Definition 2.1 (相关性矩阵).
+</div>
+<div class="block-content">
+<p><span class="math display">\[r=\left(\begin{matrix} 1
+&amp;  r_{Y1}  &amp;  r_{Y2}  &amp;  \dots  &amp; r_{Yp}
+\\  r_{1Y}  &amp; 1 &amp;  r_{12}  &amp;  \dots  &amp; r_{1p}
+\\  \vdots  &amp;  \vdots  &amp;  \vdots&amp;  \ddots &amp; \vdots
+\\  r_{pY}  &amp;  r_{p1}  &amp; r_{p 2} &amp;  \dots  &amp; 1
+\end{matrix}\right)=(X^{*})^{T}(X^{*})\]</span>其中<span
+class="math display">\[r_{ij}=\frac{\sum_{n = 1}^{N}
+(X_{i,n}-\bar{X}_{i})(X_{j,n}-\bar{X}_{j})}{\sqrt{ \sum_{i = 1}^{N}
+(X_{i,n}-\bar{X}_{i})^{2}\sum_{i = 1}^{N} (X_{j,n}-\bar{X}_{j})^{2}
+}}=\sum_{n = 1}^{N} X^{*}_{i,n}X^{*}_{j,n}\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 2.2 (偏决定系数).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[r^{2}_{Yj}=\frac{SSE_{1,\dots,j-1,j+1,\dots,p}-SSE_{1,\dots,p}}{SSE_{1,\dots,j-1,j+1,\dots,p}}\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 2.3 (偏相关系数).
+</div>
+<div class="block-content">
+<p><span class="math display">\[r_{Yj}=\sqrt{ r^{2}_{Yj}
+}\]</span>符号与回归系数符号相同。</p>
+</div>
+</div>
+</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/11/04/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE-%E8%BF%9E%E7%BB%AD%E6%97%B6%E9%97%B4/">【随机过程】04Markov链-连续时间</a><a class="next" href="/2024/10/25/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%AE%9E%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%E5%AF%B9%E8%A7%92%E5%8C%96/">实对称矩阵对角化</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/11/04/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE-%E8%BF%9E%E7%BB%AD%E6%97%B6%E9%97%B4/">【随机过程】04Markov链-连续时间</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/03/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-%E7%BB%AD/">【回归分析】02多元线性回归-续</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/25/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%AE%9E%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%E5%AF%B9%E8%A7%92%E5%8C%96/">实对称矩阵对角化</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/15/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】02多元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B-%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】03更新过程-更新过程的推广</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE/">【随机过程】04Markov链</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/10/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%BA%8C%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化-二阶方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/08/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9101%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】01一元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/06/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/">【随机过程】03更新过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/25/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%B8%80%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
