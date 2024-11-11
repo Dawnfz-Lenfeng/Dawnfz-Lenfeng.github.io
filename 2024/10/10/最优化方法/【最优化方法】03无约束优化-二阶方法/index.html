@@ -7,7 +7,7 @@ html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
 toggle.addEventListener('click', () => {
 localStorage.dark = !(html.dataset.dark == 'true');
 html.dataset.dark = localStorage.dark;
-});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【最优化方法】03无约束优化-二阶方法</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【最优化方法】03无约束优化-二阶方法</h1><div class="post-meta">2024-10-10<span> | </span><span class="category"><a href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#newton%E6%96%B9%E6%B3%95"><span class="toc-text">1 Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%ACnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.1 基本Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E5%B0%BCnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.2 阻尼Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E6%96%B9%E6%B3%95"><span class="toc-text">1.3 混合方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lm%E6%96%B9%E6%B3%95"><span class="toc-text">1.4 LM方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%9Fnewton%E6%96%B9%E6%B3%95"><span class="toc-text">2 拟Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sr1%E6%96%B9%E6%B3%95"><span class="toc-text">2.1 SR1方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bfgs%E5%85%AC%E5%BC%8F"><span class="toc-text">2.2 BFGS公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dfp%E5%85%AC%E5%BC%8F"><span class="toc-text">2.3 DFP公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#broyden%E6%97%8F%E6%96%B9%E6%B3%95"><span class="toc-text">2.4 Broyden族方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bb%E6%96%B9%E6%B3%95"><span class="toc-text">2.5 BB方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%96%B9%E6%B3%95"><span class="toc-text">3 共轭梯度方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%B3%95"><span class="toc-text">3.1 共轭梯度法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%B3%95"><span class="toc-text">3.2 线性共轭梯度法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%B3%95"><span class="toc-text">3.3 非线性共轭梯度法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95"><span class="toc-text">4 最小二乘法</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="newton方法"><span
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【最优化方法】03无约束优化-二阶方法</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【最优化方法】03无约束优化-二阶方法</h1><div class="post-meta">2024-10-10<span> | </span><span class="category"><a href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#newton%E6%96%B9%E6%B3%95"><span class="toc-text">1 Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%ACnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.1 基本Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E5%B0%BCnewton%E6%96%B9%E6%B3%95"><span class="toc-text">1.2 阻尼Newton方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E6%96%B9%E6%B3%95"><span class="toc-text">1.3 混合方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lm%E6%96%B9%E6%B3%95"><span class="toc-text">1.4 LM方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%9Fnewton%E6%96%B9%E6%B3%95"><span class="toc-text">2 拟Newton方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sr1%E6%96%B9%E6%B3%95"><span class="toc-text">2.1 SR1方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bfgs%E5%85%AC%E5%BC%8F"><span class="toc-text">2.2 BFGS公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dfp%E5%85%AC%E5%BC%8F"><span class="toc-text">2.3 DFP公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bb%E6%96%B9%E6%B3%95"><span class="toc-text">2.4 BB方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%96%B9%E6%B3%95"><span class="toc-text">3 共轭梯度方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%B3%95"><span class="toc-text">3.1 共轭梯度法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%B3%95"><span class="toc-text">3.2 线性共轭梯度法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%85%B1%E8%BD%AD%E6%A2%AF%E5%BA%A6%E6%B3%95"><span class="toc-text">3.3 非线性共轭梯度法</span></a></li></ol></li></ol></div></div><div class="post-content"><h2 data-number="1" id="newton方法"><span
 class="header-section-number">1</span> Newton方法</h2>
 <h3 data-number="1.1" id="基本newton方法"><span
 class="header-section-number">1.1</span> 基本Newton方法</h3>
@@ -253,17 +253,18 @@ Theorem 2.3.2 ($B_{k+1}$与$H_{k+1}$对称正定性).
 <p>若<span class="math inline">\(H_{k}\)</span>对称正定，则如果<span
 class="math inline">\(s_{k}^{T}y_{k}&gt;0\)</span>，则DFP构造出的<span
 class="math inline">\(H_{k+1}^{DFP}\)</span>也是对称正定。此时使用精确线搜索或者非精确线搜索Wolfe准则的DFP方法和BFGS方法有<span
-class="math inline">\(s_{k}^{T}y_{k}&gt;0\)</span>。</p>
-</div>
-</div>
-<h3 data-number="2.4" id="broyden族方法"><span
-class="header-section-number">2.4</span> Broyden族方法</h3>
-<div class="block definition">
-<div class="block-title">
-Definition 2.4.1 (Broyden族方法).
-</div>
-<div class="block-content">
-<p><span
+class="math inline">\(s_{k}^{T}y_{k}&gt;0\)</span>。 :::在、</p>
+<p><strong>证明</strong> <span class="math display">\[\begin{align}
+x^{T}H_{k+1}^{DFP}x &amp; = x^{T}H_{k}x+
+\frac{(x^{T}s_{k})^{2}}{s_{k}^{T}y_{k}}-\frac{(x^{T}H_{k}y_{k})^{2}}{y_{k}^{T}H_{k}y_{k}}
+\\
+&amp; =
+\frac{(x^{T}H_{k}x)(y_{k}^{T}H_{k}y_{k})-(x^{T}H_{k}y_{k})^{2}}{y_{k}^{T}H_{k}y_{k}}+
+\frac{(x^{T}s_{k})^{2}}{s_{k}^{T}y_{k}}
+\end{align}\]</span> 而使用精确线搜索<span
+class="math display">\[s_{k}^{T}y_{k}=\alpha_{k}d_{k}^{T}(g_{k+1}-g_{k})=-\alpha_{k}d_{k}^{T}g_{k}=\alpha_{k}g_{k}^{T}H_{k}g_{k}&gt;0\]</span>而wolfe准则<span
+class="math display">\[s_{k}^{T}y_{k}=\alpha_{k}d_{k}^{T}(g_{k+1}-g_{k})\geq-\alpha_{k}(1-\sigma)d_{k}^{T}g_{k}&gt;0\]</span>
+### Broyden族方法 ::: {.definition title=“Broyden族方法”} <span
 class="math display">\[\begin{align}B_{k+1}&amp;=(1-\phi)B_{k+1}^{BFGS}+\phi
 B_{k+1}^{DFP} \\ &amp;= B_{k+1}^{BFGS}+\phi
 v_{k}v_{k}^{T}\end{align}\]</span>其中<span
@@ -274,7 +275,7 @@ class="math display">\[v_{k}=(s_{k}^{T}B_{k}s_{k})^{1/2}\left(
 </div>
 <div class="block theorem">
 <div class="block-title">
-Theorem 2.4.1 ($B_{k+1}$的对称正定性).
+Theorem 2.3.3 ($B_{k+1}$的对称正定性).
 </div>
 <div class="block-content">
 <p>若<span
@@ -283,11 +284,11 @@ class="math inline">\(\phi&gt;0\)</span>时，Broyden族公式得到<span
 class="math inline">\(B_{k+1}\)</span>也是对称正定阵。</p>
 </div>
 </div>
-<h3 data-number="2.5" id="bb方法"><span
-class="header-section-number">2.5</span> BB方法</h3>
+<h3 data-number="2.4" id="bb方法"><span
+class="header-section-number">2.4</span> BB方法</h3>
 <div class="block definition">
 <div class="block-title">
-Definition 2.5.1 (BB方法).
+Definition 2.4.1 (BB方法).
 </div>
 <div class="block-content">
 <p><span
@@ -456,18 +457,101 @@ Definition 3.3.1 (FR公式).
 class="math display">\[\beta_{k-1}^{FR}=\frac{g_{k}^{T}g_{k}}{g_{k-1}^{T}g_{k-1}}\]</span></p>
 </div>
 </div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.3.1 (下降方向保证).
+</div>
+<div class="block-content">
+<p>若FR方法步长由强Wolfe准则得到，且<span class="math inline">\(\sigma
+\in\left( 0, \frac{1}{2} \right)\)</span>，则迭代方向<span
+class="math inline">\(d_{k}\)</span>满足<span
+class="math display">\[-\frac{1}{1-\sigma}\leq
+\frac{g_{k}^{T}d_{k}}{\left\lVert g_{k} \right\rVert ^{2}}\leq
+\frac{2\sigma-1}{1-\sigma}\]</span>从而<span
+class="math inline">\(d_{k}\)</span>是下降方向。</p>
+</div>
+</div>
+<p><strong>证明</strong> 考虑数学归纳法，当<span
+class="math inline">\(k=0\)</span>时，<span
+class="math inline">\(d_{0}=-g_{0}\)</span>，此时<span
+class="math display">\[\frac{g_{0}^{T}d_{0}}{\left\lVert g_{0}
+\right\rVert ^{2}}=-1\]</span>成立。考虑<span
+class="math inline">\(k-1\)</span>均成立，此时<span
+class="math display">\[\begin{align}
+\frac{g_{k}^{T}d_{k}}{\left\lVert g_{k} \right\rVert ^{2}} &amp; =-1+
+\beta_{k-1} \frac{g_{k}^{T}d_{k-1}}{\left\lVert g_{k} \right\rVert ^{2}}
+\\
+&amp; = -1 + \frac{g_{k}^{T}d_{k-1}}{\left\lVert g_{k-1}
+\right\rVert^{2} }
+\end{align}\]</span>一方面<span
+class="math display">\[\frac{g_{k}^{T}d_{k}}{\left\lVert g_{k}
+\right\rVert^{2} }\geq-1+ \frac{\sigma g_{k-1}^{T}d_{k-1}}{\left\lVert
+g_{k-1} \right\rVert
+^{2}}\geq-1-\frac{\sigma}{1-\sigma}=-\frac{1}{1-\sigma}\]</span>另方面<span
+class="math display">\[\frac{g_{k}^{T}d_{k}}{\left\lVert g_{k}
+\right\rVert^{2} }\leq-1- \frac{\sigma g_{k-1}^{T}d_{k-1}}{\left\lVert
+g_{k-1} \right\rVert
+^{2}}\leq-1+\frac{\sigma}{1-\sigma}=\frac{2\sigma-1}{1-\sigma}\]</span>故证毕。</p>
 <div class="block definition">
 <div class="block-title">
-Definition 3.3.2 (PRP公式).
+Definition 3.3.2 (PRP方法).
 </div>
 <div class="block-content">
 <p><span
-class="math display">\[\beta^{PRP}=\frac{g_{k}^{T}(g_{k}-g_{k-1})}{g_{k-1}^{T}g_{k-1}}\]</span></p>
+class="math display">\[\beta^{PRP}_{k}=\frac{g_{k+1}^{T}(g_{k+1}-g_{k})}{g_{k}^{T}g_{k}}\]</span></p>
 </div>
 </div>
-<h2 data-number="4" id="最小二乘法"><span
-class="header-section-number">4</span> 最小二乘法</h2>
-</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE/">【随机过程】04Markov链</a><a class="next" href="/2024/10/08/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9101%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】01一元线性回归</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/11/04/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE-%E8%BF%9E%E7%BB%AD%E6%97%B6%E9%97%B4/">【随机过程】04Markov链-连续时间</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/03/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-%E7%BB%AD/">【回归分析】02多元线性回归-续</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/25/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%AE%9E%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%E5%AF%B9%E8%A7%92%E5%8C%96/">实对称矩阵对角化</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/15/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】02多元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B-%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】03更新过程-更新过程的推广</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE/">【随机过程】04Markov链</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/10/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%BA%8C%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化-二阶方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/08/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9101%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】01一元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/06/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/">【随机过程】03更新过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/25/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%B8%80%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+<div class="block definition">
+<div class="block-title">
+Definition 3.3.3 (共轭下降方法).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[\beta_{k}=-\frac{g_{k+1}^{T}g_{k+1}}{d_{k}^{T}g_{k}}\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 3.3.4 (DY方法).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[\beta_{k}=-\frac{g_{k}^{T}g_{k}}{d_{k}^{T}(g_{k+1}-g_{k})}\]</span></p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.3.2 (正定二次函数Broyden族性质).
+</div>
+<div class="block-content">
+<p>对于正定二次函数，采用精确线搜索的Broyden族方法，有<span
+class="math display">\[\begin{align} H_{k}y_{i} &amp;= s_{i}\\
+d_{k}^{T}Gd_{i}&amp;=0\end{align}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 仍然考虑数学归纳法。当<span
+class="math inline">\(k=1\)</span>时，<span
+class="math inline">\(H_{0}y_{0}=s_{0}\)</span>，同时<span
+class="math display">\[d_{1}^{T}Gd_{0}=-\frac{1}{\alpha_{0}}(H_{1}g_{1})^{T}y_{0}=-g_{1}^{T}d_{0}=0\]</span>此时对于<span
+class="math inline">\(k-1\)</span>均成立，此时<span
+class="math display">\[H_{k}y_{i}=H_{k-1}y_{i}+
+\frac{s_{k-1}s_{k-1}^{T}}{s_{k-1}^{T}y_{k-1}}y_{i}-
+\frac{H_{k-1}y_{k-1}y_{k-1}^{T}H_{k-1}}{y_{k-1}^{T}Hy_{k-1}}y_{i}+\varphi
+v_{k-1}v_{k-1}^{T}y_{i}\]</span>注意到<span
+class="math display">\[\begin{align}
+&amp; s_{k-1}^{T}y_{i}=s_{k-1}^{T}Gs_{i} =0 \\
+&amp; y_{k-1}^{T}H_{k-1}y_{i}=y_{k-1}^{T}s_{i}=s_{k-1}^{T}Gs_{i}=0 \\
+&amp; v_{k-1}^{T}y_{i}=(y_{k-1}^{T}H_{k-1}y_{k-1})^{1/2}\left(
+\frac{s_{k-1}}{s_{k-1}^{T}y_{k-1}}-\frac{H_{k-1}y_{k-1}}{y_{k-1}^{T}H_{k-1}y_{k-1}}
+\right)^{T}y_{i}=0
+\end{align}\]</span>同时<span class="math display">\[\begin{align}
+d_{k}^{T}Gd_{i} &amp; = -\frac{1}{\alpha_{i}}(H_{k}g_{k})^{T}y_{i} \\
+&amp; =-\frac{1}{\alpha_{i}}g_{k}^{T}s_{i} \\
+&amp; =-g_{k}^{T}d_{i} \\
+&amp; =-(g_{i+1}+y_{i+1}+\dots+y_{k-1})^{T}d_{i} \\
+&amp; =0
+\end{align}\]</span></p>
+</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE/">【随机过程】04Markov链</a><a class="next" href="/2024/10/08/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9101%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】01一元线性回归</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/11/09/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9105%E7%BA%A6%E6%9D%9F%E6%9C%80%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98/">【最优化方法】05约束最优化问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/09/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9104%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/">【最优化方法】04无约束优化-最小二乘法</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/05/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9103%E8%BF%9D%E8%83%8C%E5%9F%BA%E6%9C%AC%E5%81%87%E8%AE%BE%E7%9A%84%E6%83%85%E5%86%B5/">【回归分析】03违背基本假设的情况</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/04/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE-%E8%BF%9E%E7%BB%AD%E6%97%B6%E9%97%B4/">【随机过程】04Markov链-连续时间</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/03/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-%E7%BB%AD/">【回归分析】02多元线性回归-续</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/25/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%AE%9E%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%E5%AF%B9%E8%A7%92%E5%8C%96/">实对称矩阵对角化</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/15/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】02多元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B-%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】03更新过程-更新过程的推广</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE/">【随机过程】04Markov链</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/10/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%BA%8C%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化-二阶方法</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
   tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   });
 </script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>【回归分析】03违背基本假设的情况 | What was I thinking?</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/pure-min.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="https://unpkg.com/jquery/dist/jquery.min.js"></script><link rel="stylesheet" href="/css/custom.css"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"><link rel="Shortcut Icon" href="/images/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="https://unpkg.com/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="https://unpkg.com/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="https://unpkg.com/toastr/build/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【回归分析】03违背基本假设的情况</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【回归分析】03违背基本假设的情况</h1><div class="post-meta">2024-11-05<span> | </span><span class="category"><a href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%AF%8A%E6%96%AD"><span class="toc-text">1 回归模型的诊断</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%96%B9%E5%B7%AE%E6%80%A7"><span class="toc-text">2 异方差性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E7%9B%B8%E5%85%B3"><span class="toc-text">3 自相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E7%9B%B8%E5%85%B3%E6%A3%80%E9%AA%8C"><span class="toc-text">3.1 自相关检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E7%9B%B8%E5%85%B3%E6%94%B9%E8%BF%9B%E6%96%B9%E6%B3%95"><span class="toc-text">3.2 自相关改进方法</span></a></li></ol></li></ol></div></div><div class="post-content"><h2 data-number="1" id="回归模型的诊断"><span
+class="header-section-number">1</span> 回归模型的诊断</h2>
+<div class="block theorem">
+<div class="block-title">
+Theorem 1.1 (残差$e$的性质).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[E(e)=0,Cov(e)=\sigma^{2}(I-H)\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 1.1 (学生化残差).
+</div>
+<div class="block-content">
+<p><span class="math display">\[r_{i}= \frac{e_{i}}{\hat{\sigma}\sqrt{
+1-h_{ii} }}\]</span>其中<span class="math inline">\(\hat{\sigma}=\sqrt{
+\frac{SSE}{n-p} }\)</span>。近似的认为<span
+class="math inline">\(r_{i}\sim N(0,1)\)</span>。</p>
+</div>
+</div>
+<h2 data-number="2" id="异方差性"><span
+class="header-section-number">2</span> 异方差性</h2>
+<div class="block definition">
+<div class="block-title">
+Definition 2.1 (异方差性).
+</div>
+<div class="block-content">
+<p>若随机误差存在异方差性，即<span
+class="math display">\[Var(\varepsilon)=\sigma^{2}\Lambda\]</span>此时有<span
+class="math display">\[Var(\boldsymbol{\beta})=(X^{T}X)^{-1}X^{T}\Lambda
+X(X^{T}X)^{-1}\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 2.2 (Spearman检验).
+</div>
+<div class="block-content">
+<p>取<span class="math inline">\(e_{i}\)</span>的绝对值，将<span
+class="math inline">\(X_{i}\)</span>和<span class="math inline">\(\lvert
+e_{i}
+\rvert\)</span>按递增或递减的次序排列后给出各自的次序等级，计算<span
+class="math display">\[r_{s}=1-\frac{6}{n(n^{2}-1)}\sum_{i = 1}^{n}
+d_{i}^{2}\]</span>其中<span
+class="math inline">\(d_{i}\)</span>为次序等级之差。此时当<span
+class="math inline">\(n&gt;8\)</span>时检验统计量<span
+class="math display">\[t=\frac{\sqrt{ n-2 }r_{s}}{\sqrt{ 1-r_{s}^{2}
+}}\sim t(n-2)\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 2.3 (G-Q检验).
+</div>
+<div class="block-content">
+<p>将样本观测值按<span
+class="math inline">\(X_{i}\)</span>大小进行排序，剔除中间<span
+class="math inline">\(m\)</span>个观测，对剩余等分为2个样本分布进行回归分析，此时<span
+class="math display">\[\begin{align}F &amp; =\frac{\sum e_{1i}^{2} /
+\left( \frac{n-m}{2}-p -1\right) }{\sum e_{2i}^{2} / \left(
+\frac{n-m}{2}-p -1\right) }\\ &amp;=\frac{\sum e_{1i}^{2}}{\sum
+e_{2i}^{2}}\sim F\left( \left( \frac{n-m}{2}-p -1\right),\left(
+\frac{n-m}{2}-p -1\right)\right)\end{align}\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 2.4 (加权最小二乘法).
+</div>
+<div class="block-content">
+<p>考虑<span
+class="math display">\[Q_{w}(\beta)=(Y-X\boldsymbol{\beta})^{T}\Omega(Y-X\boldsymbol{\beta})\]</span>其中<span
+class="math inline">\(\Omega=\mathrm{diag}\{ \omega_{1},\dots,\omega_{n}
+\}\)</span>。此时<span
+class="math display">\[\boldsymbol{\beta}=(X^{T}\Omega
+X)^{-1}X^{T}\Omega Y\]</span></p>
+<p>为了消除异方差，我们一般取<span
+class="math inline">\(\Omega=\Lambda^{-1}\)</span>。若已知<span
+class="math inline">\(\sigma^{2}_{i}=\sigma^{2}f(X_{i})\)</span>，则取<span
+class="math display">\[\Omega=\mathrm{diag}(f(X))^{-1}\]</span></p>
+</div>
+</div>
+<h2 data-number="3" id="自相关"><span
+class="header-section-number">3</span> 自相关</h2>
+<h3 data-number="3.1" id="自相关检验"><span
+class="header-section-number">3.1</span> 自相关检验</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 3.1.1 (自相关系数).
+</div>
+<div class="block-content">
+<p><span class="math display">\[\rho= \frac{\sum_{t = 2}^{n}
+\varepsilon_{t}\varepsilon_{t-1}}{\sqrt{ \sum_{t = 2}^{n}
+\varepsilon_{t}^{2} }\sqrt{ \sum_{t = 2}^{n} \varepsilon_{t-1}^{2}
+}}\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 3.1.2 (一阶自相关).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[\varepsilon_{t}=\rho\varepsilon_{t-1}+u_{t}\]</span></p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.1.1 (一阶自相关误差方差).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[\sigma_{\varepsilon}^{2}=\frac{\sigma^{2}}{1-\rho^{2}}\]</span>其协方差为<span
+class="math display">\[Cov(\varepsilon_{t},\varepsilon_{t-k})=\rho^{k}\sigma^{2}_{\varepsilon}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 注意到<span
+class="math display">\[\begin{align}
+Var(\varepsilon_{t}) &amp;
+=\rho^{2}Var(\varepsilon_{t-1})+\sigma^{2}+2\rho
+Cov(\varepsilon_{t-1},u_{t}) \\
+&amp; = \rho^{2}Var(\varepsilon_{t-1})+\sigma^{2}
+\end{align}\]</span>我们认为<span
+class="math display">\[Var(\varepsilon_{t})=Var(\varepsilon_{t-1})=\sigma_{\varepsilon}^{2}\]</span>因此有<span
+class="math display">\[\sigma^{2}_{\varepsilon}=\frac{\sigma^{2}}{1-\rho^{2}}\]</span>此时<span
+class="math display">\[Cov(\varepsilon_{t},\varepsilon_{t-1})=\rho\sigma^{2}_{\varepsilon}\]</span>由递推可证一般情况。</p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.1.2 (一阶自相关方差估计).
+</div>
+<div class="block-content">
+<p>在一阶自相关方差下有<span
+class="math display">\[\hat{\sigma^{2}}=\frac{SSE}{n-tr(H\Sigma)}\]</span></p>
+</div>
+</div>
+<p>此时<span class="math display">\[\begin{align}
+E(SSE) &amp; =E(\boldsymbol{e}^{T}\boldsymbol{e}) \\
+&amp; =E(\varepsilon ^{T}(I-H)\varepsilon) \\
+&amp; =\sigma^{2}tr((I-H)R) \\
+&amp; = \sigma^{2}(n-tr(HR))
+\end{align}\]</span>考虑<span class="math inline">\(p=1\)</span>时<span
+class="math display">\[\begin{align}
+tr(HR)
+&amp; = \sum_{i = 1}^{n} \sum_{j = 1}^{n} h_{ij}\rho^{\lvert i-j \rvert
+} \\
+&amp; = \sum_{k = 1}^{n} h_{kk}+2\sum_{k = 1}^{n-1} \rho^{k}\left(
+\sum_{i = 1}^{n-k} h_{i,i+k} \right) \\
+&amp; =2+2\sum_{k = 1}^{n-1} \rho^{k}\left( \sum_{i = 1}^{n-k} h_{i,i+k}
+\right)
+\end{align}\]</span>为了计算简便，我们不妨假设<span
+class="math inline">\(X\)</span>已做标准化处理，此时<span
+class="math display">\[h_{ij}=\frac{1}{n}+ X_{i}X_{j}\]</span>此时<span
+class="math display">\[\begin{align}
+tr(HR) &amp; =2+2\sum_{k = 1}^{n} \rho^{k}\left( \sum_{i = 1}^{n-k}
+\left( \frac{1}{n} +X_{i}X_{i+k}\right) \right) \\
+&amp; = 2+2\sum_{k = 1}^{n} \rho^{k}\left( 1-\frac{k}{n}+\sum_{i =
+1}^{n-k} X_{i}X_{i+k}\right)
+\end{align}\]</span>因此<span
+class="math display">\[E(SSE)=\sigma^{2}\left( n-2-2\sum_{k = 1}^{n}
+\rho^{k}\left( 1-\frac{k}{n}+\sum_{i = 1}^{n-k} X_{i}X_{i+k} \right)
+\right)\]</span></p>
+<div class="block definition">
+<div class="block-title">
+Definition 3.1.3 (DW检验).
+</div>
+<div class="block-content">
+<p><span class="math display">\[DW=\frac{\sum_{t = 2}^{n}
+(e_{t}-e_{t-1})^{2}}{\sum_{t = 2}^{n} e_{t}^{2}}\approx
+2(1-\hat{\rho})\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> <span class="math display">\[\begin{align}
+DW &amp; =\frac{\sum_{t = 2}^{n} (e_{t}-e_{t-1})^{2}}{\sum_{t = 2}^{n}
+e_{t}^{2}} \\
+&amp; = \frac{\sum_{t = 2}^{n} e_{t}^{2}+\sum_{t = 2}^{n}
+e_{t-1}^{2}-2\sum_{t = 2}^{n} e_{t}e_{t-1}}{\sum_{t = 2}^{n} e_{t}^{2}}
+\end{align}\]</span>近似认为<span class="math inline">\(\sum_{t =
+2}^{n}e_{t}^{2}=\sum_{t = 2}^{n}e_{t-1}^{2}\)</span>，因此<span
+class="math display">\[DW\approx 2\left( 1-\frac{\sum_{t = 2}^{n}
+e_{t}e_{t-1}}{\sum_{t = 2}^{n} e_{t}^{2}} \right)\approx
+2(1-\hat{\rho})\]</span></p>
+<h3 data-number="3.2" id="自相关改进方法"><span
+class="header-section-number">3.2</span> 自相关改进方法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 3.2.1 (迭代法).
+</div>
+<div class="block-content">
+<p>对于<span
+class="math inline">\(Y=X\beta+\varepsilon\)</span>，其中<span
+class="math inline">\(\varepsilon\)</span>满足一阶自相关，此时令<span
+class="math display">\[\begin{align} Y&#39;_{t} &amp; =Y_{t}-\rho
+Y_{t-1} \\ X&#39;_{t} &amp; =X_{t}-\rho
+X_{t-1}\end{align}\]</span>其中<span
+class="math inline">\(\hat{\rho}\approx
+1-\frac{1}{2}DW\)</span>。此时构建<span
+class="math inline">\(Y&#39;=X&#39;\beta&#39;+u\)</span>满足基本假定。</p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 3.2.2 (差分法).
+</div>
+<div class="block-content">
+<p>构建<span class="math display">\[\Delta Y=\beta\Delta
+X+u\]</span></p>
+</div>
+</div>
+</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/11/09/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9104%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/">【最优化方法】04无约束优化-最小二乘法</a><a class="next" href="/2024/11/04/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE-%E8%BF%9E%E7%BB%AD%E6%97%B6%E9%97%B4/">【随机过程】04Markov链-连续时间</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/11/09/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9105%E7%BA%A6%E6%9D%9F%E6%9C%80%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98/">【最优化方法】05约束最优化问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/09/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9104%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/">【最优化方法】04无约束优化-最小二乘法</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/05/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9103%E8%BF%9D%E8%83%8C%E5%9F%BA%E6%9C%AC%E5%81%87%E8%AE%BE%E7%9A%84%E6%83%85%E5%86%B5/">【回归分析】03违背基本假设的情况</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/04/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE-%E8%BF%9E%E7%BB%AD%E6%97%B6%E9%97%B4/">【随机过程】04Markov链-连续时间</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/03/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-%E7%BB%AD/">【回归分析】02多元线性回归-续</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/25/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%AE%9E%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%E5%AF%B9%E8%A7%92%E5%8C%96/">实对称矩阵对角化</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/15/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">【回归分析】02多元线性回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B-%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】03更新过程-更新过程的推广</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE/">【随机过程】04Markov链</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/10/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%BA%8C%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化-二阶方法</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
