@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>【回归分析】04多重共线性 | What was I thinking?</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/pure-min.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="https://unpkg.com/jquery/dist/jquery.min.js"></script><link rel="stylesheet" href="/css/custom.css"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"><link rel="Shortcut Icon" href="/images/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="https://unpkg.com/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="https://unpkg.com/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="https://unpkg.com/toastr/build/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【回归分析】04多重共线性</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【回归分析】04多重共线性</h1><div class="post-meta">2024-11-26<span> | </span><span class="category"><a href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E9%87%8D%E5%85%B1%E7%BA%BF%E6%80%A7"><span class="toc-text">1 多重共线性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8A%E6%96%AD%E6%96%B9%E6%B3%95"><span class="toc-text">2 诊断方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E5%B7%AE%E8%86%A8%E8%83%80%E5%9B%A0%E5%AD%90%E8%AF%8A%E6%96%AD%E6%B3%95"><span class="toc-text">2.1 方差膨胀因子诊断法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E6%A0%B9%E8%AF%8A%E6%96%AD%E6%B3%95"><span class="toc-text">2.2 特征根诊断法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B2%AD%E4%BC%B0%E8%AE%A1"><span class="toc-text">3 岭估计</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="多重共线性"><span
+class="header-section-number">1</span> 多重共线性</h2>
+<div class="block theorem">
+<div class="block-title">
+Theorem 1.1 (多重共线性性质).
+</div>
+<div class="block-content">
+<p><span class="math inline">\(X\)</span>存在多重共线性<span
+class="math inline">\(\iff\)</span><span
+class="math inline">\(X^{T}X\)</span>存在零特征值。</p>
+</div>
+</div>
+<p><strong>证明</strong> 考虑<span
+class="math inline">\(X^{T}X\)</span>特征向量<span
+class="math inline">\(\xi\)</span>，不妨设其为单位向量，此时<span
+class="math display">\[X^{T}X\xi=\lambda \xi\]</span>故<span
+class="math display">\[\xi ^{T}X^{T}X\xi=\lambda \xi
+^{T}\xi=\lambda\]</span>若<span class="math inline">\(\lambda =
+0\)</span>，则<span class="math display">\[\xi ^{T}X^{T}X\xi=
+0\]</span>故<span class="math display">\[X\xi = 0\]</span>即<span
+class="math inline">\(X\)</span>存在多重共线性。</p>
+<p>反过来<span class="math display">\[X\xi=0\]</span>显然也有<span
+class="math display">\[X^{T}X\xi=0\]</span>这里用到了<span
+class="math inline">\(X\)</span>与<span
+class="math inline">\(X^{T}X\)</span>同零空间的性质。</p>
+<h2 data-number="2" id="诊断方法"><span
+class="header-section-number">2</span> 诊断方法</h2>
+<h3 data-number="2.1" id="方差膨胀因子诊断法"><span
+class="header-section-number">2.1</span> 方差膨胀因子诊断法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 2.1.1 (方差膨胀因子).
+</div>
+<div class="block-content">
+<p><span
+class="math inline">\(\hat{\beta}_{i}\)</span>的方差膨胀因子为<span
+class="math display">\[VIF_{i}=\frac{1}{1-R_{i}^{2}}\]</span>其中<span
+class="math inline">\(R_{i}^{2}\)</span>表示自变量<span
+class="math inline">\(X_{i}\)</span>对其余<span
+class="math inline">\(i-1\)</span>各自变量的复决定系数。</p>
+</div>
+</div>
+<blockquote>
+<p>[!theorem] 方差膨胀因子的性质 对<span
+class="math inline">\(X\)</span>进行中心化得到<span
+class="math inline">\(X^{*}\)</span>，令<span
+class="math display">\[L=(X^{*T}X^{*})^{-1}\]</span>此时<span
+class="math display">\[Var(\hat{\beta}
+_{i})=l_{ii}\sigma^{2}\]</span>而<span
+class="math inline">\(l_{ii}\)</span>即方差膨胀因子</p>
+</blockquote>
+<p><strong>证明</strong> 假设<span
+class="math inline">\(X\)</span>已经经过了标准化，此时建立回归模型为<span
+class="math display">\[X_{i}=X_{-i}\gamma_{i}+\epsilon_{i}\]</span>此时<span
+class="math display">\[H_{-i}=X_{-i}(X_{-i}^{T}X_{-i})^{-1}X_{-i}^{T}\]</span>因此<span
+class="math display">\[R_{i}^{2}=\frac{X_{i}^{T}H_{-i}X_{i}}{X_{i}^{T}X_{i}}=X_{i}^{T}H_{-i}X_{i}\]</span>此时<span
+class="math display">\[\frac{1}{1-R^{2}_{i}}=
+\frac{1}{1-X_{i}^{T}H_{-i}X_{i}}\]</span></p>
+<p>下面考虑求<span
+class="math inline">\(l_{ii}=((X^{*T}X^{*})^{-1})_{ii}\)</span>。由于对称性，这里不妨设<span
+class="math inline">\(X_{i}\)</span>正好在最后一个，此时<span
+class="math display">\[\begin{align}
+X &amp; =\begin{pmatrix} X_{-i} &amp; X_{i} \end{pmatrix} \\
+L_{X} &amp;= \mathrm{diag}(X^{T}X)
+\end{align}\]</span>因此<span class="math display">\[\begin{align}
+(X^{T}X )^{-1}
+&amp; =\begin{pmatrix}
+X_{-i}^{T}X_{-i} &amp; X_{-i}^{T}X_{i} \\
+X_{i}^{T}X_{-i} &amp; X_{i}^{T}X_{i}
+\end{pmatrix}^{-1} \\
+&amp; = \begin{pmatrix}
+1  &amp; -(X_{-i}^{T}X_{-i})^{-1}X_{-i}^{T}X_{i} \\
+0  &amp; I
+\end{pmatrix}\begin{pmatrix}
+(X_{-i}^{T}X_{-i})^{-1} &amp; 0\\
+0 &amp; S^{-1}
+\end{pmatrix}\begin{pmatrix}
+1  &amp; 0 \\
+-X_{i}^{T}X_{-i}(X_{-i}^{T}X_{-i})^{-1}   &amp; I
+\end{pmatrix}
+\end{align}\]</span>其中<span
+class="math display">\[S=X_{i}^{T}X_{i}-X_{i}^{T}X_{-i}(X_{-i}X_{-i})^{-1}X_{-i}^{T}X_{i}=1-X_{i}^{T}H_{-i}X_{i}\]</span>因此<span
+class="math display">\[l_{ii}=S^{-1}=\frac{1}{1-X_{i}^{T}H_{-i}X_{i}}\]</span>故证毕。</p>
+<h3 data-number="2.2" id="特征根诊断法"><span
+class="header-section-number">2.2</span> 特征根诊断法</h3>
+<div class="block definition">
+<div class="block-title">
+Definition 2.2.1 (特征根诊断法).
+</div>
+<div class="block-content">
+<p>设<span
+class="math display">\[k_{i}=\frac{\lambda_{m}}{\lambda_{i}}\]</span>为特征值<span
+class="math inline">\(\lambda_{i}\)</span>的条件数。</p>
+</div>
+</div>
+<h2 data-number="3" id="岭估计"><span
+class="header-section-number">3</span> 岭估计</h2>
+<div class="block definition">
+<div class="block-title">
+Definition 3.1 (岭估计).
+</div>
+<div class="block-content">
+<p><span
+class="math display">\[\hat{\beta}(k)=(X^{T}X+kI)^{-1}X^{T}Y\]</span></p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 3.1 (岭估计等价性).
+</div>
+<div class="block-content">
+<p>岭回归是最小二乘问题<span
+class="math display">\[Q(\boldsymbol{\beta})=\left\lVert
+Y-X\boldsymbol{\beta} \right\rVert ^{2}+k\left\lVert \boldsymbol{\beta}
+\right\rVert ^{2}\]</span>的解。</p>
+</div>
+</div>
+<p><strong>证明</strong> 令<span class="math display">\[\begin{align}
+\frac{ \partial Q }{ \partial \boldsymbol{\beta} }  &amp; =
+-2X^{T}(Y-X\boldsymbol{\beta} )+ 2k\boldsymbol{\beta} \\
+&amp; = 2((X^{T}X+kI)\boldsymbol{\beta}-X^{T}Y)=0
+\end{align}\]</span>故证毕。</p>
+</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/11/29/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9105%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/">【回归分析】05模型选择</a><a class="next" href="/2024/11/21/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9106%E7%BD%9A%E5%87%BD%E6%95%B0%E6%B3%95/">【最优化方法】06罚函数法</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/11/30/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9105%E9%9E%85/">【随机过程】05鞅</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/30/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9106%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8/">【随机过程】06布朗运动</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/29/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9105%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/">【回归分析】05模型选择</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/26/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9104%E5%A4%9A%E9%87%8D%E5%85%B1%E7%BA%BF%E6%80%A7/">【回归分析】04多重共线性</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/21/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9106%E7%BD%9A%E5%87%BD%E6%95%B0%E6%B3%95/">【最优化方法】06罚函数法</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/">【回归分析】02多元线性回归-模型推断</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%88%86%E5%9D%97%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/">分块矩阵的逆</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E5%B9%BF%E4%B9%89%E5%81%8FF%E6%A3%80%E9%AA%8C/">广义偏F检验</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/Sherman-Morrison%E5%85%AC%E5%BC%8F/">Sherman-Morrison公式</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E6%8A%95%E5%BD%B1%E7%9F%A9%E9%98%B5/">投影矩阵</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
