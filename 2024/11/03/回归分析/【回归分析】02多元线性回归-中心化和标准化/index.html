@@ -7,7 +7,7 @@ html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
 toggle.addEventListener('click', () => {
 localStorage.dark = !(html.dataset.dark == 'true');
 html.dataset.dark = localStorage.dark;
-});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【回归分析】02多元线性回归-续</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【回归分析】02多元线性回归-续</h1><div class="post-meta">2024-11-03<span> | </span><span class="category"><a href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E5%BF%83%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96"><span class="toc-text">1 中心化和标准化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E7%9F%A9%E9%98%B5%E4%B8%8E%E5%81%8F%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-text">2 相关性矩阵与偏相关系数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E5%88%AB%E5%9E%8B%E8%87%AA%E5%8F%98%E9%87%8F"><span class="toc-text">3 类别型自变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%AE%B5%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92"><span class="toc-text">4 分段线性回归</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="中心化和标准化"><span
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【回归分析】02多元线性回归-续</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【回归分析】02多元线性回归-续</h1><div class="post-meta">2024-11-03<span> | </span><span class="category"><a href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E5%BF%83%E5%8C%96%E5%92%8C%E6%A0%87%E5%87%86%E5%8C%96"><span class="toc-text">1 中心化和标准化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E7%9F%A9%E9%98%B5%E4%B8%8E%E5%81%8F%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-text">2 相关性矩阵与偏相关系数</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="中心化和标准化"><span
 class="header-section-number">1</span> 中心化和标准化</h2>
 <div class="block definition">
 <div class="block-title">
@@ -15,7 +15,8 @@ Definition 1.1 (中心化).
 </div>
 <div class="block-content">
 <p><span class="math display">\[X_{ij}&#39;=X_{ij}-\bar{X}_{j},\quad
-Y_{i}&#39;=Y_{i}-\bar{Y}\]</span></p>
+Y_{i}&#39;=Y_{i}-\bar{Y}\]</span>向量形式为<span
+class="math display">\[X&#39;=(I-A)X,\quad Y&#39;=(I-A)Y\]</span></p>
 </div>
 </div>
 <div class="block theorem">
@@ -124,7 +125,10 @@ Definition 1.2 (标准化).
 <div class="block-content">
 <p><span class="math display">\[\begin{align}
 X_{ij}^{*}=\frac{X_{ij}-\bar{X}_{j}}{\sqrt{ L_{jj} } } \\ Y_{i}^{*
-}=\frac{Y_{i}-\bar{Y}}{\sqrt{ L_{yy} }} \end{align}\]</span></p>
+}=\frac{Y_{i}-\bar{Y}}{\sqrt{ L_{yy} }}
+\end{align}\]</span>向量形式为<span
+class="math display">\[X^{*}=(I-A)XL_{x}^{-1/2},\quad Y^{*}=(I-A)Y
+L_{y}^{-1/2}\]</span></p>
 </div>
 </div>
 <div class="block theorem">
@@ -159,16 +163,22 @@ class="header-section-number">2</span> 相关性矩阵与偏相关系数</h2>
 Definition 2.1 (相关性矩阵).
 </div>
 <div class="block-content">
-<p><span class="math display">\[r=\left(\begin{matrix} 1
-&amp;  r_{Y1}  &amp;  r_{Y2}  &amp;  \dots  &amp; r_{Yp}
-\\  r_{1Y}  &amp; 1 &amp;  r_{12}  &amp;  \dots  &amp; r_{1p}
-\\  \vdots  &amp;  \vdots  &amp;  \vdots&amp;  \ddots &amp; \vdots
-\\  r_{pY}  &amp;  r_{p1}  &amp; r_{p 2} &amp;  \dots  &amp; 1
-\end{matrix}\right)=(X^{*})^{T}(X^{*})\]</span>其中<span
-class="math display">\[r_{ij}=\frac{\sum_{n = 1}^{N}
-(X_{i,n}-\bar{X}_{i})(X_{j,n}-\bar{X}_{j})}{\sqrt{ \sum_{i = 1}^{N}
-(X_{i,n}-\bar{X}_{i})^{2}\sum_{i = 1}^{N} (X_{j,n}-\bar{X}_{j})^{2}
-}}=\sum_{n = 1}^{N} X^{*}_{i,n}X^{*}_{j,n}\]</span></p>
+<p>设 <span class="math inline">\(\tilde{X} = (Y,X)\)</span>
+为包含因变量的增广矩阵，则相关性矩阵为：<span
+class="math display">\[r=\left(\begin{matrix} 1
+&amp;  r_{Y1}  &amp;  r_{Y2}  &amp;  \dots  &amp; r_{Yp} \\
+r_{1Y}  &amp; 1 &amp;  r_{12}  &amp;  \dots  &amp; r_{1p} \\
+\vdots  &amp;  \vdots  &amp;  \vdots&amp;  \ddots &amp; \vdots \\
+r_{pY}  &amp;  r_{p1}  &amp; r_{p 2} &amp;  \dots  &amp; 1
+\end{matrix}\right)=\tilde{X}^{*T}\tilde{X}^*=L^{-1/2}\tilde{X}^T(I-A)\tilde{X}L^{-1/2}\]</span>Y与X的相关性系数可以表示为：<span
+class="math display">\[r_{Yj} = \frac{L_{Yj}}{\sqrt{L_{YY}L_{jj}}} =
+\frac{\sum_{i=1}^n (Y_i-\bar{Y})(X_{ij}-\bar{X}_j)}{\sqrt{\sum_{i=1}^n
+(Y_i-\bar{Y})^2\sum_{i=1}^n
+(X_{ij}-\bar{X}_j)^2}}\]</span>X之间的相关性系数为：<span
+class="math display">\[r_{jk} = \frac{L_{jk}}{\sqrt{L_{jj}L_{kk}}} =
+\frac{\sum_{i=1}^n
+(X_{ij}-\bar{X}_j)(X_{ik}-\bar{X}_k)}{\sqrt{\sum_{i=1}^n
+(X_{ij}-\bar{X}_j)^2\sum_{i=1}^n (X_{ik}-\bar{X}_k)^2}}\]</span></p>
 </div>
 </div>
 <div class="block definition">
@@ -176,8 +186,10 @@ class="math display">\[r_{ij}=\frac{\sum_{n = 1}^{N}
 Definition 2.2 (偏决定系数).
 </div>
 <div class="block-content">
-<p><span
-class="math display">\[r^{2}_{Yj}=\frac{SSE_{1,\dots,j-1,j+1,\dots,p}-SSE_{1,\dots,p}}{SSE_{1,\dots,j-1,j+1,\dots,p}}\]</span></p>
+<p><span class="math display">\[\begin{align} R^{2}_{Yj} &amp;
+=\frac{SSE_{1,\dots,j-1,j+1,\dots,p}-SSE_{1,\dots,p}}{SSE_{1,\dots,j-1,j+1,\dots,p}}
+\\  &amp; =
+\frac{Y^{T}(H-H_{-j})Y}{Y^{T}(I-H_{-j})Y}\end{align}\]</span></p>
 </div>
 </div>
 <div class="block definition">
@@ -185,20 +197,27 @@ class="math display">\[r^{2}_{Yj}=\frac{SSE_{1,\dots,j-1,j+1,\dots,p}-SSE_{1,\do
 Definition 2.3 (偏相关系数).
 </div>
 <div class="block-content">
-<p><span class="math display">\[r_{Yj}=\sqrt{ r^{2}_{Yj}
-}\]</span>符号与回归系数符号相同。</p>
+<p><span class="math display">\[r_{Yj} =
+\frac{X_j^T(I-H_{-j})Y}{\sqrt{X_j^T(I-H_{-j})X_j \cdot
+Y^T(I-H_{-j})Y}}\]</span> 符号与回归系数符号相同。</p>
 </div>
 </div>
-<h2 data-number="3" id="类别型自变量"><span
-class="header-section-number">3</span> 类别型自变量</h2>
-<p>哑变量化</p>
-<h2 data-number="4" id="分段线性回归"><span
-class="header-section-number">4</span> 分段线性回归</h2>
-<p>使用01变量进行分段： <span
-class="math display">\[Y=\beta_{0}+\beta_{1}X+\beta_{2}(X-X_{0})D+\varepsilon\]</span>
-<span
-class="math display">\[Y=\beta_{0}+\beta_{1}X+\beta_{2}(X-X_{0})D_{0}+\beta_{3}(X-X_{1})D_{1}+\varepsilon\]</span></p>
-</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/11/04/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE-%E8%BF%9E%E7%BB%AD%E6%97%B6%E9%97%B4/">【随机过程】04Markov链-连续时间</a><a class="next" href="/2024/10/25/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%AE%9E%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%E5%AF%B9%E8%A7%92%E5%8C%96/">实对称矩阵对角化</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/12/10/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9106%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/">【回归分析】06广义线性回归模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/30/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9105%E9%9E%85/">【随机过程】05鞅</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/30/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9106%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8/">【随机过程】06布朗运动</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/29/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9105%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/">【回归分析】05模型选择</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/26/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9104%E5%A4%9A%E9%87%8D%E5%85%B1%E7%BA%BF%E6%80%A7/">【回归分析】04多重共线性</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/21/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9106%E7%BD%9A%E5%87%BD%E6%95%B0%E6%B3%95/">【最优化方法】06罚函数法</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/">【回归分析】02多元线性回归-模型推断</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%88%86%E5%9D%97%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/">分块矩阵的逆</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E5%B9%BF%E4%B9%89%E5%81%8FF%E6%A3%80%E9%AA%8C/">广义偏F检验</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/Sherman-Morrison%E5%85%AC%E5%BC%8F/">Sherman-Morrison公式</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+<div class="block theorem">
+<div class="block-title">
+Theorem 2.1 (偏相关系数与偏决定系数的关系).
+</div>
+<div class="block-content">
+<p><span class="math display">\[r_{Yj}^{2}=R_{Y_{j}}^{2}\]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 类似于t检验和偏F检验<span
+class="math display">\[\begin{align}
+r_{Y_{j}}^{2} &amp; =\frac{Y^{T}r_{j}r_{j}^{T}Y}{r_{j}^{T}r_{j}}
+\frac{1}{Y^{T}(I-H_{-j})Y} \\
+&amp; =\frac{Y^{T}(H-H_{-j})Y}{Y^{T}(I-H_{-j})Y} \\
+&amp; = R_{Y_{j}}^{2}
+\end{align}\]</span></p>
+</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/11/04/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9104Markov%E9%93%BE-%E8%BF%9E%E7%BB%AD%E6%97%B6%E9%97%B4/">【随机过程】04Markov链-连续时间</a><a class="next" href="/2024/10/25/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%AE%9E%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%E5%AF%B9%E8%A7%92%E5%8C%96/">实对称矩阵对角化</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2025/01/06/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E4%BD%BF%E7%94%A8%E7%9F%A9%E9%98%B5%E6%8E%A8%E5%AF%BC%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%9B%B8%E5%85%B3%E5%85%AC%E5%BC%8F/">使用矩阵推导一元线性回归相关公式</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/10/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9106%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/">【回归分析】06广义线性回归模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/30/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9105%E9%9E%85/">【随机过程】05鞅</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/30/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9106%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8/">【随机过程】06布朗运动</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/29/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9105%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/">【回归分析】05模型选择</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/26/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9104%E5%A4%9A%E9%87%8D%E5%85%B1%E7%BA%BF%E6%80%A7/">【回归分析】04多重共线性</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/21/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9106%E7%BD%9A%E5%87%BD%E6%95%B0%E6%B3%95/">【最优化方法】06罚函数法</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/">【回归分析】02多元线性回归-模型推断</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%88%86%E5%9D%97%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/">分块矩阵的逆</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E5%B9%BF%E4%B9%89%E5%81%8FF%E6%A3%80%E9%AA%8C/">广义偏F检验</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
   tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   });
 </script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
