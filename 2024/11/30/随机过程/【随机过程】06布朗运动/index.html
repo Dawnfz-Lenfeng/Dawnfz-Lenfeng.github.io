@@ -7,8 +7,8 @@ html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
 toggle.addEventListener('click', () => {
 localStorage.dark = !(html.dataset.dark == 'true');
 html.dataset.dark = localStorage.dark;
-});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【随机过程】06布朗运动</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【随机过程】06布朗运动</h1><div class="post-meta">2024-11-30<span> | </span><span class="category"><a href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">1 基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#guass%E8%BF%87%E7%A8%8B"><span class="toc-text">2 Guass过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E7%9A%84%E9%9E%85%E6%80%A7%E8%B4%A8"><span class="toc-text">3 布朗运动的鞅性质</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E7%9A%84markov%E6%80%A7%E8%B4%A8"><span class="toc-text">4 布朗运动的Markov性质</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#brown%E8%BF%90%E5%8A%A8%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC%E5%8F%98%E9%87%8F%E5%8F%8A%E5%8F%8D%E6%AD%A3%E5%BC%A6%E5%BE%8B"><span class="toc-text">5
-Brown运动的最大值变量及反正弦律</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="基本概念"><span
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">【随机过程】06布朗运动</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">【随机过程】06布朗运动</h1><div class="post-meta">2024-11-30<span> | </span><span class="category"><a href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">1 基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#guass%E8%BF%87%E7%A8%8B"><span class="toc-text">2 Guass过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8%E7%9A%84%E9%9E%85%E6%80%A7%E8%B4%A8"><span class="toc-text">3 布朗运动的鞅性质</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#brown%E8%BF%90%E5%8A%A8%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC%E5%8F%98%E9%87%8F%E5%8F%8A%E5%8F%8D%E6%AD%A3%E5%BC%A6%E5%BE%8B"><span class="toc-text">4
+Brown运动的最大值变量及反正弦律</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#brown%E8%BF%90%E5%8A%A8%E7%9A%84%E5%87%A0%E7%A7%8D%E5%8F%98%E5%8C%96"><span class="toc-text">5 Brown运动的几种变化</span></a></li></ol></div></div><div class="post-content"><h2 data-number="1" id="基本概念"><span
 class="header-section-number">1</span> 基本概念</h2>
 <div class="block definition">
 <div class="block-title">
@@ -62,6 +62,14 @@ P\{ B(1)\leq 0,B(2)\leq 0 \} &amp; =\int _{-\infty}^{0}P\{ B(2)\leq 0
 &amp; = \int _{\frac{1}{2}}^{1}y \, dy \\
 &amp; = \frac{3}{8}
 \end{align}\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 1.1 (Brown运动矩母函数).
+</div>
+<div class="block-content">
+<p><span class="math display">\[E(e^{sB(t)})=e^{ts^{2}/2}\]</span></p>
+</div>
+</div>
 <h2 data-number="2" id="guass过程"><span
 class="header-section-number">2</span> Guass过程</h2>
 <div class="block definition">
@@ -127,11 +135,129 @@ e^{u(B(t+s)-B(t))} \right)=e^{\frac{u^{2}}{2}s } \]</span>设<span
 class="math inline">\(Z_{s}=B(t+s)-B(t)\sim N(0,s)\)</span>，此时<span
 class="math display">\[E\left( e^{u(B(t+s)-B(t))}
 \right)=E(e^{uZ_{s}})\]</span>恰为矩母函数，故证毕。</p>
-<h2 data-number="4" id="布朗运动的markov性质"><span
-class="header-section-number">4</span> 布朗运动的Markov性质</h2>
-<h2 data-number="5" id="brown运动的最大值变量及反正弦律"><span
-class="header-section-number">5</span>
+<h2 data-number="4" id="brown运动的最大值变量及反正弦律"><span
+class="header-section-number">4</span>
 Brown运动的最大值变量及反正弦律</h2>
+<div class="block theorem">
+<div class="block-title">
+Theorem 4.1 (首次击中时刻的概率分布).
+</div>
+<div class="block-content">
+<p>设<span class="math inline">\(T_{x}\)</span>为布朗运动首次击中<span
+class="math inline">\(x\)</span>的时刻，即<span
+class="math display">\[T_{x}=\inf \{ t\mid B(t)=x,t&gt;0
+\}\]</span>当<span class="math inline">\(B(0)=0\)</span>，<span
+class="math inline">\(x&gt;0\)</span>时有<span
+class="math display">\[P\{ T_{x}\leq t \}=2\left( 1-\Phi\left(
+\frac{x}{\sqrt{ t }} \right) \right)=\frac{2}{\sqrt{ 2\pi }}\int
+_{\frac{x}{\sqrt{ t }}}^{+\infty}e^{-y^{2}/2} \, dx \]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 由全概率公式<span
+class="math display">\[\begin{align}
+P\{ B(t)\geq x \} &amp; =P\{ B(t)\geq x\mid T_{x}\leq t \}P\{ T_{x}\leq
+t \}+P\{ B(t)\geq x \mid T_{x}&gt;t\}P\{ T_{x}&gt;t \} \\
+&amp; = \frac{1}{2}P\{ T_{x}\leq t \}
+\end{align}\]</span>从而<span class="math display">\[\begin{align}
+P\{ T_{x}\leq t \} &amp; =2P\{ B(t)\geq x \} \\
+&amp; =2\left( 1-\Phi\left( \frac{x}{\sqrt{ t }} \right) \right)
+\end{align}\]</span>其密度函数为<span
+class="math display">\[\begin{align}
+f_{T_{x}}(t) &amp; =2\phi\left( \frac{x}{\sqrt{ t }} \right)
+\frac{x}{2}t^{-3/2} \\
+&amp; =xt^{-3/2 }\phi\left( \frac{x}{\sqrt{ t }} \right) \\
+&amp; =\frac{x}{\sqrt{ 2 \pi}}t^{-3/2}e^{-x^{2}/2t}, &amp; t&gt;0
+\end{align}\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 4.2 (最大值最小值的分布).
+</div>
+<div class="block-content">
+<p>设<span class="math inline">\(M(t)=\max_{0\leq s\leq
+t}B(s)\)</span>，<span class="math inline">\(m(t)=\min_{0\leq s\leq
+t}\)</span>，则<span class="math display">\[\begin{align}P\{ M(t)\geq x
+\} &amp; =P\{ T_{x}\leq t \},\quad x&gt;0\\ P\{ m(t)\leq x \}&amp;= P\{
+T_{x}\leq t \},\quad x&lt;0\end{align}\]</span></p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 4.3 (击中零点的概率).
+</div>
+<div class="block-content">
+<p>设<span class="math inline">\(\{ B^{x}(t) \}\)</span>为始于<span
+class="math inline">\(x\)</span>的布朗运动，则<span
+class="math inline">\(B^{x}(t)\)</span>在<span
+class="math inline">\((0,t)\)</span>中至少有一个零点的概率为<span
+class="math display">\[\frac{\lvert x \rvert }{\sqrt{ 2\pi }}\int
+_{0}^{t}u^{-3/2}e^{-x^{2}/2u} \, du \]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> 若<span
+class="math inline">\(x&lt;0\)</span>，此时只需求<span
+class="math display">\[\begin{align}
+P\{ \max_{0\leq s\leq t}B^{x}(s)\geq 0 \} &amp; = P\{ \max_{0\leq s\leq
+t}B(s)+x \geq 0 \} \\
+&amp; =P\{ M(t)\geq-x \} \\
+&amp; =P\{ T_{-x}\leq t \} \\
+&amp; =P\{ T_{x}\leq t \}
+\end{align}\]</span></p>
+<div class="block corollary">
+<div class="block-title">
+Corollary 4.1 (Brown运动同分布性质).
+</div>
+<div class="block-content">
+<p><span class="math inline">\(M(t)\)</span>，<span
+class="math inline">\(\lvert B(t) \rvert\)</span>，<span
+class="math inline">\(M(t)-B(t)\)</span>同分布。</p>
+</div>
+</div>
+<div class="block theorem">
+<div class="block-title">
+Theorem 4.4 (布朗运动反正弦律).
+</div>
+<div class="block-content">
+<p><span class="math inline">\(B^{y}(t)\)</span>在区间<span
+class="math inline">\((a,b)\)</span>中至少有一个零点概率为<span
+class="math display">\[\frac{2}{\pi}\arccos \sqrt{ \frac{a}{b}
+}\]</span></p>
+</div>
+</div>
+<h2 data-number="5" id="brown运动的几种变化"><span
+class="header-section-number">5</span> Brown运动的几种变化</h2>
+<div class="block definition">
+<div class="block-title">
+Definition 5.1 (Brown桥).
+</div>
+<div class="block-content">
+<p><span class="math display">\[B^{*}(t)=B(t)-tB(1)\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 5.2 (有吸收值的Brown运动).
+</div>
+<div class="block-content">
+<p><span class="math display">\[Z(t)=\begin{cases} B(t), &amp;
+t&lt;T_{x}\\x, &amp; t\geq T_{x} \end{cases}\]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 5.3 (在原点反射的Brown运动).
+</div>
+<div class="block-content">
+<p><span class="math display">\[Y(t)=\lvert B(t) \rvert \]</span></p>
+</div>
+</div>
+<div class="block definition">
+<div class="block-title">
+Definition 5.4 (几何Brown运动).
+</div>
+<div class="block-content">
+<p><span class="math display">\[X(t)=e^{B(t)}\]</span></p>
+</div>
+</div>
 </div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/11/30/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9105%E9%9E%85/">【随机过程】05鞅</a><a class="next" href="/2024/11/29/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9105%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/">【回归分析】05模型选择</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2025/01/06/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E4%BD%BF%E7%94%A8%E7%9F%A9%E9%98%B5%E6%8E%A8%E5%AF%BC%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%9B%B8%E5%85%B3%E5%85%AC%E5%BC%8F/">使用矩阵推导一元线性回归相关公式</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/10/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9106%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/">【回归分析】06广义线性回归模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/30/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9105%E9%9E%85/">【随机过程】05鞅</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/30/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9106%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8/">【随机过程】06布朗运动</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/29/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9105%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/">【回归分析】05模型选择</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/26/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9104%E5%A4%9A%E9%87%8D%E5%85%B1%E7%BA%BF%E6%80%A7/">【回归分析】04多重共线性</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/21/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9106%E7%BD%9A%E5%87%BD%E6%95%B0%E6%B3%95/">【最优化方法】06罚函数法</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/">【回归分析】02多元线性回归-模型推断</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%88%86%E5%9D%97%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/">分块矩阵的逆</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E5%B9%BF%E4%B9%89%E5%81%8FF%E6%A3%80%E9%AA%8C/">广义偏F检验</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
   tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   });

@@ -7,7 +7,8 @@ html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
 toggle.addEventListener('click', () => {
 localStorage.dark = !(html.dataset.dark == 'true');
 html.dataset.dark = localStorage.dark;
-});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">使用矩阵推导一元线性回归相关公式</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">使用矩阵推导一元线性回归相关公式</h1><div class="post-meta">2025-01-06<span> | </span><span class="category"><a href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%85%83%E6%83%85%E5%86%B5"><span class="toc-text">1 一元情况</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xtx-1%E8%AE%A1%E7%AE%97"><span class="toc-text">1.1 \((X^{T}X)^{-1}\)计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hatbeta%E8%AE%A1%E7%AE%97"><span class="toc-text">1.2 \(\hat{\beta}\)计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%95%E5%BD%B1%E7%9F%A9%E9%98%B5h%E8%AE%A1%E7%AE%97"><span class="toc-text">1.3 投影矩阵\(H\)计算</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E8%88%AC%E6%83%85%E5%86%B5"><span class="toc-text">2 一般情况</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xtx-1%E8%AE%A1%E7%AE%97-1"><span class="toc-text">2.1 \((X^{T}X)^{-1}\)计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hatbeta_i%E8%AE%A1%E7%AE%97"><span class="toc-text">2.2 \(\hat{\beta}_{i}\)计算</span></a></li></ol></li></ol></div></div><div class="post-content"><p>在<a
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">使用矩阵推导一元线性回归相关公式</h1><a id="logo" href="/.">What was I thinking?</a><p class="description">Lingfeng's Starry Night</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/todo/"><i class="fa fa-check-square"> 事务</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">使用矩阵推导一元线性回归相关公式</h1><div class="post-meta">2025-01-06<span> | </span><span class="category"><a href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%85%83%E6%83%85%E5%86%B5"><span class="toc-text">1 一元情况</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xtx-1%E8%AE%A1%E7%AE%97"><span class="toc-text">1.1 \((X^{T}X)^{-1}\)计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hatbeta%E8%AE%A1%E7%AE%97"><span class="toc-text">1.2 \(\hat{\beta}\)计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%95%E5%BD%B1%E7%9F%A9%E9%98%B5h%E8%AE%A1%E7%AE%97"><span class="toc-text">1.3 投影矩阵\(H\)计算</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E8%88%AC%E6%83%85%E5%86%B5"><span class="toc-text">2 一般情况</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xtx-1%E8%AE%A1%E7%AE%97-1"><span class="toc-text">2.1 \((X^{T}X)^{-1}\)计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hatbeta_i%E8%AE%A1%E7%AE%97"><span class="toc-text">2.2 \(\hat{\beta}_{i}\)计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%95%E5%BD%B1%E7%9F%A9%E9%98%B5h%E8%AE%A1%E7%AE%97-1"><span class="toc-text">2.3 投影矩阵\(H\)计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#t2-f_j-%E8%AF%81%E6%98%8E"><span class="toc-text">2.4 \(t^2
+&#x3D; F_j\) 证明</span></a></li></ol></li></ol></div></div><div class="post-content"><p>在<a
 href="【回归分析】01一元线性回归.md">【回归分析】01一元线性回归</a>中，一元线性回归的相关公式是通过求和符号进行推导的，虽然直观但过程较为繁琐。而在<a
 href="【回归分析】02多元线性回归.md">【回归分析】02多元线性回归</a>中，给出了使用矩阵表示的一般情况，这种方法更加简洁明了。</p>
 <p>为了进一步说明矩阵方法的优越性，接下来我们以一元线性回归为例，使用矩阵形式重新推导，目标是得到与求和符号推导相同的结果，同时简化计算过程。</p>
@@ -164,9 +165,11 @@ X_{i}^{T}
 \end{align}\]</span> 再计算方差，即为<span
 class="math inline">\((X^{T}X)^{-1}\)</span>最后一个对角元<span
 class="math display">\[Var(\hat{\beta_{i}}
-)=\frac{\sigma^{2}}{X_{i}^{T}(I-H_{-i})X_{i}}\]</span> ### 投影矩阵<span
-class="math inline">\(H\)</span>计算 注意到<span
-class="math display">\[\begin{align}
+)=\frac{\sigma^{2}}{X_{i}^{T}(I-H_{-i})X_{i}}\]</span></p>
+<h3 data-number="2.3" id="投影矩阵h计算-1"><span
+class="header-section-number">2.3</span> 投影矩阵<span
+class="math inline">\(H\)</span>计算</h3>
+<p>注意到<span class="math display">\[\begin{align}
 H &amp; =X(X^{T}X)^{-1}X^{T} \\
 &amp; =\begin{pmatrix}
 X_{-i} &amp; X_{i}
@@ -184,8 +187,11 @@ X_{i}^{T}
 \\
 &amp; =H_{-i}+
 \frac{(I-H_{-i})X_{i}X_{i}^{T}(I-H_{-i})}{X_{i}^{T}(I-H_{-i})X_{i}}
-\end{align}\]</span> ### <span class="math inline">\(t^2 = F_j\)</span>
-证明 由定义<span
+\end{align}\]</span></p>
+<h3 data-number="2.4" id="t2-f_j-证明"><span
+class="header-section-number">2.4</span> <span class="math inline">\(t^2
+= F_j\)</span> 证明</h3>
+<p>由定义<span
 class="math display">\[t_{j}=\frac{\hat{\beta}_{j}}{\sqrt{ c_{jj}
 }\hat{\sigma}}\]</span>而我们已经求出<span
 class="math display">\[\begin{align} \\

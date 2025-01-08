@@ -265,6 +265,23 @@ p_{ii}^{(n-l)} \right) \\
 &amp; = 1+ f_{ii}\sum_{n = 0}^{\infty} p_{ii}^{(n)}
 \end{align}\]</span>得到<span class="math display">\[f_{ii}=1-
 \frac{1}{\sum_{n = 0}^{\infty} p_{ii}^{(n)}}\]</span></p>
+<div class="block theorem">
+<div class="block-title">
+Theorem 2.5 (常返分解定理).
+</div>
+<div class="block-content">
+<p><span class="math display">\[f_{ii}=p_{ii}+\sum_{l \neq
+i}p_{il}f_{li} \]</span></p>
+</div>
+</div>
+<p><strong>证明</strong> <span class="math display">\[\begin{align}
+f_{ii} &amp; =\sum_{n = 1}^{\infty} f_{ii}^{(n)} \\
+&amp; = p_{ii}+ \sum_{n = 2}^{\infty} \sum_{l\neq i}
+p_{il}f_{li}^{(n-1)} \\
+&amp; =p_{ii}+ \sum_{l\neq i} p_{il} \sum_{n = 1}^{\infty} f_{li}^{(n) }
+\\
+&amp; = p_{ii}+\sum_{l\neq i} p_{il}f_{li}
+\end{align}\]</span></p>
 <div class="block lemma">
 <div class="block-title">
 Lemma 2.1 (互通常返性).
@@ -275,17 +292,44 @@ class="math inline">\(i\)</span>为常返状态，则<span
 class="math inline">\(f_{ji}=1\)</span>，自然有<span
 class="math inline">\(j\to i\)</span>。若<span
 class="math inline">\(i\)</span>是零常犯态，也有<span
-class="math inline">\(j\)</span>为常返态。</p>
+class="math inline">\(j\)</span>为零常返态。</p>
 </div>
 </div>
+<p><strong>证明</strong> 考虑反证法，假设<span
+class="math inline">\(f_{ji}&lt;1\)</span>，注意到<span
+class="math display">\[\begin{align}
+1-f_{ii} &amp; =1-p_{ii}-\sum_{l\neq i} p_{il}f_{li}  \\
+&amp;  = \sum_{l \neq i}p_{il}-  \sum_{l \neq i}p_{il}f_{li} \\
+&amp; =\sum_{l \neq i} p_{il}(1-f_{li}) \\
+&amp; \geq p_{ij}(1-f_{ji})&gt;0
+\end{align}\]</span>与<span
+class="math inline">\(f_{ii}=1\)</span>矛盾。故证毕。</p>
 <div class="block theorem">
 <div class="block-title">
-Theorem 2.5 (常返性与l类).
+Theorem 2.6 (常返性与类).
 </div>
 <div class="block-content">
-<p>常返性是类性质。</p>
+<p>常返性是类性质。若<span class="math inline">\(i\leftrightarrow
+j\)</span>，则<span class="math inline">\(i\)</span>常返必有<span
+class="math inline">\(j\)</span>也常返。</p>
 </div>
 </div>
+<p><strong>证明</strong> 由于<span
+class="math inline">\(i\leftrightarrow j\)</span>，<span
+class="math inline">\(\exists n,m&gt;0\)</span>，使得<span
+class="math inline">\(p_{ij}^{(n)}\)</span>，<span
+class="math inline">\(p_{ji}^{(m)}&gt;0\)</span>，此时<span
+class="math display">\[p_{ii}^{(n+m+l)}\geq
+p_{ij}^{(n)}p_{jj}^{(l)}p_{ji}^{(m)}\]</span>因此<span
+class="math display">\[\sum_{l = 0}^{\infty} p_{ii}^{(l)}\geq \sum_{l =
+0}^{\infty} p_{ii}^{(n+m+l)}\geq p_{ij}^{(n)}p_{ji}^{(m)}\sum_{l =
+1}^{\infty}p_{jj}^{(l)} \]</span>同理<span
+class="math display">\[\sum_{l = 0}^{\infty} p_{jj}^{(l)}\geq b \sum_{l
+= 0}^{\infty} p_{ii}^{(l)}\]</span>其中<span
+class="math inline">\(0&lt;b\leq1\)</span>。故<span
+class="math inline">\(\sum_{i = 0}^{\infty}p_{ii}^{(l)}\)</span>与<span
+class="math inline">\(\sum_{i =
+0}^{\infty}p_{jj}^{(l)}\)</span>相互控制，由常返判别准则知定理成立。</p>
 <h2 data-number="3" id="极限定理及平稳分布"><span
 class="header-section-number">3</span> 极限定理及平稳分布</h2>
 <h3 data-number="3.1" id="极限定理"><span
@@ -343,6 +387,12 @@ Corollary 3.1.2 (有限状态Markov链性质).
 <p>有限状态Markov链性质不会全为非常返态，也不会有零常返态，不可约有限Markov链一切状态都是正常返的。</p>
 </div>
 </div>
+<p><strong>证明</strong> 设<span class="math inline">\(S=\{ 1,2,\dots,N
+\}\)</span>。若<span
+class="math inline">\(N\)</span>个状态非常返，则<span
+class="math display">\[\lim_{ n \to \infty } \sum_{j \in S}p_{ij}^{(n)}
+=\sum_{j\in S} \lim_{ n \to \infty } p_{ij}^{(n)} =0\]</span>但<span
+class="math display">\[\sum_{j \in S}p_{ij}=1 \]</span>矛盾。</p>
 <h3 data-number="3.2" id="平稳分布"><span
 class="header-section-number">3.2</span> 平稳分布</h3>
 <div class="block definition">
@@ -389,6 +439,15 @@ S}\tilde{\pi}_{i}p^{(n)}_{ij}\]</span>此时<span
 class="math display">\[\tilde{\pi}_{j}=\sum_{i \in
 S}\tilde{\pi}_{i}\lim_{ n \to \infty } p_{ij}^{(n)}=\left( \sum_{i \in
 S}\tilde{\pi}_{i} \right)\pi_{j}=\pi_{j}\]</span></p>
+<div class="block corollary">
+<div class="block-title">
+Corollary 3.2.1 (平稳分布和平均步数).
+</div>
+<div class="block-content">
+<p>对于不可约非周期遍历的Markov链，有<span class="math display">\[\lim_{
+n \to \infty } p_{ij}^{(n)}=\pi_{j}=\frac{1}{\mu_{j}}\]</span></p>
+</div>
+</div>
 </div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/10/12/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9103%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B-%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B%E7%9A%84%E6%8E%A8%E5%B9%BF/">【随机过程】03更新过程-更新过程的推广</a><a class="next" href="/2024/10/10/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9103%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96-%E4%BA%8C%E9%98%B6%E6%96%B9%E6%B3%95/">【最优化方法】03无约束优化-二阶方法</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://dawnfz-lenfeng.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/avatar.png"/></a><p>Let no one ignorant of thinking enter.</p><a class="info-icon" href="mailto:lingfengbut@qq.com" title="Email" target="_blank" style="margin-inline:5px"> <i class="fa fa-envelope-square" style="margin-inline:5px"></i></a><a class="info-icon" href="https://github.com/Dawnfz-Lenfeng" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/">回归分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B/">教程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">最优化方法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 15px;">随笔</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2025/01/06/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E4%BD%BF%E7%94%A8%E7%9F%A9%E9%98%B5%E6%8E%A8%E5%AF%BC%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%9B%B8%E5%85%B3%E5%85%AC%E5%BC%8F/">使用矩阵推导一元线性回归相关公式</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/10/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9106%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B/">【回归分析】06广义线性回归模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/30/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9105%E9%9E%85/">【随机过程】05鞅</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/30/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E3%80%90%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B%E3%80%9106%E5%B8%83%E6%9C%97%E8%BF%90%E5%8A%A8/">【随机过程】06布朗运动</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/29/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9105%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/">【回归分析】05模型选择</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/26/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9104%E5%A4%9A%E9%87%8D%E5%85%B1%E7%BA%BF%E6%80%A7/">【回归分析】04多重共线性</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/21/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E3%80%90%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95%E3%80%9106%E7%BD%9A%E5%87%BD%E6%95%B0%E6%B3%95/">【最优化方法】06罚函数法</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E3%80%90%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90%E3%80%9102%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-%E6%A8%A1%E5%9E%8B%E6%8E%A8%E6%96%AD/">【回归分析】02多元线性回归-模型推断</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E5%88%86%E5%9D%97%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/">分块矩阵的逆</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/16/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90/%E5%B9%BF%E4%B9%89%E5%81%8FF%E6%A3%80%E9%AA%8C/">广义偏F检验</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">What was I thinking?.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
   tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   });
