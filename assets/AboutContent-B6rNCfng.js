@@ -1,0 +1,1 @@
+import{_ as e,c as o,o as n,a as s,g as a}from"./app-DgkFR5ae.js";const c={name:"AboutContent"},r={class:"content-wrapper"},_={class:"about-content"};function d(t,l,p,u,i,f){return n(),o("div",r,[s("div",_,[a(t.$slots,"default")])])}const $=e(c,[["render",d],["__file","AboutContent.vue"]]);export{$ as default};
