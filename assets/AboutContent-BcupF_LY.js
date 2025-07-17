@@ -1,0 +1,1 @@
+import{_ as e,c as o,o as s,a as n,f as a}from"./app-D17wElzq.js";const c={name:"AboutContent"},r={class:"content-wrapper"},_={class:"about-content"};function d(t,p,l,f,i,u){return s(),o("div",r,[n("div",_,[a(t.$slots,"default")])])}const $=e(c,[["render",d]]);export{$ as default};
