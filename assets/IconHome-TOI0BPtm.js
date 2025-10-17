@@ -1,0 +1,1 @@
+import{_ as o,o as t,c as n,a as r}from"./app-rKlnVmho.js";const s={},c={xmlns:"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink",viewBox:"0 0 24 24"};function l(a,e){return t(),n("svg",c,e[0]||(e[0]=[r("path",{d:"M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z",fill:"currentColor"},null,-1)]))}const i=o(s,[["render",l],["__file","IconHome.vue"]]);export{i as default};
